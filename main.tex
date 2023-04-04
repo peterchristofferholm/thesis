@@ -1,0 +1,91 @@
+\documentclass[%
+    a4paper, twoside, dissertation, fontsize=12pt%
+]{tufte-book}
+\hypersetup{colorlinks}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Metadata
+\title{data-driven precision cardiology}
+\author[Peter Christoffer Holm]{Peter Christoffer Holm}
+\publisher{University of Copenhagen}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{lipsum}
+\usepackage{pdfpages}
+\usepackage{blindtext}
+\usepackage{appendix}
+
+% For graphics / images
+\usepackage{graphicx}
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+\graphicspath{{graphics/}}
+
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Hanging parentheses and asterisks
+\newcommand{\hangp}[1]{\makebox[0pt][r]{(}#1\makebox[0pt][l]{)}}
+\newcommand{\hangstar}{\makebox[0pt][l]{*}}
+
+% Prints the month name (e.g., January) and the year (e.g., 2008)
+\newcommand{\monthyear}{%
+  \ifcase\month\or January\or February\or March\or April\or May\or June\or
+  July\or August\or September\or October\or November\or
+  December\fi\space\number\year
+}
+
+% Custom macros
+\newcommand{\na}{\quad--}
+\newcommand{\blankpage}{\newpage\hbox{}\thispagestyle{empty}\newpage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\frontmatter
+\maketitle
+
+\include{content/00-copyright}
+\cleardoublepage
+ 
+\tableofcontents
+\listoffigures
+\listoftables
+\cleardoublepage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\mainmatter
+
+\chapter{Introduction}
+\section{Survival analysis}
+
+\Blindtext[2]
+\Blindtext[2]
+
+\section{Machine Learning}
+
+\Blindtext[5]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\backmatter
+% \bibliography{sample-handout}
+% \bibliographystyle{plainnat}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\part*{Appendix}
+
+\appendix
+
+\chapter{Paper 1}
+
+\includepdf[%
+    frame=true, scale=0.8, pages=-, pagecommand={}%
+]{assets/dummy.pdf}
+
+\end{document}
