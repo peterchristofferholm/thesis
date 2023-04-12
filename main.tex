@@ -1,5 +1,6 @@
+\PassOptionsToPackage{full}{textcomp}
 \documentclass[%
-    a4paper, twoside, dissertation, fontsize=12pt%
+    a4paper, twoside, dissertation, fontsize=12pt, nobib%
 ]{tufte-book}
 \hypersetup{colorlinks}
 
@@ -8,7 +9,31 @@
 \title{data-driven precision cardiology}
 \author[Peter Christoffer Holm]{Peter Christoffer Holm}
 \publisher{University of Copenhagen}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[%
+    style=verbose-note,
+    %style=verbose-note,
+    url=false,
+    isbn=false,
+    doi=false,
+    maxcitenames=2,
+    sorting=none,
+    autocite=footnote,
+]{biblatex}
+\addbibresource{assets/pch-thesis.bib}
+
+\AtEveryCitekey{\clearfield{pagetotal}}
+\AtEveryCitekey{\clearfield{pages}}
+\AtEveryCitekey{\clearfield{eprint}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[p, osf]{ETbb} % osf in text, tabular lining figures in math
+\usepackage[scaled=.95,type1]{cabin} % sans serif in style of Gill Sans
+
+% \usepackage[varqu,varl]{zi4} % inconsolata typewriter
 
 \usepackage{microtype}
 \usepackage{booktabs}
@@ -16,6 +41,10 @@
 \usepackage{pdfpages}
 \usepackage{blindtext}
 \usepackage{appendix}
+\usepackage{amsmath}
+
+% quotation marks
+\usepackage{csquotes}
 
 % For graphics / images
 \usepackage{graphicx}
@@ -48,7 +77,9 @@
 \frontmatter
 \maketitle
 
-\include{content/00-copyright}
+\include{content/00-copyright.tex}
+\include{content/00-preface.tex}
+
 \cleardoublepage
  
 \tableofcontents
@@ -60,21 +91,22 @@
 
 \mainmatter
 
-\chapter{Introduction}
-\section{Survival analysis}
+\chapter{Summary}
+\chapter{Scientific Publications}
 
-\Blindtext[2]
-\Blindtext[2]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Machine Learning}
+\part{General Introduction}
 
-\Blindtext[5]
+\include{content/precision-medicine.tex}
+\include{content/health-informatics.tex}
+\include{content/machine-learning.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \backmatter
-% \bibliography{sample-handout}
-% \bibliographystyle{plainnat}
+
+\printbibliography
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -82,6 +114,7 @@
 
 \appendix
 
+\chapter{Paper 1}
 \chapter{Paper 1}
 
 \includepdf[%
