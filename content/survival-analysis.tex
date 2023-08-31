@@ -1,0 +1,614 @@
+\chapter{Time-to-event Prediction with Survival Analysis}
+
+%------------------------------------------------------------------------------
+\marginnote{%
+    \setlength{\parindent}{0pt}
+    \vskip 1em
+    What is survival analysis?
+    \begin{description}[leftmargin=!, labelwidth=3em]
+        \item[outcome] time until an event occurs.
+            Can be measured in seconds, days, months, etc.
+        \item[event] death, relapse, remission, engine failure, etc.
+    \end{description}
+    
+    \begin{center}
+    \begin{tikzpicture}
+        \noindent
+        \node (a) at (2.5, 0) {event};
+        \node (b) at (0, 0) {start (\(t_0\))} edge ["time", ->] (a);
+    \end{tikzpicture}
+    \end{center}
+     
+}
+%------------------------------------------------------------------------------
+
+Generally, 
+survival analysis is the collection of statistical methods
+for the modelling and analysis of time-to-event data,
+which is data where the outcome variable of interest 
+is the time until \enquote{something} happens~%
+\autocite{kleinbaumSurvival2011}.
+This \enquote{something} is a particular event of interest,
+which, depending on the type of analytical problem, 
+could be cancer relapse, 
+diabetes remission,
+or the death of a patient.
+To figure out what processes and characteristics 
+that are associated with such events, 
+in survival analysis, we try to model the relationship between
+explanatory variables and the number of weeks, months, or years 
+until that particular event is likely to occur. 
+
+%------------------------------------------------------------------------------
+\marginnote{%
+    \vskip 2em
+    Survival analysis have applications outside biomedical research.
+    In engineering, it is called \textit{reliability analysis} and
+    is used to model the time-to-failure of system-critical components 
+    such as e.g. bearings or valves.
+}
+%------------------------------------------------------------------------------
+
+Although this task can be daunting in its own right, 
+an additional complication to survival analysis 
+is the presence of observations that are subject to 
+\textit{censoring}.
+Censoring refers to cases 
+where the event of interest has not been observed 
+before the end of follow-up, 
+e.g. when a study or experiment has to be stopped.
+In such cases, 
+we would know that a given subject did not experience a relapse 
+in the three months he or she was included in the study, 
+but after the study period ends, 
+we have no information on the status of the patient. 
+Including and utilizing this partial information
+is a cornerstone in many survival analysis problems.
+There are different forms of censoring,
+such as right censoring, left censoring, and interval censoring.
+In the study designs used throughout this thesis 
+we have only had to deal with right censoring,
+the most common form of censoring,
+so the two other types  will not be described further.
+See instead \textcite{kleinSurvival2003} for more details on this.
+
+%==============================================================================
+\section{Basics of survival analysis}
+
+In survival analysis the central outcome variable is the survival time,
+which is a non-negative random variable usually denoted as \(T\). 
+When refering to specific values of \(T\) we use a lower case \(t\).
+This is for instance seen in the definition of the survival function,
+which gives the probability of 
+a subject still being alive after some specified time:
+%
+\begin{equation*}
+    S(t) = \Pr (T > t).
+\end{equation*}
+
+\begin{marginfigure}%
+	\begin{tikzpicture}[scale=2]
+	  \draw[->] (0, 0) --  (2,0) 
+		node[pos=0.0, below] {$0$}
+		node[pos=0.5, below] {$t$}
+		node[pos=1.0, below] {$\infty$};
+	  \draw[->] (0, 0) --  (0,1) 
+		node[pos=1.0, left] {$1$}
+		node[pos=0.5, left] {$S(t)$};
+	  \draw[-, color=blue] 
+		(0.05, 0.95) .. controls (1, 1) and (1, 0) .. (1.95,0.05);
+	\end{tikzpicture}
+    \caption[A theoretical survival function]{%
+        A theoretical survival function \(S(t)\). 
+        Survival functions are monotonically nonincreasing 
+        and always starts at \(S(0) = 1\).
+    }
+    \label{fig:survival-function}
+\end{marginfigure}
+
+Another fundamental quantity in survival analysis is 
+the hazard function or hazard rate.
+The hazard function represents the instantaneous failure rate 
+at a given timepoint, and is defined as
+%
+\begin{equation*}
+    h(t) = \lim_{\Delta t \to 0} 
+        \frac{\Pr (t \leq T < t + \Delta t | T \geq t)}{\Delta t}.
+\end{equation*}
+
+The hazard function provides information 
+about the risk of experiencing the event of interest at a particular moment,
+given that the individual has survived up to that point in time.
+It thus represents the dynamic risk of experiencing an event over time.
+
+The survival function and the hazard function is inextricably linked 
+as they are both representations of the same distribution.
+Knowing or modelling one is thus enough to obtain the other as
+%
+\begin{align*}
+    S(t) &= \exp \left[ - \int_{0}^{t}  h(t) \, dt \right] \\
+    \intertext{and correspondingly}
+    h(t) &= \frac{d \log \left[S(t)\right]}{dt}.
+\end{align*}
+%
+
+\vskip 10em
+
+
+
+\vskip 10em
+
+A survival dataset of size \(n\) is given by
+
+\begin{equation*}
+    \mathfrak{D}_n = \{(T_i ,\, \delta_i,\, \mathbf{x}_i) ; 1 \leq i \leq n\} 
+\end{equation*}
+
+
+
+
+\begin{equation*}
+    \eqnmarkbox[blue]{node1}{e_q^n}
+    \cdot f(x) \, kT
+\end{equation*}
+\annotate[yshift=1em]{right}{node1}{my}
+
+
+
+
+
+
+%------------------------------------------------------------------------------
+\marginnote{%
+A survival dataset of size \(n\) is given by
+\begin{equation*}
+    \mathfrak{D}_n = \{T_i, \delta_i, \mathbf{x}_i; i = 1, \ldots, n\} 
+\end{equation*}
+where \(T_i = \min(T_i, C_i) \) is the observed event time 
+for the \(i\)th subject,
+with \(T_i\) denoting the survival time
+and \(C_i\) denoting the censoring time. 
+\(\delta_i\) is the event indicator 
+and \(\mathbf{x}_i\) is the covariate vector.
+}
+%------------------------------------------------------------------------------
+
+
+
+
+
+%==============================================================================
+
+\section{Discrete time survival analysis}
+
+Most textbooks on survival analysis treats survival time as continuous, 
+and that is also usually the case across the biomedical litterature.
+However, handling time as a something discrete might be advantegous.
+In practice, most measurements of \enquote{time} is inherently discrete 
+with durations being recorded in, for example, days; months; and weeks.
+The common continuous time approaches are applicable on discrete time data,
+however, methods that are designed specifically for discrete time-to-event 
+data have some advantages~\autocite{tutzModeling2016}:
+
+\begin{itemize}
+    \item If observed event times are inherently discrete, 
+        then modelling them as such is more accurate and appropriate. 
+    \item In the discrete time setting, hazards can be formulated as 
+        conditional probabilities which are much more intuitive to 
+        both interpret and understand.
+    \item Tied event times, 
+        which is simply when two events happen at the exact same recorded time,
+        is, in contrast to continuous time methods,
+        not a problem for the discrete time alternatives.
+    \item Discrete time-to-event models are more easily transferred to 
+        other more general purpose modelling frameworks 
+        such as generalized linear models, random survival forests, 
+        neural networks.
+\end{itemize}
+
+In \textsc{paper II} and \textsc{paper III} we take advantage of the latter,
+in constructing neural network-based survival models
+for precision prognostication in ischemic heart disease.
+
+%==============================================================================
+
+
+
+The survival function for a population can be estimated using 
+the Kaplan-Meier product-limit estimator
+
+
+\begin{equation}
+    \widehat{S} (t) = \prod_{i : \, t_i \leq t} \left(
+        1 - \frac{d_i}{n_i}
+    \right)
+\end{equation}
+
+Cox proportional hazards model is a semi-parametric model, 
+where the hazard function is modeled as 
+\begin{equation}
+    h(t) = h_0(t) \exp \{\beta \mathbf{x}\}
+\end{equation}
+
+
+The most well-known regression model in survival analysis 
+is Cox's proportional hazards model.
+
+\begin{equation}
+    \lambda (t | \mathbf{x}) = \lambda_0(t) \exp(\beta \cdot \mathbf{x})
+\end{equation}
+
+The function \(\lambda_0(t)\) is the \textit{baseline hazard} 
+which is usually left unspecified and treated as a nuisance function.
+The regression coefficients \(\beta\) are estimated
+by maximizing the partial likelihood.
+If absolute estimates are required, 
+the baseline hazard can be estimated using non-parametric methods,
+most commnly using the Breslow estimator.
+
+
+%==============================================================================
+\section{Discrete-time survival analysis}
+
+
+
+
+%==============================================================================
+\section{Competing risk analysis}
+
+
+
+
+\autocite{biganzoliFeed1998}
+
+
+In survival analysis of competing risks, 
+different risks can be modelled marginally,
+independently of one another.
+This relies on the latent failure assumption.
+
+However, in real-life, the different competing risks 
+or \enquote{failure modes} can influence one another
+by some shared mechanisms.
+Therefore, marginal independent time-to-event models
+can therefore be to simplistic.
+Instead, it is in such cases
+more reasonable to model the competing risks jointly,
+such that the dependence structure shared between them
+can be leveraged.
+
+Excluding subject for whom the event status is unknown
+will lead to a biased model with poor real-life performance.
+
+
+
+
+
+The DeepSurv model estimates the hazard function \(h(t|\mathbf{x})\).
+
+\begin{equation}
+    h(t | \mathbf{x}) = h_0(t) \exp(f(x, \theta))
+\end{equation}
+
+\begin{itemize}
+    \item Random survival trees and forest
+    \item Penalized or boosted Cox regression
+    \item Neural network-based extensions
+\end{itemize}
+
+
+\section{Discrete-time survival models}
+
+In a discrete-time framework, 
+continuous follow-up time is divided into into \(q\) contiguous intervals
+%
+\begin{equation*}
+	[0, a_1), [a_1, a_2), ..., [a_{q-1}, a_q), [a_{q}, \infty)
+\end{equation*}
+%
+and the time to event variable \(T\) is denoted 
+with a positive integer \(t = 1, 2, ...\),
+which points to the interval \([a_{t-1}, a_{t})\).
+With this discrete time scale,
+the cause-specific hazard function \(\lambda_{r}(t)\) is 
+the conditional probability of an individual experiencing 
+the event in that specific interval,
+given that the individual is still alive at the start of the interval
+%
+\begin{equation*}
+    \lambda_{r}(t | \mathbf{x}) = \Pr (T = t, R = r | T \geq t, \mathbf{x})
+\end{equation*}
+%
+given a vector \(\mathbf{x}\) of predictor variables. 
+
+The discrete hazard function is defined as
+the probability of failure in the interval \(t\),
+given that the individual is still alive at the end of the preceding interval
+\(t - 1\).
+
+
+
+\citeauthor{gensheimerScalable2019} 
+parameterized the hazard using a neural network,
+and showed that their method provide well calibrated
+model estimates with high model discrimination.
+
+It is an approach with the same idea as the one presented by 
+\citeauthor{brownUse1997} in 1997 \autocite{brownUse1997}.
+
+
+DeepHit parameterizes the probability mass function 
+of the survival distribution.
+They also include a ranking loss to improve model discrimination.
+\citeauthor{kvammeContinuous2021} showed that the DeepHit method
+has excellent discrimination but is poorly calibrated.
+
+
+\section{Model formulation}
+
+Let \(C_i\) be the right-censoring time 
+and \(T_i\) be the event time for for individual \(i\).
+A discrete time survival dataset \(\mathfrak{D}\) is a set of \(n\) tuples
+\((t_{i}, \delta_{i}, \mathbf{x}_{i})\)
+where \(t_i = \min\{T_i, C_i\}\) is the event time,
+\(\delta_{i} \in \{0, ..., m\}\) is the event indicator 
+(with \(\delta_i = 0\) defined as censoring),
+and \(\mathbf{x}_{i} \in \mathbb{R}^d\) 
+is a \(d\)-dimensional vector of time-independent predictors or covariates.
+
+The proposed model parametrizes the cause-specific conditional hazards,
+and the output \(\Lambda\) is then a 
+\(n \times q \times (m + 1)\) matrix of probabilities
+where values across the last dimension all sum up to 1.
+
+Without competing risks,
+the negative log-likelihood of the model output is
+%
+\begin{equation}
+    \mathrm{NLL}(\Lambda) =
+	- \sum_{i=1}^{n}
+	\sum_{t=1}^{q}
+    y_{is} \log [\ \lambda(s|\mathbf{x}_i) ]\
+    + (1 - y_{is}) \log [\ 1 - \lambda(s|\mathbf{x}_i) ]\
+\end{equation}
+%
+which is the loss-function used in \citeauthor{gensheimerScalable2019}.
+
+
+\section{Model formulation}
+
+In the case of several competing target events,
+it is necessary to define several hazard functions,
+one for each distinct outcome type.
+Let \(R \in \{1, ..., m\}\) denote the competing risks.
+Then, for disrete time \(T \in \{1, ..., q\}\), 
+the cause-specific hazard function from cause $r$ is defined by
+%
+\begin{equation*}
+    \lambda_{r}(t | \mathbf{x}) = \Pr (T = t, R = r | T \geq t, \mathbf{x})
+\end{equation*}
+%
+where \(\mathbf{x}\) is a vector of time-independent predictor variables. 
+The different hazard functions, 
+\(\lambda_{1}(t|\mathbf{x}), ..., \lambda_{m}(t|\mathbf{x})\) 
+can be combined into the overall hazard function defined as
+%
+\begin{equation}
+    \lambda(t|\mathbf{x}) 
+    = \sum_{r=1}^{m}(\lambda_{r}(t|\mathbf{x}))
+    = \Pr(T = t | t \leq T, \mathbf{x})
+\end{equation}
+%
+From this it follows that the survival function is
+%
+\begin{equation}
+    S(t|\mathbf{x})
+    = \Pr(T >= t|\mathbf{x})
+    = \prod_{i=1}^{t}(1 - \lambda(i|\mathbf{x}))
+\end{equation}
+
+The model uses $m + 1$ categorical responses.
+The responses are either any of the $m$ competings risks, 
+or conditional survival.
+%
+\begin{equation}
+    \Pr(T > t | T \geq t, \mathbf{x})
+    = 1 - \sum_{r = 1}^{m} \lambda_r (t | \mathbf{x})
+    = 1 - \lambda (t | \mathbf{x})
+\end{equation}
+
+\section{Model formulation}
+
+Continuous follow-up time is divided into into $q$ intervals
+%
+\begin{equation*}
+	[0, a_1), [a_1, a_2), ..., [a_{q-1}, a_q), [a_{q}, \infty)
+\end{equation*}
+%
+and the time to event variable \(T\) is denoted 
+with a positive integer \(t = 1, 2, ...\),
+which points to the interval \([a_{t-1}, a_{t})\).
+With this discrete time scale,
+the cause specific hazard function \(\lambda_{r}(t)\) is a conditional probability defined as
+%
+\begin{equation*}
+    \lambda_{r}(t | \mathbf{x}) = \Pr (T = t, R = r | T \geq t, \mathbf{x})
+\end{equation*}
+%
+given a vector \(\mathbf{x}\) of predictor variables.
+
+The discrete hazard function is defined as
+the probability of failure in the interval \(t\),
+given that the individual is still alive at the end of the preceding interval
+\(t - 1\).
+
+In a time-to-event model with several competing target events,
+we describe the process with multiple hazard functions, 
+that each describe a specific target outcome or risk.
+Typically, 
+we refer to the individual hazard functions as cause-specific hazards.
+
+For discrete time \(T \in \{1, ..., s+1\}\), and with a given vector \(\mathbf{x}\) of time-independent covariates,
+the cause-specific hazard from cause \(r\) is defined as
+
+\begin{equation}
+    \lambda_{r}(t|\mathbf{x}) 
+    = P(T = t, R = r | t \leq T, \mathbf{x})
+\end{equation}
+
+Which represents the probability of 
+
+The overall hazard function is
+
+\begin{equation}
+    \lambda(t|\mathbf{x}) 
+    = \sum_{r=1}^{m}(\lambda_{r}(t|\mathbf{x}))
+    = P(T = t | t \leq T, \mathbf{x})
+\end{equation}
+
+The survival function is the unconditional probability of an event in period \(t\) given the specific covariates is 
+
+\begin{equation}
+    S(t|\mathbf{x})
+    = P(T >= t|\mathbf{x})
+    = \prod_{i=1}^{t}(1 - \lambda(i|\mathbf{x}))
+\end{equation}
+
+From the hazard we can obtain the survival function 
+%
+\begin{equation*}
+    S(t | \mathbf{x}) 
+    = \Pr (T \geq t | \mathbf{x}) 
+    = \prod_{s = 1}^{t-1} (1 - \lambda(s | \mathbf{x}))
+\end{equation*}
+%
+which represents the unconditional probability of surviving interval \(t\) given the specific covariates cf. \autocite{tutzModeling2016}.
+
+Of note, this interpretation is considerably more accessible than the usual
+continuous hazard one.
+
+
+\begin{equation}
+    S(\tau) = P(T > \tau) = \sum_{i = 1}^{\tau - 1} (P(T = \tau - i))    
+\end{equation}
+
+The cause specific cumulative incidence function is
+
+\begin{equation}
+	CIF_r(t|\mathbf{x})
+	= \sum_{i=1}^{t}\lambda_{r}(t|\mathbf{x}) S(t-1|\mathbf{x})
+\end{equation}
+
+Let the data be given by \(t_{i}, r_{i}, \delta_{i}, \mathbf{x}_{i}\),
+where \(r_{i} \in \{1, ..., m\}\) indicates the target event. 
+Assuming random censoring at the end of the interval
+with \(t_i = \min\{T_i, C_i\}\), 
+where events are defined by the indicator function
+
+\begin{equation}
+\delta_i = 
+	\begin{cases}
+		1, & T_i \leq C_i \\
+		0, & T_i > C_i
+	\end{cases}
+\end{equation}
+
+\begin{subequations}
+\begin{equation}
+	nll =
+	- \sum_{i=1}^{n}
+	\sum_{t=1}^{ti}
+	\left(
+		\sum_{r \in C} \delta_{itr} \log(\lambda_{r} (t | \mathbf{x}))
+		+ \delta_{it0} \log\left(
+			1 - \sum_{r \in C} \lambda_{r} (t | \mathbf{x})
+		\right)
+	\right)
+\end{equation}
+
+Or alternatively 
+
+\begin{equation}
+	nll =
+	- \sum_{t=1}^{q}
+	\sum_{i \in R_s}
+	\delta_{is} \log(s|\mathbf{x}_i) 
+	+ (1 - \delta_{is}) (1 - \log(s|\mathbf{x}_i)))
+\end{equation}
+\end{subequations}
+
+In our approach, the neural network parametrises the logistic hazards.
+The goal is to learn \( \hat{h}(t | \mathbf{x}) \)
+for each of the competing events.
+
+
+
+
+The discrete probability function
+
+\begin{equation}
+    f_l = \Pr (T \in A_l) = S(t_{l-1}) - S(t|l)
+\end{equation}
+
+the discrete hazard rate
+
+\begin{equation}
+    h_l = \Pr (T \in A_l | T > t_{l-1}) = \frac{f_l}{S(t_{l-1})}
+\end{equation}
+
+    
+The contribution to the likelihood function of the \textit{i}th subject
+
+For uncensored subjects, the contribution is
+%
+\begin{equation}
+    \Pr (T_i \in A_{l_i}) = f_{l_i} = h_{l_i} \prod_{l=1}^{l_i-1}(1-h_{l_i})
+\end{equation}
+%
+while for censored subject, the contribution is
+%
+\begin{equation}
+    \Pr (T_i > t_{l_i}) = S(t_{l_i}) = \prod_{l=1}^{l}(1-h_{l_i})
+\end{equation}
+
+A similar approach have previously been described \autocite{biganzoliFeed1998}.
+
+
+
+
+\section{Evaluating prediction models}
+
+Visualization of model performance.
+A calibration shows the link between 
+expected outcome proportion 
+and predicted probabilities.
+
+\subsection{Calibration}
+
+A model is said to be well-calibrated
+if the probabilistic predictions are reliable.
+
+With a reliable model, 
+in a group of individuals predicted to develop diabetes
+with a \SI{10}{\percent} risk, 
+we would expect to exactly \SI{10}{\percent} to actually develop diabetes.
+
+
+\subsection{Discrimination}
+
+Discrimination refers to a models ability to rank individuals according 
+to their actual risk of experiencing a given event.
+The main measure for discrimination is the area under the receiver
+operating characteristic curve (AUC).
+For survival models, Harrel's C-index is typically used,
+although it is actually an improper scoring metric.
+Instead, the time-dependent AUC should be used instead.
+
+
+
+
+
+
+
+
+

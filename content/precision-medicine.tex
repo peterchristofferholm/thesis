@@ -1,4 +1,15 @@
-\chapter{Precision medicine}
+\chapter{Data-driven Precision Medicine} \label{precision-medicine}
+
+
+
+
+
+
+
+
+
+
+
 
 A clinical reference chart may indicate that all healthy adults in Denmark
 have a cholesterol level between XX to XX unit per volume.
@@ -9,5 +20,203 @@ Development of quantitative estimates of risks.
 
 Electronical health records are a rich source of health data,
 and can be used to find connections between risk factors and diseases.
+
+Precision medicine is prevention and treatment approaches
+that takes individual variation into account.
+
+As a concept, precision medicine is not a new idea;
+tissue- and blood typing, for instance,  
+has been used to guide treatment for many decades.
+However, the prospective of leveraging large clinical databases
+and broad array of phenotypic information 
+to deliver precision medicine across
+a wide spectrum of disease states
+is adding renewed interest in the concept.
+
+The terms
+\enquote{precision},
+\enquote{personalized},
+and \enquote{individualized medicine}
+are often used interchangeably.
+
+
+
+
+
+
+\section{Deep phenotyping} \label{deep-pheno}
+
+In their review 
+\citetitle{konigWhat2017}, 
+\citeauthor{konigWhat2017} presents data-driven precision medicine
+as a framework with three main \enquote{tracks} or \enquote{processes}
+that serves as an useful abstraction for understanding
+the process of moving from big data
+to clinically actionable insights~%
+\autocite{konigWhat2017}. 
+At the center of the framwork resides the data,
+which are both plentiful and representative of the population of interest.
+Now, the three tracks are
+1) preprocessing and data-mining
+2) diagnostic and prognostic models
+and 3) prediction of treatment response.
+
+\subsection{Track 1: preprocessing and data mining}
+
+Quality control, preprocessing, and extraction of information.
+The concrete steps and methods utilized as part of this track
+is highly context-dependent, 
+and is therefore difficult to describe on a general level. 
+
+Feature-engineering.
+
+Extracting structured information from unstructured information.
+
+Clustering.
+
+\subsection{Track 2: diagnostic and prognostic models}
+
+Relying in part on processed data from track 1
+as well as any insights gained from data-mining,
+track 2 is concerned with the development
+of models that can characterise current (diagnostic models)
+or future (prognostic models) states of health and disease~%
+\autocite{konigWhat2017}. 
+
+\subsection{Track 3: predicting treatment response}
+
+\todo[inline, caption={Some text}]{
+\begin{minipage}{\linewidth}
+    \emph{Notes:}
+
+    Causality.
+    Different strategies exists for guiding the development of 
+    predicting therapy response.
+    We might be able to use prognostic and diagnostic factors
+    discovered in the previous track to predict treatment response.
+    Example: HER is prognostic for survival in breast cancer,
+        but is also predictive of treatment response against X.
+
+
+\end{minipage}
+}
+
+As with the other tracks, track 3 gan generate further knowledge 
+that in turn can feed back to the more general phenotyping of patients
+\autocite{konigWhat2017}. 
+
+
+\section{Health Informatics}
+
+Health informatics is a cross-disciplinary field
+that aims at developing methods and techniques
+for the collection, study, and analysis of healthcare data.
+It operates in the intersection between medicine and computer science,
+and involves disciplines such as
+bioinformatics, software engineering, statistics, information systems,
+data science, and artificial intelligence.
+The overall goal of health informatics is the data-driven improvement
+of delivery and accuracy of health and healthcare for the individual patient.
+
+In modern medicine, 
+ever increasing amounts of data 
+is continuously being generated and collected.
+Ranging from structured administrative data 
+used primarily for billing purposes
+to advanced imaging and high-througput \enquote{omics} analyses,
+the array of available data is as diverse as it is plentiful.
+
+The volume and range of information collected
+at just a single visit for a single patient
+can be large.
+
+
+There is increasing evidence that informatics improves
+health care, public health, and biomedical research.
+
+    
+An electronic health record
+is a systematized collection of health data 
+stored in a digital format.
+Electronic health records may include data such as
+medical history, drug prescriptions, laboratory test results,
+radiology images, body measurements, and billing information.
+EHRs enable following patients in both time and space;
+not only in the physical space that is the cardiology department
+and the intensive care unit, but also in the health-and-disease space.
+
+\begin{itemize}
+    \item \textbf{Decision support systems}
+    \item \textbf{Personalized medicine}
+    \item \textbf{Mobile health applications} (aka. \textit{mHealth})
+    \item \textbf{Screening}
+    \item \textbf{Surveillance}
+    \item \textbf{Medical outcomes}
+\end{itemize}
+
+\marginnote{
+    The five Vs of big data:
+    \begin{itemize}
+        \item Volume
+        \item Velocity
+        \item Variety
+        \item Value
+        \item Veracity
+    \end{itemize}
+}
+
+\section{Clinical decision support systems}
+
+Deep learning can identify patterns in sparse, noisy,
+and very heterogenous data without the need for expert feature engineering
+\cite{norgeotCall2019}.
+
+Challenges in developing machine learning models from electronic health records
+includes syntactic interoperability, 
+which specifies the format and structure of the data.
+Many different interopability formats exists, 
+but their adoption varies considerably.
+
+Benefits of interopable digital health data
+~\autocite{lehneWhy2019}.
+Test~\cite{lehneWhy2019}.
+
+\begin{itemize}
+    \item Large-scale observational studies.
+    \item Less time spend on data cleaning and pre-processing.
+    \item Interoperable exchange format could further cross-institutional
+    and international collaboration, which would make it easier 
+    to reproduce and externally validate e.g. prognostic applications.
+    In the case of rare diseases with very limited number of patients, 
+    international pooling of data could enable analysis
+    that otherwise would not be possible.
+    \item Faster research and development process.
+    \item If data is known to conform to a well-defined format,
+    computer software can be written without explicit access to the data.
+    This solve many issues related to sensitive data or
+    data that are otherwise subject to strict data protection regulations.
+\end{itemize}
+
+
+Healthcare data are usually private and scattered across various applications,
+which makes it difficult to share data and generate robust results 
+that translate to different and diverse populations.
+
+
+Succesful implementation of data-driven applications
+require large and diverse data sets.
+
+AI approaches rely on data that accurately represent
+the real-life distribution of the underlying problem.
+We can not exclusively rely on data that have been carefully curated 
+from few and often very similar sources. 
+In order to capture subtle relationships 
+between health and disease patterns,
+we need to include many and diverse cases~%
+\autocite{riekeFuture2020}.
+
+Federated learning could solve some of these issues\autocite{riekeFuture2020}.
+
+
 
 

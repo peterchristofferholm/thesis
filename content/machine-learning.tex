@@ -1,4 +1,4 @@
-\chapter{Machine Learning}
+\chapter{Fundamentals of Machine Learning and Neural Networks}
 
 The promise of AI lies in the ability 
 to integrate large amounts of data from huge data sets
@@ -205,8 +205,27 @@ the black-box nature of many machine learning algorithms and
 how it should or should not affect the clinical use of such 
 \autocite{topolHighperformance2019, gunningXAI2019, vanderveldenExplainable2022}.
 
-
 In computer vision tasks in the medical domain,
 deep-learning models have achieved physician-level performance
 in many different diagnostic tasks
 ranging from \todo{finish sentence}.
+
+Automated diagnosis in ophthalmology 
+from optical coherence tomography scans~\autocite{defauwClinically2018}.
+
+\section{Computational models in cardiology}
+
+Using single-lead lectrocardiogram recordings from \num{53877} patients,
+Hannun et al.\autocite{hannunCardiologistlevel2019}
+constructed a deep neural network
+to identify 12 difference classes of cardiac rythm.
+In the validation of their algorithm on an independent test set,
+the authors were able to show that the computer model
+significantly outperforms the average cardiologist. 
+
+As the amount of available diagnostic data increases,
+it becomes more difficult for the treating physician
+to fully utilize the complete array of phenotypic information.
+Computational models can easily integrate all this data,
+and through automated identification of important clinical patterns
+they could serve as an important diagnostic support.

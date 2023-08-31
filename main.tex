@@ -6,27 +6,35 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Metadata
-\title{data-driven precision cardiology}
+\title{AI-based precision medicine in ischemic heart disease}
 \author[Peter Christoffer Holm]{Peter Christoffer Holm}
-\publisher{University of Copenhagen}
+\publisher{%
+    Graduate School of Health and Medical Sciences
+    University of Copenhagen%
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \usepackage[%
     style=verbose-note,
-    %style=verbose-note,
     url=false,
     isbn=false,
     doi=false,
+    eprint=false,
+    date=year,
     maxcitenames=2,
     sorting=none,
     autocite=footnote,
 ]{biblatex}
-\addbibresource{assets/pch-thesis.bib}
 
-\AtEveryCitekey{\clearfield{pagetotal}}
-\AtEveryCitekey{\clearfield{pages}}
-\AtEveryCitekey{\clearfield{eprint}}
+\AtEveryCitekey{%
+    \clearfield{pagetotal}%
+    \clearfield{eprint}%
+    \clearfield{pages}%
+    \clearfield{series}%
+    \clearlist{location}%
+}
+\addbibresource{assets/pch-thesis.bib}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -42,11 +50,24 @@
 \usepackage{blindtext}
 \usepackage{appendix}
 \usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{siunitx}
+%\usepackage{cleveref}
 
 \usepackage{todonotes}
+\usepackage{enumitem}
 
 % quotation marks
 \usepackage{csquotes}
+
+
+% tikz %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{arrows,shapes}
+\usetikzlibrary{quotes}
+\usepackage{annotate-equations}
+
 
 % For graphics / images
 \usepackage{graphicx}
@@ -85,7 +106,6 @@
 \cleardoublepage
 
 \listoftodos
- 
 \tableofcontents
 \listoffigures
 \listoftables
@@ -95,34 +115,50 @@
 
 \mainmatter
 
-\chapter{Summary}
-\chapter{Scientific Publications}
+\include{content/01-summary.tex}
+\include{content/01-manuscripts.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\part{General Introduction}
+\include{content/introduction.tex}
 
 \include{content/precision-medicine.tex}
-\include{content/health-informatics.tex}
 \include{content/machine-learning.tex}
+
+\include{content/survival-analysis.tex}
+\include{content/miscellaneous.tex}
+
+\include{content/results-of-papers.tex}
+\include{content/conclusions-and-perspectives.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \backmatter
 
+\addcontentsline{toc}{chapter}{List of References}
 \printbibliography
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\part*{Appendix}
-
 \appendix
 
-\chapter{Paper 1}
-\chapter{Paper 1}
-
-\includepdf[%
-    frame=true, scale=0.8, pages=-, pagecommand={}%
-]{assets/dummy.pdf}
+\addcontentsline{toc}{chapter}{Appendix A: Manuscript I, II, and III}
+% \part*{Paper 1}
+% \addcontentsline{toc}{chapter}{Paper 1}
+% \includepdf[%
+%     frame=true, scale=0.8, pages=-, pagecommand={}%
+% ]{assets/paper1-clustering.pdf}
+% 
+% \part*{Paper 2}
+% \addcontentsline{toc}{chapter}{Paper 2}
+% \includepdf[%
+%     frame=true, scale=0.8, pages=-, pagecommand={}%
+% ]{assets/paper1-clustering.pdf}
+% 
+% \part*{Paper 3}
+% \addcontentsline{toc}{chapter}{Paper 3}
+% \includepdf[%
+%     frame=true, scale=0.8, pages=-, pagecommand={}%
+% ]{assets/paper1-clustering.pdf}
 
 \end{document}
