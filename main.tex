@@ -6,7 +6,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Metadata
-\title{AI-based precision medicine in ischemic heart disease}
+\title{ML-based precision medicine in ischemic heart disease}
 \author[Peter Christoffer Holm]{Peter Christoffer Holm}
 \publisher{%
     Graduate School of Health and Medical Sciences
@@ -55,7 +55,12 @@
 %\usepackage{cleveref}
 
 \usepackage{todonotes}
-\usepackage{enumitem}
+\usepackage[inline]{enumitem}
+
+\renewlist{enumerate*}{enumerate*}{1}
+\setlist[enumerate*]{
+    label=(\roman*), itemjoin={{; }}, itemjoin*={{; and }}
+}
 
 % quotation marks
 \usepackage{csquotes}
@@ -105,6 +110,7 @@
 
 \cleardoublepage
 
+\setcounter{tocdepth}{1}
 \listoftodos
 \tableofcontents
 \listoffigures
@@ -121,6 +127,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \include{content/introduction.tex}
+\include{content/ischemic-heart-disease.tex}
 
 \include{content/precision-medicine.tex}
 \include{content/machine-learning.tex}
