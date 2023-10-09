@@ -1,11 +1,10 @@
 \PassOptionsToPackage{full}{textcomp}
-\documentclass[%
-    a4paper, twoside, nobib%
-]{tufte-book}
+\documentclass[a4paper, twoside, nobib]{tufte-book}
 \hypersetup{colorlinks}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Metadata
+% metadata
+
 \title{ML-based precision medicine in ischemic heart disease}
 \author[Peter Christoffer Holm]{Peter Christoffer Holm}
 \publisher{%
@@ -14,17 +13,23 @@
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% biblatex configuration
 
 \usepackage[%
     style=verbose-note,
+    %% disable these fields in the citation %%
     url=false,
     isbn=false,
     doi=false,
     eprint=false,
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     date=year,
-    maxcitenames=2,
-    sorting=none,
-    autocite=footnote,
+    maxcitenames=2,     % when should "et al." be triggered?
+    maxbibnames=4,      % when should "et al." be triggered? (in bib)
+    sorting=nty,        % name, title, year
+    autocite=footnote,  % put citation in sidenotes 
+    citereset=chapter,  % reset citation tracker at each chapter
+    citetracker=strict
 ]{biblatex}
 
 \AtEveryCitekey{%
@@ -37,12 +42,14 @@
 \addbibresource{assets/pch-thesis.bib}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% load packages
 
-\usepackage[p, osf]{ETbb} % osf in text, tabular lining figures in math
-\usepackage[scaled=.95,type1]{cabin} % sans serif in style of Gill Sans
+% fonts
+\usepackage[p, osf]{ETbb}  % osf in text, tabular lining figures in math
+\usepackage[scaled=.95,type1]{cabin}  % sans serif in style of Gill Sans
+\usepackage[libertine,vvarbb]{newtxmath}  % recommended math font
 
-% \usepackage[varqu,varl]{zi4} % inconsolata typewriter
-
+% misc
 \usepackage{microtype}
 \usepackage{booktabs}
 \usepackage{lipsum}
@@ -52,50 +59,55 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{siunitx}
-%\usepackage{cleveref}
-
 \usepackage{todonotes}
-\usepackage[inline]{enumitem}
+\usepackage{relsize}  % easy scaling of fonts
 
+% enumerate
+\usepackage[inline]{enumitem}
 \renewlist{enumerate*}{enumerate*}{1}
 \setlist[enumerate*]{
     label=(\roman*), itemjoin={{; }}, itemjoin*={{; and }}
 }
 
-% quotation marks
-\usepackage{csquotes}
+% context aware quotation marks
+\usepackage{csquotes}  
+\renewcommand{\mkcitation}[1]{~\autocite{#1}}
 
+% acro 
+\usepackage[nohyperlinks]{acronym}
+\renewcommand*{\acsfont}[1]{{\relsize{+0.5}\smallcaps{#1}}}
 
-% tikz %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% tikz 
 \usepackage{tikz}
 \usetikzlibrary{positioning}
 \usetikzlibrary{arrows,shapes}
 \usetikzlibrary{quotes}
 \usepackage{annotate-equations}
 
-
-% For graphics / images
+% for graphics / images
 \usepackage{graphicx}
 \setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
 \graphicspath{{graphics/}}
 
-% The fancyvrb package lets us customize the formatting of verbatim
-% environments.  We use a slightly smaller font.
+% adjust verbatim environments
 \usepackage{fancyvrb}
 \fvset{fontsize=\normalsize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% custom macros
 
 % Hanging parentheses and asterisks
 \newcommand{\hangp}[1]{\makebox[0pt][r]{(}#1\makebox[0pt][l]{)}}
 \newcommand{\hangstar}{\makebox[0pt][l]{*}}
 
-% Prints the month name (e.g., January) and the year (e.g., 2008)
+% prints the month name (e.g., january) and the year (e.g., 2008)
 \newcommand{\monthyear}{%
   \ifcase\month\or January\or February\or March\or April\or May\or June\or
   July\or August\or September\or October\or November\or
   December\fi\space\number\year
 }
 
-% Custom macros
+% misc
 \newcommand{\na}{\quad--}
 \newcommand{\blankpage}{\newpage\hbox{}\thispagestyle{empty}\newpage}
 
@@ -110,11 +122,25 @@
 
 \cleardoublepage
 
-\setcounter{tocdepth}{1}
+% \setcounter{tocdepth}{1}
 \listoftodos
 \tableofcontents
 \listoffigures
 \listoftables
+
+\chapter*{List of Acronyms}
+\begin{acronym}[NSTEMI]
+\acro{IHD}{ischemic heart disease}
+\acro{MI}{myocardial infarction}
+\acro{UA}{unstable angina}
+\acro{ECG}{electrocardiogram}
+\acro{NSTEMI}{non-ST-elevation myocardial infarction}
+\acro{STEMI}{ST-elevation myocardial infarction}
+\acro{CABG}{coronary artery bypass grafting}
+\acro{PCI}{percutaneous coronary intervention}
+\end{acronym}
+
+
 \cleardoublepage
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
