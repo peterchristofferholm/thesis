@@ -1,91 +1,61 @@
 \chapter{Thesis Objectives and Overview} \label{intro}
 
-The overall aim of this thesis is ...
+The primary objective of this thesis is to contribute to the advancement of
+precision medicine in the field of ischemic heart disease, with a particular
+emphasis on secondary prevention. The research focuses on two main areas: 1)
+characterizing multimorbidity in ischemic heart disease and its impact on
+disease risk and progression, and 2) developing risk-prediction tools capable
+of leveraging heterogeneous healthcare data. For the latter, we have employed
+neural network-based survival models designed to accurately handle censored
+data.
 
+This thesis investigates how data-driven approaches can enhance the evolution
+of precision medicine specifically for ischemic heart disease. While the
+research is concentrated on ischemic heart disease and cardiology, the
+methodologies and findings could potentially be extrapolated to other medical
+fields, given their broad applicability.
 
-\vskip 10em
+The intersection of precision medicine and artificial intelligence represents a
+significant paradigm shift, offering the potential to revolutionize how we
+diagnose, manage, and treat diseases.
 
-With the advent of large language models (LLMs) like ChatGPT
-%------------------------------------------------------------------------------
-\marginnote{%
-    \textsf{hype}, (noun). [clipping of hyperbole].
+\section{Overview of Structure}
 
-    (marketing) promotion or propaganda; especially exaggerated claims. 
-    \rightline{\textit{wiktionary.org}}%
-}
-%------------------------------------------------------------------------------
-and text-to-image models such as DALL-E and Midjourney,
-there has been a surge of interest in the broader domains of
-artificial intelligence and machine-learning.
-%
-ChatGPT, in particular, stands out as prominent example---%
-an LLM-based chatbot developed by OpenAI, 
-have managed to impress both the general public aswell 
-as researchers across various disciplines.
-It has been shown that ChatGPT can pass exams
-such as USMLE\footnotemark
-~\autocite{openaiGPT42023}
+The thesis is organized as follows:
 
-%------------------------------------------------------------------------------
-\footnote{%
-The United States Medical Licensing Examination (USMLE) 
-is a three-step examination program for obtaining a medical license
-in the United States of America.
-}
-%------------------------------------------------------------------------------
+\begin{itemize} 
 
+    \item In the chapter \nameref{ihd-background}, I provide an
+        in-depth discussion of the pathophysiology and disease manifestations of
+        ischemic heart disease, which serves as the focal point of this thesis.
 
+    \item Subsequently, in the chapter \nameref{precision-medicine}, I offer an
+        overview of the methodologies involved in developing data-driven
+        precision medicine. Throughout the thesis, precision medicine is
+        primarily contextualized within the frameworks of \enquote{big data} 
+        and \enquote{machine learning}.
 
+    \item The chapter \nameref{ml-fundamentals} introduces the core concepts of
+        machine learning, with a specific focus on neural networks. While the
+        chapter is generally broad in scope, it places particular emphasis on
+        the tools and techniques utilized in the research presented.
 
+    \item The final background chapter, \nameref{survival-analysis}, provides a
+        comprehensive overview of survival analysis. It further delves into the
+        specific approach we have employed for modeling time-to-event data
+        using neural networks.  
 
+    \item In \nameref{results}, I summarize each of the three included papers,
+        briefly outline the methodologies employed, and highlight the key
+        findings.  Additionally, I contextualize the research within the
+        broader scientific literature.
 
-It has been claimed that 
+    \item In \nameref{conclusions}, I offer final thoughts on the thesis and
+        outline areas that warrant further investigation.
 
+    \item The \nameref{appendix} includes the three full-length scientific
+        manuscripts that form the core of this thesis.
 
+\end{itemize}
 
-
-However, 
-
-
-
-
-The convergence of precision medicine and artificial intelligence 
-stands as a monumental paradigm shift, promising to redefine
-the way we diagnose, treat, and manage disease.
-
-
-
-It is this author's opinion, 
-that the main cause of \enquote{success} of the abovementioned
-AI-applications is the combined value of 
-absolutelive massive datasets and massive computing power.
-
-This thesis has little to do with the likes of ChatGPT, 
-but 
-
-In this thesis, I explore how data-drive approaches
-can further the development of precision medicine in ischemic heart disease.
-
-The thesis is structured as follows:
-in the chapter \nameref{precision-medicine} I will be introducing the 
-concept of precision medicine framed in the context of \enquote{big data}
-and \enquote{machine learning}.
-
-In \nameref{ml-fundamentals}
-
-In \nameref{survival-analysis}
-
-In \nameref{results}
-
-In \nameref{conclusions}
-
-
-
-
-Although we in the three manuscripts that forms this thesis 
-primarily place a focus on cardiology,
-and specifically ischemic heart disease,
-the presented methods can be used across many fields of medicine.
-
-
-
+\todo[inline]{Refactor \enquote{Thesis Overview} section.}

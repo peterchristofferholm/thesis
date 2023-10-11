@@ -19,7 +19,6 @@
 % The front matter in Tufte's /Beautiful Evidence/ contains everything up
 % to the opening page of Chapter 1.  The running heads, when they appear,
 % contain only the (arabic) page number in the outside corner.
-%\newif\if@mainmatter \@mainmattertrue
 \renewcommand\frontmatter{%
   \if@openright%
     \cleardoublepage%
@@ -28,7 +27,6 @@
   \fi%
   \@mainmatterfalse%
   \pagenumbering{arabic}%
-  %\pagestyle{plain}%
   \fancyhf{}%
   \ifthenelse{\boolean{@tufte@twoside}}%
     {\fancyhead[LE,RO]{\thepage}}%

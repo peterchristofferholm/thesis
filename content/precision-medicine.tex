@@ -1,28 +1,22 @@
 \chapter{Data-driven Precision Medicine} \label{precision-medicine}
 
-
-
-
-
-
-
-
-
-
-
-
-A clinical reference chart may indicate that all healthy adults in Denmark
-have a cholesterol level between XX to XX unit per volume.
-That range only includes 97.5\% of people.
-The other 2.5\% will have cholesterol levels outside that range.
-
-Development of quantitative estimates of risks.
-
-Electronical health records are a rich source of health data,
-and can be used to find connections between risk factors and diseases.
-
-Precision medicine is prevention and treatment approaches
-that takes individual variation into account.
+A 2013 Cochrane review on \citetitle{taylorStatins2013} concluded 
+that statins effectively lower all-cause mortality and reduce the incidence
+of both fatal and non-fatal cardiovascular events all without any serious
+adverse effects~\autocite{taylorStatins2013}.
+For instance, the relative risk of fatal cardiovascular events 
+when using statins as opposed to placebo
+was estimated to \num{0.82} with a 
+\si{95}{\%} \ac{CI} of \num{0.70} to \num{0.96}.
+~\autocite{taylorStatins2013}
+This means that those treated with statins, on average,
+are \si{18}{\%} less likely to die from cardiovascular causes. 
+However, it is important to emphasize that this \si{18}{\%} 
+reduction is an average effect.
+There might be groups of people for whom the reduction could be 
+even higher, while others may see little to no benefit. 
+Understanding and making use of such individual variability 
+is the central objective of precision medicine.
 
 As a concept, precision medicine is not a new idea;
 tissue- and blood typing, for instance,  
@@ -32,6 +26,54 @@ and broad array of phenotypic information
 to deliver precision medicine across
 a wide spectrum of disease states
 is adding renewed interest in the concept.
+
+
+
+
+
+
+Use data to improve decision making
+
+
+Subgroup identification seeks to identify groups of individuals with an
+increased treatment response, which
+\citeauthor{kosorokPrecision2019} refers to as 
+\textquote[kosorokPrecision2019]{%
+    finding the right patient for the right treatment%
+}.
+
+
+\begin{table*}[h]
+    \footnotesize
+    \centering
+    \begin{tabularx}{0.9\textwidth}{XlX} \toprule
+    Condition & Gene & Action \\
+    \midrule
+    Familial hypercholesterolaemia & \textit{PCSK9}, \textit{APOB}, and \textit{LDLR} & Indication for PCSK9 inhibitor drugs \\
+    Familial hypercholesterolaemia & \textit{PCSK9}, \textit{APOB}, and \textit{LDLR} & Indication for PCSK9 inhibitor drugs \\
+    Familial hypercholesterolaemia & \textit{PCSK9}, \textit{APOB}, and \textit{LDLR} & Indication for PCSK9 inhibitor drugs \\
+    Familial hypercholesterolaemia & \textit{PCSK9}, \textit{APOB}, and \textit{LDLR} & Indication for PCSK9 inhibitor drugs \\
+    Chronic myeloid leukemia       & BCR/ABL & Imatinib \\
+    Chronic myeloid leukemia       & BCR/ABL & Imatinib \\
+    Chronic myeloid leukemia       & BCR/ABL & Imatinib \\
+    Chronic myeloid leukemia       & BCR/ABL & Imatinib \\
+    Chronic myeloid leukemia       & BCR/ABL & Imatinib \\
+    \bottomrule
+    \end{tabularx}
+    \caption[Precision drugs]{
+        Examples of precision pharmacotherapy informed by genetics 
+        and more more more more
+    }
+\end{table*}
+
+
+
+Electronical health records are a rich source of health data,
+and can be used to find connections between risk factors and diseases.
+
+Precision medicine is prevention and treatment approaches
+that takes individual variation into account.
+
 
 The terms
 \enquote{precision},

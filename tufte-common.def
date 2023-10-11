@@ -713,7 +713,7 @@
   \RequirePackage{letterspace}%
   % Set up letterspacing (using microtype package) -- requires pdfTeX v1.40+
   \renewcommand{\allcapsspacing}[1]{\textls[200]{##1}}%
-  \renewcommand{\smallcapsspacing}[1]{\textls[30]{##1}}%
+  \renewcommand{\smallcapsspacing}[1]{\textls[50]{##1}}%
   \renewcommand{\allcaps}[1]{\allcapsspacing{\MakeTextUppercase{##1}}}%
   \renewcommand{\smallcaps}[1]{\smallcapsspacing{\scshape\MakeTextLowercase{##1}}}%
   \renewcommand{\textsc}[1]{\smallcapsspacing{\textsmallcaps{##1}}}%
@@ -1192,24 +1192,29 @@
     \ifthenelse{\equal{#3}{star}}%
       {\gsetboolean{@tufte@float@star}{true}}%
       {\gsetboolean{@tufte@float@star}{false}}%
+
     \ifthenelse{\equal{#4}{fwcaption}}{%
-     \setlength{\@tufte@float@fwwidth}{\@tufte@fullwidth}%
-      \renewcommand{\@tufte@float@fwalign}{t}
+      \gsetboolean{@tufte@float@fwcaption}{true}%
+      \setlength{\@tufte@float@fwwidth}{\textwidth}%
+      \renewcommand{\@tufte@float@fwalign}{t}%
     }{%
       \setlength{\@tufte@float@fwwidth}{\marginparwidth}%
       \renewcommand{\@tufte@float@fwalign}{\floatalignment}%
     }%
+
     % Check page side (recto/verso) and store detected value -- can be overriden in environment contents
     \@tufte@checkoddpage%
     \ifthenelse{\boolean{@tufte@odd@page}}%
       {\gsetboolean{@tufte@float@recto}{true}\@tufte@float@debug{Detected page: [recto/odd]}}%
       {\gsetboolean{@tufte@float@recto}{false}\@tufte@float@debug{Detected page: [verso/even]}}%
+
     % If the float placement specifier is 'b' and only 'b', then bottom-align the mini-pages, otherwise top-align them.
     \renewcommand{\@tufte@fps}{#1}%
     \@tufte@float@debug{Allowed positions: [#1]}%
     \ifthenelse{\equal{#1}{b}\OR\equal{#1}{B}}%
       {\renewcommand{\floatalignment}{b}\@tufte@float@debug{Presumed position: [bottom]}}%
       {\renewcommand{\floatalignment}{t}\@tufte@float@debug{Presumed position: [top]}}%
+
     % Capture the contents of the \caption command to use later
     \global\let\@tufte@orig@caption\caption%
     \global\let\@tufte@orig@label\label%
@@ -1217,32 +1222,41 @@
       % Now also capture the contents of the \label command to use later
       \let\label\@tufte@label%
       \optparams{\@tufte@caption}{[][0pt]}}%
+
     \@tufte@orig@float{#2}[#1]%
+
     \ifthenelse{\boolean{@tufte@float@star}}%
       {\setlength{\@tufte@float@contents@width}{\@tufte@fullwidth}}%
-      {\setlength{\@tufte@float@contents@width}{\textwidth}}%
+      {\setlength{\@tufte@float@contents@width}{\@tufte@float@textwidth}}%
+
     \begin{lrbox}{\@tufte@figure@box}%
       \begin{minipage}[\floatalignment]{\@tufte@float@contents@width}\hbox{}%
+
   }{% end @tufte@float
-      \par\hbox{}\vspace{-\baselineskip}\ifthenelse{\prevdepth>0}{\vspace{-\prevdepth}}{}% align baselines of boxes
+
+      \par\hbox{}
+      %\vspace{-\baselineskip}%
+      \ifthenelse{\prevdepth>0}
+        {\vspace{-\prevdepth}}%
+        {}%
       \end{minipage}%
     \end{lrbox}%
-    %
-    % build the caption box %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    %% build the caption box
     \begin{lrbox}{\@tufte@caption@box}%
-      \begin{minipage}[\@tufte@float@fwalign]{\@tufte@float@fwwidth}\hbox{}% this is my version
-        \begin{minipage}{\@tufte@caption@fill-\marginparsep}
-          \ifthenelse{\NOT\equal{\@tufte@stored@caption}{}}%
-            {\@tufte@orig@caption[\@tufte@stored@shortcaption]{\@tufte@stored@caption}}%
-            {}%
-          \ifthenelse{\NOT\equal{\@tufte@stored@label}{}}{\@tufte@orig@label{\@tufte@stored@label}}{}%
-          \par\vspace{-\prevdepth}%% TODO: DOUBLE-CHECK FOR SAFETY
-        \end{minipage}%
-        \hfill
-      \end{minipage}%
+    \begin{minipage}[\@tufte@float@fwalign]{\@tufte@float@fwwidth}%
+        \hbox{}%
+        \ifthenelse{\NOT\equal{\@tufte@stored@caption}{}}{%
+            \@tufte@orig@caption[\@tufte@stored@shortcaption]{\@tufte@stored@caption}}{}
+
+        \ifthenelse{\NOT\equal{\@tufte@stored@label}{}}{%
+            \@tufte@orig@label{\@tufte@stored@label}}{}
+
+        \par\vspace{-\prevdepth}%% TODO: DOUBLE-CHECK FOR SAFETY
+
+    \end{minipage}%
     \end{lrbox}%
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %
+
     % now typeset the stored boxes
     \begin{fullwidth}%
       \begin{minipage}[\floatalignment]{\linewidth}%
@@ -1251,23 +1265,9 @@
           {\@tufte@float@textwidth[\@tufte@caption@vertical@offset]{\@tufte@figure@box}{\@tufte@caption@box}}%
       \end{minipage}%
     \end{fullwidth}%
+
     \@tufte@orig@endfloat% end original LaTeX float environment
-    %
-    % output debug info
-    \ifthenelse{\boolean{@tufte@debug}}{%
-      \typeout{^^J^^J----------- Tufte-LaTeX float information ----------}%
-      \ifthenelse{\equal{\@tufte@stored@label}{}}%
-        {\typeout{Warning: Float unlabeled!}}%
-        {\typeout{Float label: [\@tufte@stored@label]}}%
-      \typeout{Page number: [\thepage]}%
-      \def\MessageBreak{^^J}%
-      \typeout{\@tufte@float@debug@info}%
-      \ifthenelse{\boolean{@tufte@symmetric}}%
-        {\typeout{Symmetric: [true]}}%
-        {\typeout{Symmetric: [false]}}%
-      \typeout{----------------------------------------------------^^J^^J}%
-    }{}%
-    %
+
     % reset commands and temp boxes and captions
     \gdef\@tufte@float@debug@info{}%
     \let\caption\@tufte@orig@caption%
@@ -1278,10 +1278,23 @@
     \gdef\@tufte@stored@caption{}%
     \gdef\@tufte@stored@label{}%
     \gsetlength{\@tufte@caption@vertical@offset}{0pt}% reset caption offset
+    \gsetboolean{@tufte@float@fwcaption}{false}%
   }
 
+\newcommand{\@tufte@float@fullwidth}[3][0pt]{%
+  \ifthenelse{\boolean{@tufte@float@fwcaption}}{%
+    \ifthenelse{\NOT\boolean{@tufte@symmetric}\OR\boolean{@tufte@float@recto}}%
+      {\usebox{#2}\par\smash{\raisebox{#1}{\usebox{#3}}}\hfill\@tufte@float@debug{Caption position: [below left]}}% caption on the left
+      {\usebox{#2}\par\hfill\smash{\raisebox{#1}{\usebox{#3}}}\@tufte@float@debug{Caption position: [below right]}}% caption on the right
+  }{%
+      \ifthenelse{\NOT\boolean{@tufte@symmetric}\OR\boolean{@tufte@float@recto}}%
+        {\usebox{#2}\par\hfill\smash{\raisebox{#1}{\usebox{#3}}}\@tufte@float@debug{Caption position: [below right]}}% caption on the right
+        {\usebox{#2}\par\smash{\raisebox{#1}{\usebox{#3}}}\hfill\@tufte@float@debug{Caption position: [below left]}}% caption on the left
+  }
+}
+
 \newcommand{\@tufte@float@textwidth}[3][0pt]{%
-  \ifthenelse{\NOT\boolean{@tufte@symmetric}\OR\boolean{@tufte@float@recto}}{%
+    \ifthenelse{\NOT\boolean{@tufte@symmetric}\OR\boolean{@tufte@float@recto}}{%
     % asymmetric or page is odd, so caption is on the right
     \hbox{%
       \usebox{#2}%
@@ -1289,26 +1302,13 @@
       \smash{\raisebox{#1}{\usebox{#3}}}%
     }%
     \@tufte@float@debug{Caption position: [right]}%
-  }{% symmetric pages and page is even, so caption is on the left
+    }{% symmetric pages and page is even, so caption is on the left
     \hbox{%
       \smash{\raisebox{#1}{\usebox{#3}}}%
       \hspace{\marginparsep}%
       \usebox{#2}%
     }%
     \@tufte@float@debug{Caption position: [left]}%
-  }%
-}
-
-\newcommand{\@tufte@float@fullwidth}[3][0pt]{%
-  \ifthenelse{\equal{\floatalignment}{b}}%
-    {% place caption above figure
-      \ifthenelse{\NOT\boolean{@tufte@symmetric}\OR\boolean{@tufte@float@recto}}%
-        {\hfill\smash{\raisebox{#1}{\usebox{#3}}}\par\usebox{#2}\@tufte@float@debug{Caption position: [above right]}}% caption on the right
-        {\smash{\raisebox{#1}{\usebox{#3}}}\hfill\par\usebox{#2}\@tufte@float@debug{Caption position: [above left]}}% caption on the left
-    }{% place caption below figure
-      \ifthenelse{\NOT\boolean{@tufte@symmetric}\OR\boolean{@tufte@float@recto}}%
-        {\usebox{#2}\par\hfill\smash{\raisebox{#1}{\usebox{#3}}}\@tufte@float@debug{Caption position: [below right]}}% caption on the right
-        {\usebox{#2}\par\smash{\raisebox{#1}{\usebox{#3}}}\hfill\@tufte@float@debug{Caption position: [below left]}}% caption on the left
     }%
 }
 
@@ -2000,4 +2000,3 @@
 %%
 % End of file
 \endinput
-

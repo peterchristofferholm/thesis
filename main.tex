@@ -52,6 +52,7 @@
 % misc
 \usepackage{microtype}
 \usepackage{booktabs}
+\usepackage{tabularx}
 \usepackage{lipsum}
 \usepackage{pdfpages}
 \usepackage{blindtext}
@@ -122,8 +123,6 @@
 
 \cleardoublepage
 
-% \setcounter{tocdepth}{1}
-\listoftodos
 \tableofcontents
 \listoffigures
 \listoftables
@@ -138,6 +137,7 @@
 \acro{STEMI}{ST-elevation myocardial infarction}
 \acro{CABG}{coronary artery bypass grafting}
 \acro{PCI}{percutaneous coronary intervention}
+\acro{CI}{confidence interval}
 \end{acronym}
 
 
@@ -146,6 +146,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \mainmatter
+
+%% todonotes
+\setcounter{tocdepth}{1}
+\listoftodos
 
 \include{content/01-summary.tex}
 \include{content/01-manuscripts.tex}
@@ -175,13 +179,17 @@
 
 \appendix
 
-\addcontentsline{toc}{chapter}{Appendix A: Manuscript I, II, and III}
-% \part*{Paper 1}
-% \addcontentsline{toc}{chapter}{Paper 1}
-% \includepdf[%
-%     frame=true, scale=0.8, pages=-, pagecommand={}%
-% ]{assets/paper1-clustering.pdf}
-% 
+\part*{Appendix}
+\label{appendix}
+
+\part*{Appendix A: Manuscript 1}
+\label{paper-1}
+\addcontentsline{toc}{chapter}{Manuscript 1}
+\includepdf[%
+    frame=true, scale=0.8, pages=-, pagecommand={}%
+]{assets/paper1-clustering.pdf}
+
+ 
 % \part*{Paper 2}
 % \addcontentsline{toc}{chapter}{Paper 2}
 % \includepdf[%
