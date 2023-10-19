@@ -1,15 +1,15 @@
 %%
 %% This file contains the code that is common to the Tufte-LaTeX document classes.
+%% Based on the fork by Visika (https://github.com/visika/tufte-latex)
 %%
 
 \ProvidesFile{tufte-common.def}[2015/06/21 v3.5.2 Common code for the Tufte-LaTeX styles]
 
 %%
-% The `xkeyval' package simplifies the user interface for the document class options
 \RequirePackage{xkeyval}
 
 %%
-% We use the `xifthen' package to handle our package option switches
+% We use the `xifthen` package to handle our package option switches
 \RequirePackage{xifthen}
 
 %%
@@ -20,7 +20,7 @@
 \newcommand{\@tufte@debug@info@noline}[1]{\ifthenelse{\boolean{@tufte@debug}}{\@tufte@info@noline{#1}}{}}
 
 %%
-% `debug' option -- provides more information in the .log file for use in
+% `debug` option -- provides more information in the .log file for use in
 % troubleshooting problems
 \newboolean{@tufte@debug}
 \DeclareOptionX[tufte]<common>{debug}{\setboolean{@tufte@debug}{true}}
@@ -1192,7 +1192,9 @@
     \ifthenelse{\equal{#3}{star}}%
       {\gsetboolean{@tufte@float@star}{true}}%
       {\gsetboolean{@tufte@float@star}{false}}%
-
+    %
+    % should we use fwcaption?
+    %
     \ifthenelse{\equal{#4}{fwcaption}}{%
       \gsetboolean{@tufte@float@fwcaption}{true}%
       \setlength{\@tufte@float@fwwidth}{\textwidth}%
@@ -1201,8 +1203,8 @@
       \setlength{\@tufte@float@fwwidth}{\marginparwidth}%
       \renewcommand{\@tufte@float@fwalign}{\floatalignment}%
     }%
-
-    % Check page side (recto/verso) and store detected value -- can be overriden in environment contents
+    %
+    % Check page side (recto/verso) and store detected value.
     \@tufte@checkoddpage%
     \ifthenelse{\boolean{@tufte@odd@page}}%
       {\gsetboolean{@tufte@float@recto}{true}\@tufte@float@debug{Detected page: [recto/odd]}}%
