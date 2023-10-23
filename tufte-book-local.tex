@@ -1,1 +1,69 @@
 \setlength\marginparpush{11pt}
+
+\setcounter{tocdepth}{0}
+\setcounter{secnumdepth}{0}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FORMATTING TABLE OF CONTENTS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% formatting for main table of contents
+% [left] {above} {before w/label} {before w/o label} {filler + page} [after]
+
+\titlecontents{part}%
+	[0em]%
+	{%%   
+		\vspace{1.0\baselineskip}%
+		\begin{fullwidth}%
+		\LARGE\rmfamily\itshape%
+	}%
+	{%%
+		\hspace*{0em}\contentslabel{2em}%
+	}%
+	{}%
+	{%
+		\rmfamily\upshape\qquad\thecontentspage%
+	}%
+	[\end{fullwidth}]
+
+\titlecontents{chapter}%
+	[0em]%
+	{%%   
+		\vspace{1.0\baselineskip}%
+		\begin{fullwidth}%
+		\LARGE\rmfamily\itshape%
+	}%
+	{%%
+		\hspace*{3.0em}\contentslabel{1.5em}%
+	}%
+	{%%
+		\hspace*{0em}%
+	}%
+	{%%
+		\rmfamily\upshape\qquad\thecontentspage%
+	}%
+	[\end{fullwidth}]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FORMATTING TITLES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\titleformat{\chapter}%
+	[block]%
+    {\relax\begin{fullwidth}}%
+    {}
+    {0em}
+    {\huge\rmfamily\itshape}
+	[\end{fullwidth}]
+
+\titleformat{\part}%
+	[display]%
+    {\relax\begin{fullwidth}\centering}%
+    {\Large PART \thepart}
+    {0em}
+    {\Huge\rmfamily\upshape}
+	[\end{fullwidth}]
+
+\titlespacing*{\chapter}{0pt}{50pt}{40pt}
+\titlespacing*{\section}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}

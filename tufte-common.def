@@ -20,7 +20,7 @@
 \newcommand{\@tufte@debug@info@noline}[1]{\ifthenelse{\boolean{@tufte@debug}}{\@tufte@info@noline{#1}}{}}
 
 %%
-% `debug` option -- provides more information in the .log file for use in
+% `debug' option -- provides more information in the .log file for use in
 % troubleshooting problems
 \newboolean{@tufte@debug}
 \DeclareOptionX[tufte]<common>{debug}{\setboolean{@tufte@debug}{true}}
@@ -1229,8 +1229,7 @@
 
     \ifthenelse{\boolean{@tufte@float@star}}%
       {\setlength{\@tufte@float@contents@width}{\@tufte@fullwidth}}%
-      {\setlength{\@tufte@float@contents@width}{\@tufte@float@textwidth}}%
-
+      {\setlength{\@tufte@float@contents@width}{\textwidth}}%
     \begin{lrbox}{\@tufte@figure@box}%
       \begin{minipage}[\floatalignment]{\@tufte@float@contents@width}\hbox{}%
 
@@ -2002,3 +2001,4 @@
 %%
 % End of file
 \endinput
+

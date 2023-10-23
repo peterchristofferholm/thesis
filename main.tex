@@ -22,6 +22,7 @@
     isbn=false,
     doi=false,
     eprint=false,
+    eprint=false,
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     date=year,
     maxcitenames=2,     % when should "et al." be triggered?
@@ -32,12 +33,24 @@
     citetracker=strict
 ]{biblatex}
 
+\renewbibmacro{in:}{}
+
+\DeclareCiteCommand{\cite}
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{footcite}}
+  {\multicitedelim}
+  {\usebibmacro{cite:postnote}}
+
 \AtEveryCitekey{%
     \clearfield{pagetotal}%
     \clearfield{eprint}%
     \clearfield{pages}%
     \clearfield{series}%
+    \clearfield{volume}%
+    \clearfield{number}%
     \clearlist{location}%
+    \clearname{editor}%
 }
 \addbibresource{assets/pch-thesis.bib}
 
@@ -54,6 +67,7 @@
 \usepackage{booktabs}
 \usepackage{tabularx}
 \usepackage{lipsum}
+\usepackage{makecell}
 \usepackage{pdfpages}
 \usepackage{blindtext}
 \usepackage{appendix}
@@ -61,6 +75,7 @@
 \usepackage{amsfonts}
 \usepackage{siunitx}
 \usepackage{todonotes}
+\usepackage{appendix}
 \usepackage{relsize}  % easy scaling of fonts
 
 % enumerate
@@ -76,7 +91,7 @@
 
 % acro 
 \usepackage[nohyperlinks]{acronym}
-\renewcommand*{\acsfont}[1]{{\relsize{+0.5}\smallcaps{#1}}}
+%\renewcommand*{\acsfont}[1]{{\relsize{+0.5}\smallcaps{#1}}}
 
 % tikz 
 \usepackage{tikz}
@@ -138,6 +153,10 @@
 \acro{CABG}{coronary artery bypass grafting}
 \acro{PCI}{percutaneous coronary intervention}
 \acro{CI}{confidence interval}
+\acro{OR}{odds ratio}
+\acro{PK}{pharmacokinetics}
+\acro{SNP}{single-nucleotide polymorphism}
+\acro{EHR}{electronic health record}
 \end{acronym}
 
 
@@ -145,27 +164,34 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\mainmatter
-
 %% todonotes
 \setcounter{tocdepth}{1}
 \listoftodos
 
-\include{content/01-summary.tex}
 \include{content/01-manuscripts.tex}
+\include{content/01-summary.tex}
+
+\cleardoublepage
+\include{content/overview.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\mainmatter
+
+\part{Background and Methods}
+
 \include{content/introduction.tex}
-\include{content/ischemic-heart-disease.tex}
-
-\include{content/precision-medicine.tex}
 \include{content/machine-learning.tex}
-
 \include{content/survival-analysis.tex}
-\include{content/miscellaneous.tex}
 
-\include{content/results-of-papers.tex}
+%\include{content/miscellaneous.tex}
+
+\part{Outline of Papers}
+
+\include{content/data-foundation.tex}
+\include{content/results-paper1.tex}
+\include{content/results-paper2.tex}
+\include{content/results-paper3.tex}
 \include{content/conclusions-and-perspectives.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -177,29 +203,28 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\mainmatter
 \appendix
+\appendixpage
+\addappheadtotoc
 
-\part*{Appendix}
-\label{appendix}
+\cleardoublepage
 
-\part*{Appendix A: Manuscript 1}
-\label{paper-1}
-\addcontentsline{toc}{chapter}{Manuscript 1}
-\includepdf[%
-    frame=true, scale=0.8, pages=-, pagecommand={}%
-]{assets/paper1-clustering.pdf}
+\includepdf[
+    clip, trim=0 4cm 0 1.5cm, offset=0 -2cm, 
+    frame=true, scale=0.8, 
+    pages=1, pagecommand=\chapter{Paper 1}]%
+    {assets/paper1-clustering.pdf}
+\includepdf[
+    clip, trim=0 0 0 1.5cm, offset=0 0, 
+    frame=true, scale=0.8, 
+    pages=2-, pagecommand={}]%
+    {assets/paper1-clustering.pdf}
 
- 
-% \part*{Paper 2}
-% \addcontentsline{toc}{chapter}{Paper 2}
-% \includepdf[%
-%     frame=true, scale=0.8, pages=-, pagecommand={}%
-% ]{assets/paper1-clustering.pdf}
-% 
-% \part*{Paper 3}
-% \addcontentsline{toc}{chapter}{Paper 3}
-% \includepdf[%
-%     frame=true, scale=0.8, pages=-, pagecommand={}%
-% ]{assets/paper1-clustering.pdf}
+%\label{paper-1}
+%\includepdf[%
+%    frame=true, scale=0.8, pages=-, pagecommand={}%
+%]{assets/paper1-clustering.pdf}
+
 
 \end{document}

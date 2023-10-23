@@ -135,3 +135,4 @@ sympy-plots-for-*.tex/
 Session.vim
 .netrwhist
 *~
+.Rproj.user
