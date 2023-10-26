@@ -45,6 +45,7 @@
 \AtEveryCitekey{%
     \clearfield{pagetotal}%
     \clearfield{eprint}%
+    \clearfield{url}%
     \clearfield{pages}%
     \clearfield{series}%
     \clearfield{volume}%
@@ -53,6 +54,20 @@
     \clearname{editor}%
 }
 \addbibresource{assets/pch-thesis.bib}
+
+
+% fix appearance of cited preprints
+\DeclareSourcemap{
+    \maps[datatype=bibtex]{
+        \map{
+            \pertype{online}
+            \step[typesource=online, typetarget=article]
+            \step[fieldsource=eprinttype, fieldtarget=journaltitle]
+            \step[fieldsource=journaltitle,
+                match={arxiv}, replace={arXiv}]
+        }
+    }
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % load packages
@@ -76,7 +91,12 @@
 \usepackage{siunitx}
 \usepackage{todonotes}
 \usepackage{appendix}
+\usepackage{twemojis}
+\usepackage{cleveref}
+\usepackage{bm}
+\usepackage{pgffor}
 \usepackage{relsize}  % easy scaling of fonts
+
 
 % enumerate
 \usepackage[inline]{enumitem}
@@ -97,7 +117,9 @@
 \usepackage{tikz}
 \usetikzlibrary{positioning}
 \usetikzlibrary{arrows,shapes}
-\usetikzlibrary{quotes}
+\usetikzlibrary{quotes} 
+\usetikzlibrary{decorations.text}
+\usetikzlibrary{decorations.markings}
 \usepackage{annotate-equations}
 
 % for graphics / images
@@ -128,103 +150,75 @@
 \newcommand{\blankpage}{\newpage\hbox{}\thispagestyle{empty}\newpage}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \begin{document}
+
 \frontmatter
 \maketitle
 
-\include{content/00-copyright.tex}
-\include{content/00-preface.tex}
+\include{content/00-copyright.tex}      % [ ]
+\include{content/00-preface.tex}        % [ ]
 
 \cleardoublepage
-
 \tableofcontents
 \listoffigures
 \listoftables
 
-\chapter*{List of Acronyms}
-\begin{acronym}[NSTEMI]
-\acro{IHD}{ischemic heart disease}
-\acro{MI}{myocardial infarction}
-\acro{UA}{unstable angina}
-\acro{ECG}{electrocardiogram}
-\acro{NSTEMI}{non-ST-elevation myocardial infarction}
-\acro{STEMI}{ST-elevation myocardial infarction}
-\acro{CABG}{coronary artery bypass grafting}
-\acro{PCI}{percutaneous coronary intervention}
-\acro{CI}{confidence interval}
-\acro{OR}{odds ratio}
-\acro{PK}{pharmacokinetics}
-\acro{SNP}{single-nucleotide polymorphism}
-\acro{EHR}{electronic health record}
-\end{acronym}
-
+\include{content/00-acronyms.tex}        % [ ]
+\include{content/01-manuscripts.tex}     % [ ]
+\include{content/01-summary.tex}         % [ ]
 
 \cleardoublepage
+\include{content/overview.tex}           % [ ]
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%% todonotes
-\setcounter{tocdepth}{1}
-\listoftodos
-
-\include{content/01-manuscripts.tex}
-\include{content/01-summary.tex}
-
-\cleardoublepage
-\include{content/overview.tex}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\mainmatter
+\mainmatter %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \part{Background and Methods}
-
-\include{content/introduction.tex}
-\include{content/machine-learning.tex}
-\include{content/survival-analysis.tex}
-
-%\include{content/miscellaneous.tex}
+\include{content/introduction.tex}       % [X]
+\include{content/machine-learning.tex}   % [ ]
+\include{content/survival-analysis.tex}  % [ ]
 
 \part{Outline of Papers}
+\include{content/data-foundation.tex}    % [ ]
+\include{content/results-paper1.tex}     % [ ]
+\include{content/results-paper2.tex}     % [ ]
+\include{content/results-paper3.tex}     % [ ]
+\include{content/conclusions.tex}        % [ ]
 
-\include{content/data-foundation.tex}
-\include{content/results-paper1.tex}
-\include{content/results-paper2.tex}
-\include{content/results-paper3.tex}
-\include{content/conclusions-and-perspectives.tex}
+\include{content/miscellaneous.tex}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\backmatter
+\backmatter %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \addcontentsline{toc}{chapter}{List of References}
 \printbibliography
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mainmatter %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\mainmatter
 \appendix
 \appendixpage
 \addappheadtotoc
-
 \cleardoublepage
 
 \includepdf[
-    clip, trim=0 4cm 0 1.5cm, offset=0 -2cm, 
+    clip, trim=1cm 4cm 1cm 1.8cm, offset=0 -2.2cm, 
     frame=true, scale=0.8, 
-    pages=1, pagecommand=\chapter{Paper 1}]%
+    pages=1, pagecommand=\chapter{Paper 1}\label{chap:paper-1}]%
     {assets/paper1-clustering.pdf}
+% \includepdf[
+%     clip, trim=1cm 0 1cm 1.5cm, offset=0 0, 
+%     frame=true, scale=0.8, 
+%     pages=2-, pagecommand={}]%
+%     {assets/paper1-clustering.pdf}
+
 \includepdf[
-    clip, trim=0 0 0 1.5cm, offset=0 0, 
+    clip, trim=1cm 4cm 1cm 1.8cm, offset=0 -2.2cm, 
     frame=true, scale=0.8, 
-    pages=2-, pagecommand={}]%
+    pages=1, pagecommand=\chapter{Paper 2}\label{chap:paper-2}]%
     {assets/paper1-clustering.pdf}
 
-%\label{paper-1}
-%\includepdf[%
-%    frame=true, scale=0.8, pages=-, pagecommand={}%
-%]{assets/paper1-clustering.pdf}
-
+\includepdf[
+    clip, trim=1cm 4cm 1cm 1.8cm, offset=0 -2.2cm, 
+    frame=true, scale=0.8, 
+    pages=1, pagecommand=\chapter{Paper 3}\label{chap:paper-3}]%
+    {assets/paper1-clustering.pdf}
 
 \end{document}
