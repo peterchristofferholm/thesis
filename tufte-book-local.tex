@@ -1,7 +1,7 @@
 \setlength\marginparpush{11pt}
 
 \setcounter{tocdepth}{0}
-\setcounter{secnumdepth}{0}
+\setcounter{secnumdepth}{2}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -30,7 +30,7 @@
 \titlecontents{chapter}%
 	[0em]%
 	{%%   
-		\vspace{1.0\baselineskip}%
+		\vspace{0.5\baselineskip}%
 		\begin{fullwidth}%
 		\LARGE\rmfamily\itshape%
 	}%
@@ -50,9 +50,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \titleformat{\chapter}%
-	[block]%
+	[display]%
     {\relax\begin{fullwidth}}%
-    {}
+    {\Large\sffamily Chapter \thechapter}
     {0em}
     {\huge\rmfamily\itshape}
 	[\end{fullwidth}]
@@ -65,5 +65,22 @@
     {\Huge\rmfamily\upshape}
 	[\end{fullwidth}]
 
+\titleformat{\section}%
+  [hang]%
+  {\normalfont\Large\itshape}%
+  {\hspace{-3em}\makebox[3em]{\color{gray}\raggedleft\thesection}}%
+  {0em}%
+  {}%
+  []%
+
+\titleformat{\subsection}%
+  [hang]%
+  {\normalfont\large\itshape}%
+  {\hspace{-3em}\makebox[3em]{\color{gray}\raggedleft\thesubsection}}%
+  {0em}%
+  {}%
+  []%
+
 \titlespacing*{\chapter}{0pt}{50pt}{40pt}
 \titlespacing*{\section}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+\titlespacing*{\subsection}{0pt}{2.5ex plus 1ex minus .2ex}{1.5ex plus.2ex}

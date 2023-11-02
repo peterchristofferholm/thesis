@@ -41,7 +41,7 @@ necessitates automated methods for data analysis.
 seeks to address this need by development of methods and algorithms
 that allows computers to \enquote{learn} from data to solve new problems
 instead of them being explicitly programmed.
-~\autocite{murphyMachine2012}
+~\autocite{goodfellow2016deep}
 The field of \ac{ML} have progressed exponentially
 over the past couple of decades, 
 and with the advent of generative \ac{AI} models like 
@@ -52,9 +52,16 @@ In the context of precision medicine,
 the promise of \ac{AI} lies in the ability 
 to integrate large amounts of data from huge data sets
 and register and highlight patterns with clinical importance.
+In his review on artificial intelligence in medicine%
+\autocite{topolHighperformance2019}, 
+Eric Topol expresses his view, that in the not so distant future
+\blockquote{%
+almost every type of clinician, ranging from specialty doctor to paramedic,
+will be using AI technology, and in particular deep learning}.
 
 The underlying principle of \ac{ML} is to formulate a learning problem with a
 well-defined objective and a quantifiable measure of performance.
+~\autocite{murphyMachine2012}
 Subsequently,
 a loosely defined computer program is established and fed with data
 representing said objective.
@@ -77,19 +84,21 @@ which can be broadly categorized into two distinct approaches:
 supervised learning
 and 
 unsupervised learning.
+~\autocite{murphyMachine2012}
 
 \section{Supervised Learning}
 
 In supervised learning, models are trained on labeled examples---%
 a dataset 
-\(\mathfrak{D} = \{(\bm{x}_i, \bm{y}_i) \mid i \in \{1, \ldots, N\}\} \) 
-of size \(N\) that contains both input data \(\bm{x}\)
-and corresponding correct output values \(\bm{y}\). 
+\(\mathfrak{D} = \{(\vec{x}_i, y_i) \mid i \in \{1, \ldots, N\}\} \) 
+of size \(N\) that contains both input features \(\vec{x}\)
+and corresponding correct output values \(y\)
+for all the examples in the dataset. 
 Here \( \mathfrak{D} \) is typically refered to as the training set.
 ~\autocite{murphyMachine2012}
 The primary aim in supervised learning 
-is to learn a function that correctly 
-maps input data to output data, 
+is to learn a function \(f\) that correctly 
+maps input data \(\vec{x}\) to output data \(y\), 
 i.e. correctly assigns output labels or values
 based on the features present in the input data.
 When the output is discrete labels or classes, 
@@ -104,7 +113,7 @@ manually annotated to indicate the presence or absence of critical stenosis
 in any of the coronary arteries. 
 In this scenario, 
 the output classes are denoted as 
-\(\bm{y} \in \{\textsf{stenosis}, \textsf{no stenosis}\}\), 
+\(y \in \{\textsf{stenosis}, \textsf{no stenosis}\}\), 
 and the objective is to classify the images 
 into either of these categories based on their pixel values.
 The labeled data is being used to guide and \enquote{supervise}
@@ -129,12 +138,12 @@ predetermined labels or categories, instead learning from the data itself.
 The aim is to discover intrinsic structure in the dataset, 
 which can then be used for tasks such as 
 dimensionality reduction, clustering, or anomaly detection.
-~\autocite{murphyMachine2012}
+\sidecite[-8em]{murphyMachine2012}
 
 A canonical example of unsupervised learning is the problem of clustering,
 where the objective is to partition a set of objects into subgroups based
 on similarity.
-\sidenote[][-2em]{\cite{murphyMachine2012}}
+\sidecite[-11em]{murphyMachine2012}
 Things that are similar should be grouped together and
 should be relatively dissimilar to things in other groups.
 Defining what constitutes \enquote{similar} 
@@ -142,7 +151,7 @@ is therefore a central challenge in clustering;
 different measures of similarity often result
 in fundamentally different clusterings.%
 % card clustering analogy{{{
-\sidenote[][-6em]{%
+\sidenote[][-15em]{%
     To illustrate, we can consider a set of playing cards,
     that for convenience is limited to aces, court cards, and tens. 
     One possible clustering groups the cards by suit:
@@ -228,6 +237,21 @@ in the chapter \nameref{chap:outline-paper-1}.
 \section{Generalization and Overfitting}
 \label{overfitting}
 
+% figure: generalization error {{{
+\begin{marginfigure}[3em]
+    \centering
+	\includegraphics{graphics/overfitting-2}
+    \caption[Overfitting as Function of Number of Epochs]{%
+        Training a neural network model for many iterations 
+        runs the risk of overfitting the model to the training data.
+        Although the training error keeps decreasing, 
+        it happens at the expense of increased generalization error.
+        Inspired by \cite{goodfellow2016deep}.
+    }
+    \label{fig:generalization-error}
+\end{marginfigure}
+% }}}
+
 Returning to supervised learning,
 it is important to note that achieving good performance on the 
 training set is not the sole objective.
@@ -256,19 +280,6 @@ Assuming that the test set is representative%
 the performance on the test set can be used as an estimate of 
 the generalization error since it represents unseen data.
 
-% figure: generalization error {{{
-\begin{marginfigure}[3em]
-    \centering
-	\includegraphics{graphics/overfitting-2}
-    \caption[Overfitting as Function of Number of Epochs]{%
-        Training a neural network model for many iterations 
-        runs the risk of overfitting the model to the training data.
-        Although the training error keeps decreasing, 
-        it happens at the expense of increased generalization error.
-    }
-    \label{fig:generalization-error}
-\end{marginfigure}
-% }}}
 
 \Cref{fig:generalization-error} shows a theoretical training history 
 of a neural network model where the performance is calculated 
@@ -288,6 +299,26 @@ the noise and idiosyncracies of the data that,
 although characteristic in the narrow scope of the training set,
 would not be representative of neither biology nor disease etiology.
 ~\autocite{murphyMachine2012}
+As a consequence, the test set performance is considerably worse 
+than the training set performance.
+
+% figure: overfitting {{{
+\begin{figure}[htb]
+	\includegraphics{graphics/overfitting}
+    \setfloatalignment{t}
+    \caption[What is Overfitting?][-1em]{%
+        Illustration of overfitting and underfitting 
+        in a simple classification task.
+        An overfitted model learns the training data too well,
+        and may even remember noise and outliers,
+        which makes it perform poorly on unseen data.
+        Underfitted models, on the other hand,
+        are to simple to capture meaningful patterns in the data.
+    }
+    \label{fig:overfitting}
+    \vspace{-2em}
+\end{figure}
+% }}}
 
 Overfitting, and its counterpart, underfitting,
 are key considerations in training of \ac{ML} models (\cref{fig:overfitting}).
@@ -306,59 +337,11 @@ I will outline some of the specific methods
 used to balance the complexity 
 of neural network models.
 
-% figure: overfitting {{{
-\begin{figure}[htb]
-    \caption[What is Overfitting?]{%
-        Illustration of overfitting and underfitting 
-        in a simple classification task.
-        An overfitted model learns the training data too well,
-        and may even remember noise and outliers,
-        which makes it perform poorly on unseen data.
-        Underfitted models, on the other hand,
-        are to simple to capture meaningful patterns in the data.
-    }
-	\includegraphics{graphics/overfitting}
-    \label{fig:overfitting}
-    \setfloatalignment{t}
-    \vspace{-3em}
-\end{figure}
-% }}}
-
+\clearpage
 \section{Neural Networks}
 
-Neural networks have been designed
-using the archicteture of neurons in a human brain as inspiration.
-The simplest model is that of a perceptron, 
-which can be seen as a computational approximation
-of a real neuron or nerve cell%
-\sidenote[][-4em]{\cite{charniakIntroduction2019}}.
-A typical neuron has many dendrites, a cell body, and a single axon 
-(\cref{fig:neuron}).
-The dendrites carries the input signal to a neuron,
-and if the cumulative signal is great enough%
-\sidenote[][-4em]{
-    This threshold is known as 
-    the \textit{threshold potential},
-    and is typically between -50 and -55 mV.
-}, 
-then the neuron will propagate an action potential down the axon%
-\sidenote[][-1em]{\cite{seifterConcepts2005}}.
-In similar fashion, a perceptron receives may receive many different inputs
-and produces a single output (\cref{fig:perceptron}).
-In the case of a neuron, the \enquote{all-or-none} principle means
-that nerve cells either signals at full strength or not all.
-For a perceptron, this priniciple can be emulated
-with the followingly step function:
-
-\begin{equation}
-    f_{\phi}(\bm{x})  = 
-        \begin{cases}
-            1 & \text{if } b + \bm{w} \cdot \bm{x} > 0\\
-            0 & \text{otherwise}
-        \end{cases}
-\end{equation}
-
-\begin{marginfigure}%
+% figure: neuron{{{
+\begin{marginfigure}[3em]
 	\includegraphics[width=\linewidth]{graphics/neuron}
     \caption[Schematic diagram of a neuron]{%
         Schematic diagram of a neuron.
@@ -367,31 +350,355 @@ with the followingly step function:
         and propagates output signals along the axon.
     }
     \label{fig:neuron}
-\end{marginfigure}
+\end{marginfigure}% }}}
 
+In \nameref{chap:paper-2} and \nameref{chap:paper-3}, 
+neural network models are utilized to 
+develop risk prediction models for ischemic heart disease.
+Neural networks is a versatile class of machine learning models
+well-suited for handling large and heterogeneous datasets, 
+and they currently represent the state-of-the-art in \ac{ML}.
+The rest of this chapter will concentrate mainly on neural networks, 
+outlining the methodological details and highlight 
+relevant practical challenges and considerations 
+in their implementation.
+
+Historically, neural networks were designed
+using the archicteture of neurons in a human brain as inspiration.
+~\autocite{goodfellow2016deep}
+The simplest model is that of a perceptron, 
+which can be seen as a computational approximation
+of a real neuron or nerve cell.
+~\autocite{charniakIntroduction2019}
+A typical neuron has many dendrites, a cell body, and a single axon 
+(\cref{fig:neuron}).
+The dendrites carries the input signal to a neuron,
+and if the cumulative signal is great enough%
+\sidenote[][]{
+    This threshold is known as 
+    the \textit{threshold potential},
+    and is typically between -50 and -55 mV.
+}, 
+then the neuron will propagate an action potential down the axon%
+\autocite{seifterConcepts2005}.
+In similar fashion, a perceptron receives may receive many different inputs
+and produces a single output (\cref{fig:perceptron}).
+In the case of a neuron, the \enquote{all-or-none} principle means
+that nerve cells either signals at full strength or not all.
+For a perceptron, this principle can be emulated
+with the followingly Heaviside step function:
+~\autocite{charniakIntroduction2019}
+
+\begin{equation}
+    \label{eq:step-function}
+    g_{\phi}(\vec{x})  = 
+        \begin{cases}
+            1 & \text{if } b + \vec{w} \cdot \vec{x} > 0\\
+            0 & \text{otherwise}
+        \end{cases}
+\end{equation}
+
+% figure: perceptron{{{
 \begin{marginfigure}%
 	\includegraphics[width=\linewidth]{graphics/perceptron}
 	\caption{Schematic diagram of a perceptron}
     \label{fig:perceptron}
-\end{marginfigure}
+\end{marginfigure}% }}}
 
-By combing many thousands of such neurons,
-in a multilayer-perceptron or artificial neural network,
-we can create a model that, 
+By combing several of such artificial neurons,
+in a multilayer-perceptron or feedforward neural network,
+we can create a model that, in theory,
 can learn even the most complex of patterns.
-Deep learning is at its core a form of representation learning.
-Each layer in a neural network is a different representation,
-and by stacking several of such layers on top of each others,
-the representation in one hidden layer
-feeds into the next layer and
-is thereby being transformed into an even more abstract representation%
-\autocite{estevaGuide2019}.
+~\autocite{bishopNeural1995}
+In this design (\cref{fig:nn-structure}),
+information travels in one direction, from the input layer
+through the hidden layers, and finally to the output layer. 
+Each layer in a feedforward neural network is
+fully connected to the subsequent layer---%
+every neuron in one layer is connected to every neuron in the next.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% insert example of abstract representations in a computervis model
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% figure: neural-network {{{
+\begin{figure}[tb]
+\tikzstyle{node}        =[thick, circle, draw=color0, minimum size=23, 
+                          inner sep=0.5, outer sep=0.6]
+\tikzstyle{node in}     =[node, fill=color2]
+\tikzstyle{node hidden} =[node, fill=color3]
+\tikzstyle{node out}    =[node, fill=color4]
+\tikzstyle{connect}     =[thick, color0]
+\tikzstyle{label}       =[above=0, align=center, font=\sffamily]
+\tikzset{ % node styles,
+  node 1/.style={node in},
+  node 2/.style={node hidden},
+  node 3/.style={node out},
+}
+\def\nstyle{int(\lay<\Nnodlen?min(2,\lay):3)} % map layer number onto 1, 2, or 3
+\centering
+\begin{tikzpicture}[x=2.0cm, y=1.0cm]
+  \readlist\Nnod{6,4,4,4,5}
+  \foreachitem \N \in \Nnod{ % loop over layers
+    \def\lay{\Ncnt}  % alias of index of current layer
+    \pgfmathsetmacro\prev{int(\Ncnt-1)} % number of previous layer
+    \foreach \i [evaluate={\y=\N/2-\i; \x=\lay; \n=\nstyle;}] in {1,...,\N}{
+      % nodes
+      \node[node \n] (N\lay-\i) at (\x,\y) {};
+      % connections
+      \ifnum\lay>1
+        \foreach \j in {1,...,\Nnod[\prev]}{
+          \draw[connect, white, line width=1.2] (N\prev-\j) -- (N\lay-\i);
+          \draw[connect] (N\prev-\j) -- (N\lay-\i);
+        }
+      \fi 
+    }
+  }
+  % labels
+  \node[label] at (N1-1.90) { Input };
+  \node[label] at (N3-1.90) { Hidden Layers };
+  \node[label] at (N5-1.90) { Output };
+\end{tikzpicture}
+\caption[Schematic of a Feedforward Neural Network]{
+    A schematic representation of a feedforward neural network, 
+    comprising an input layer, multiple hidden layers, and an output layer. 
+    Each circle denotes a neuron, and the connecting lines represent 
+    connections between neurons.}
+\label{fig:nn-structure}
+\end{figure}
+% }}}
 
-\section{Hyperparameter Optimization}
+In the context of modern neural networks, 
+the simplistic step function in \cref{eq:step-function} 
+has certain limitations.
+In particular, it is non-differentiable at \(x = 0\) and
+has a zero derivative elsewhere, 
+rendering it incompatible with gradient-based optimization algorithms.  
+To address these issues, other activation functions
+have been introduced,
+with the sigmoid, \ac{tanh}, and \ac{ReLU} being popular choices 
+(\cref{fig:act-fn}), but many other variations exists.
+~\autocite{cholletDeep2021}
+
+% figure: activation functions {{{
+\begin{figure}[htb]
+\pgfplotsset{%
+    every axis/.append style={%
+        tick label style={/pgf/number format/fixed},
+        font=\footnotesize,
+        ylabel near ticks,
+        xlabel near ticks,
+        grid=major
+    }}
+\centering
+\begin{tikzpicture}% {{{
+    \begin{groupplot}[%
+        group style={group size= 2 by 2}, 
+        width=0.45\linewidth, height=0.30\linewidth
+    ]
+    \nextgroupplot[
+            title=Heaviside, 
+            ylabel= \(g(z)\),
+            xmin=-5, xmax=5,
+            ymin=-0.30, ymax=1.30
+        ]
+        \addplot[mark=*, blue, thick, samples at={-5.1, 0},
+            mark options={fill=white}]  {0};
+        \addplot[mark=*, blue, thick, samples at={0, 5.1},
+            mark options={}]  {1};
+    %% 
+    \nextgroupplot[
+            title=Sigmoid, 
+            xmin=-5, xmax=5,
+            ymin=-0.30, ymax=1.30
+        ]
+        \addplot[domain=-10:10, blue, thick, samples=100] {1/(1+exp(-x))};
+    %% 
+    \nextgroupplot[
+            title=Tanh, 
+            ylabel= \(g(z)\),
+            xlabel= \(z\),
+            xmin=-5, xmax=5,
+            ymin=-1.5, ymax=1.5
+        ]
+        \addplot[domain=-10:10, blue, thick, samples=100] {tanh(x)};
+    \nextgroupplot[
+            title=ReLU, 
+            xlabel= \(z\),
+            xmin=-5, xmax=5,
+            ymin=-0.5, ymax=5
+        ]
+        \addplot[domain=-10:0, blue, thick] {0};
+        \addplot[domain=0:10,  blue, thick] {x};
+        
+    \end{groupplot}
+\end{tikzpicture}% }}}
+\caption[Well-known Activation Functions]{%
+    Plots of well-known activation functions used in neural networks. 
+    From top left to bottom right: 
+    The Heaviside step function, 
+    the sigmoid (or logistic) function,
+    the \acf{tanh}, and the \acf{ReLU}.
+    Each function is plotted against its input value \(z\) 
+    to show its respective output \(g(z)\).}
+\label{fig:act-fn}
+\end{figure}% }}}
+
+In addition to feed forward neural networks, 
+ongoing research have developed other neural network architectures 
+tailored to particular types of data. 
+For example, convolutional neural networks were designed 
+for processing image data
+~\autocite{lecunHandwritten1989}
+and have revolutionized the field of
+computer vision.
+~\autocite{prince2023understanding}
+Similarly, recurrent neural networks,
+such as the long short-term memory nework,
+can model sequential data
+and have had great impact for both time series analysis 
+and natural language processing.
+~\autocite{hochreiterLong1997}
+Another innovation, 
+is the introduction of skip or residual connections 
+in architectures such as residual networks (ResNet),
+which have enabled the training of exceptionally deep networks.
+~\autocite{heDeep2015}
+
+\clearpage
+
+\section{Practical Implementation of Neural Networks}
+
+In developing neural network models for \ac{ML} objectives,
+several methodological considerations and decisions 
+have to be made.
+It is not feasible to exhaustively cover
+every nuance within the scope of this thesis, 
+instead the book \citetitle{goodfellow2016deep} 
+serves as a comprehensive reference.%
+~\sidecite[-3em]{goodfellow2016deep}
+As a guide, 
+the following list provides a high-level overview of the typical workflow:%
+\sidenote[][-4em]{%{{{
+    The list draws inspiration from chapter 19.9 in 
+    \cite{russellArtificial2009} and chapter 4 in
+    \cite{cholletDeep2021}.
+}% }}}
+
+\begin{fullwidth}
+%\setcounter{unbalance}{3}
+\begin{multicols}{2}
+\raggedcolumns
+\begin{enumerate}
+    \item \label{itm:problem}
+        \textit{Problem Definition:} 
+        Clearly describe the problem, 
+        and in the process identify if the objective belongs to 
+        classification, regression, or a third category.
+        Attached to the objective should be a measure of performance, 
+        which in the neural network literature typically is known as 
+        loss function, which is used to direct training.
+
+    \item \textit{Preparing the Data}:
+
+        \begin{enumerate}
+        \item \label{itm:data-collection}
+            \textit{Data Collection:} 
+            Gather and organize data for both training and testing the model.
+            Importantly, data should be of reasonable quality,
+            pertinent to the problem at hand, and of sufficient quantity.
+            If not, it can be a good idea to adjust \cref{itm:problem} 
+            to better reflect the available data.
+
+        \item \label{itm:data-preprocessing}
+            \textit{Data Preprocessing:} 
+            Prepare the data for model training, 
+            which may include cleaning, normalization, and transformation tasks.
+            The classical saying \enquote{garbage in, garbage out}
+            is worth repeating here.
+            Any data-informed tasks (e.g. normalization) should exclusively
+            be setup using the training set to avoid leakage of data.
+            \unskip\footnotemark
+        \end{enumerate}
+
+    \item \label{itm:model-specification}
+        \textit{Network Structure:} 
+        Choose the architecture of the neural network, 
+        defining elements such as the number of layers, 
+        number of neurons within each layer, 
+        and activation functions.
+        Certain architectures have shown to be useful for specific 
+        types of data, e.g. convolutional neural networks are
+        typically the architecture of choice for computer vision tasks.%
+        \unskip\footnotemark
+        
+    \columnbreak
+    \item \label{itm:training-specification}
+        \textit{Configuring Model Training:}
+        \begin{enumerate}%
+        \item \label{itm:optimizer}
+            \textit{Optimization Algorithm:} 
+            Choose and configure an optimization algorithm.
+            \Ac{SGD} and variants thereof 
+            are the most common algorithms for neural networks,
+            \unskip\footnotemark
+            and all have different 
+            parameters that needs to be defined and possibly tuned 
+            (see \cref{itm:hyperparameter}), 
+            such as e.g. the learning rate.
+
+        \item \label{itm:regularization}
+            \textit{Regularization:} 
+            To mitigate overfitting and ensure better generalization,
+            consider using regularization techniques such as 
+            L1/L2-regularization or Dropout.
+            \unskip\footnotemark
+        \end{enumerate}
+
+    \item \label{itm:hyperparameter}
+        \textit{Hyperparameter Tuning:} 
+        Tweak and adjust the relevant hyperparameters specified
+        in any of the previous steps,
+        including learning rate (from \cref{itm:optimizer})
+        and specific details of the neural network architecture 
+        (\cref{itm:model-specification})
+        to find the best configuration.
+        This typically involves training many different intermediate
+        versions of the model and evaluating their performance
+        using a validation set.
+
+    \item \label{itm:training}
+        \textit{Model Training:} 
+        Train the final version of the model 
+        using the designated training set.
+
+    \item \label{itm:evaluation}
+        \textit{Model Evaluation:} 
+        Assess the trained model using the test set, 
+        calculating metrics like accuracy, precision, and recall 
+        to gauge its effectiveness.
+        Model explainability techniques can here 
+        be helpful in aiding the interpretation of the model.
+\end{enumerate}
+\end{multicols}
+\end{fullwidth}
+
+\footnotetext{\cite{cholletDeep2021}}
+\footcitetext{lecunHandwritten1989}
+\footcitetext{cholletDeep2021}
+\footcitetext{goodfellow2016deep}
+
+While presented as sequential steps, 
+the items in the list are almost all interrelated 
+and can and should affect one another. 
+As an example, 
+it especially evident that
+\cref{itm:data-collection} 
+drastically influences the range of possibilities in 
+\cref{itm:problem}.
+In the remaining sections of this chapter, 
+I will be highlighting select concepts integral to  
+building neural network models which have specific
+relevance to the papers included in the thesis.
+
+\section{Model Selection}
+\label{sec:model-selection}
 
 We can estimate the generalization error of a model
 by evaluating it on a test set.
@@ -400,48 +707,232 @@ then this approach suffices.
 However, we might want to compare many different models,
 or slightly tweak an already existing model,
 such that we can select the best performing version.
+This is particularly relevant in the context of hyperparameter optimization,
+a topic that I will return to later in this chapter.
 If we select the final model based on the test set alone,
 we might inadvertently have biased the process,
 and could, in a sense, have overfitted to the test data.
+~\autocite{murphyMachine2012}
 To avoid this, we need to completely hide away the test data
 until we are done with training, experimenting, 
-and hyperparameter optimization.
-To allow this, we instead need three sets of data:
-
+and model selection.
+To enable this, a common solution is to introduce a third dataset by splitting 
+the training data into two sets of data: a training set and a validation set.
+The three sets of data used in the development process is then: 
+%
 \begin{itemize}
     \item a training set to train or develop candidate models
-    \item a validation set to evaluate the candidate models
-        and select the best one
-    \item a test set do the final unbiased evaluation of model performance
+    \item a validation set to evaluate and select the best model
+    \item a test set for the final evaluation of model performance
 \end{itemize}
 
-Another alternative is using the technique \textit{k}-fold cross-validation.
+\section{Regularization}
+\label{sec:regularization}
 
-\section{Explaining Black Box Models}
+Regularization is a collection of strategies used to avoid
+overfitting by penalizing the complexity of \ac{ML} models.
+Two classical examples are L2 and L1 regularization
+that adds an regularization term \(\omega\),
+on the model parameters \(\phi\),
+to the loss function \(\mathcal{L}\).
+~\autocite{goodfellow2016deep}
 
-A model is interpretable if we can inspect the model
-and understand why it gave a certain output for a particular input.
-An explainable model is one that can help us understand 
-why a certain output was produced for a specific input.
-Interpretability comes from inspecting the actual model.
-Explainability can come from an external process.
+\vspace{1.5em}
+\begin{equation}
+    \widetilde{\mathcal{L}} (\vec{\phi} , \mathsf{X}, \vec{y}) =
+    \mathcal{L} (\vec{\phi} , \mathsf{X}, \vec{y}) +
+    \eqnmarkbox[blue]{node1}{ \omega (\vec{\phi})}
+\end{equation}
+\annotate[yshift=.5em]{left}{node1}{regularization term}
 
-Typically there is a distinction between model-based explanations
-and post hoc explanations\autocite{vanderveldenExplainable2022}.
-The scope of an explanation is the difference between
-explanations for a complete model and
-explanations for a single output.
-Global explanation covers feature importance estimates 
-for the entire dataset.
-Local explanations, on the other hand, seeks to explain
-the impact of the specific example under scrutiny.
-A SHAP-waterfall plot is an example of a local explanation.
-A saliency map of a chest radiograph that shows
-which pixels contributed to the label \enquote{liver cancer}
-is another example.
+In the case of L1 regularization, 
+the regularization term consists of 
+the sum of the absolute values of the model parameters, 
+also known as the L1 norm. 
+For L2 regularization, 
+the term comprises the sum of the squares of the model parameters, 
+otherwise known as the squared L2 norm.
+~\autocite{murphyMachine2012}
+%
+\begin{alignat}{3}
+    &L1: \quad \omega (\vec{\phi}) 
+        &&= \lambda||\vec{\phi}||_1 
+        &&= \lambda\sum_{i}|\phi_i|  \\
+    &L2: \quad \omega (\vec{\phi}) 
+        &&= \lambda||\vec{\phi}||_2^2 
+        &&= \lambda\sum_{i} \phi_i^2
+\end{alignat}
 
-Shapley values measures the marginal contribution
-of each individual feature.
+The regularization strength is controlled by a hyperparameter, \(\lambda\);
+a value close to zero imposes minimal regularization, 
+while larger values increases the amount.
+In the context of neural networks, 
+another commonly used regularization method is \textit{dropout}.
+~\autocite{srivastava2014dropout}
+This method simply involves randomly dropping some of the output features
+of the hidden layers during each iteration of the training.
+This process in a sense creates a different architecture at every step, discouraging the model from becoming overly dependent on any single feature 
+and thereby enhances generalization. 
+~\autocite{charniakIntroduction2019}
+Empirically, dropout have been found to give significant improvements across
+many different architectures 
+~\autocite{srivastava2014dropout}
+and is a consequence broadly utilized.
+~\autocite{charniakIntroduction2019}
+The droput rate, which controls the probability \(p\) of dropping out each
+individual unit, is a hyperparameter that needs to be specified.
+
+\section{Hyperparameter Optimization}
+
+Neural networks, as well as most other \ac{ML} models,
+have parameters and settings that are not adjusted 
+during training and therefore needs to pre-specified.
+~\autocite{goodfellow2016deep}
+These parameters are known as hyperparameters, 
+and common examples include aspects such as 
+learning rate,
+number of layers in the neural network,
+number of nodes in each layer,
+Other specific examples have also been described previously in this chapter.
+
+Although it is possible to assign default values to hyperparameters 
+based on prior experience and personal preference, 
+it is imperative to acknowledge their possible impact on model performance.
+Consequently, it is common to explore different setting and combinations
+of hyperparameters in the model building process.
+~\autocite{goodfellow2016deep}
+In the field of machine learning, this process is known as \ac{HPO}.
+
+If the number of hyperparameters are sufficiently small,
+a commonly employed strategy for \ac{HPO} 
+is creating a range of possible candidate values 
+for each hyperparameter and 
+simply testing the entire space of 
+possible combinations in what is known as a \emph{grid search}.
+The disadvantage is, however, that the search space quickly 
+explodes in size and this strategy may therefore not be feasible.
+An alternative strategy, 
+which have been emprirically and theoretically shown to outperform
+grid search, and therefore typically should be prefered,  
+is \emph{random search}.
+~\autocite{bergstraRandom2012}
+In random search, the hyperparameters values are neither binned nor
+discretized and are instead sampled from a uniform distribution.
+~\autocite{bergstraRandom2012}
+State-of-the-art \ac{HPO} approaches includes Bayesian optimization 
+models, multi-fidelity optimization, and metaheuristics algorithms.
+~\autocite{yangHyperparameter2020}
+Many of these algorithms are implemented in the 
+open-source Python package \textit{Optuna},
+a very popular software framework for \ac{HPO} in Python.
+~\autocite{akibaOptuna2019}
+
+\section{Model Explainability}
+
+As described above, the overall goal of \ac{ML} 
+is to make accurate predictions on unseen data,
+and the \enquote{how} and \enquote{why} of such predictions is,
+in the general \ac{ML} paradigm, 
+explicitly of little concern.
+Consequently, it is accepted that complex neural networks
+with deep architectures and many thousands of parameters 
+are \enquote{black box} models that can not 
+be easily described nor understood.
+~\autocite{russellArtificial2009}
+For many applications, 
+this lack of transparency can be accepted,
+but for other applications where trust is paramount, 
+including precision medicine,
+ongoing efforts seeks to adress this inherent limitation.
+~\autocite{vanderveldenExplainable2022}
+
+In the discussion of \Ac{XAI}, there is 
+a meaningful distinction to be made between 
+interpretability and explainability:
+A model is said to be interpretable if we can 
+relatively easily understand the model through inspection
+of the model itself.
+~\autocite{russellArtificial2009}
+An explainable model, on the other hand, is a simplified 
+external process that provides an interpretable approximation
+of the complex non-interpretable model.
+~\autocite{lundbergUnified2017}
+For neural networks,
+model explainability techniques are generally 
+the only available option.
+
+\subsection{What is SHAP Analysis?} 
+
+A popular method for explainability analysis of neural network models
+is \ac{SHAP}, first published by
+\citeauthor{lundbergUnified2017} in \citeyear{lundbergUnified2017}
+~\autocite{lundbergUnified2017}.
+
+The \ac{SHAP} method is based on Shapley values,
+a well-known concept from cooperative game theory.
+Shapley values is a method for quantifying individual contribution
+in cooperative games.
+In the context of \ac{ML}, the \enquote{game} is the prediction task
+and the \enquote{players} are the model features.
+
+
+
+The goal of \ac{SHAP} is to introduce a simple explanation model \(g\),
+that approximates the original complex model \(f\) in a manner
+such that the model prediction can be represented as a simple sum
+of the individual feature contributions.
+
+
+
+
+The Shapley Value is defined as the \(j\)th feature's 
+impact on the model output
+
+\begin{equation}
+    S_j = \sum_{M} \gamma_n (M) \left[
+        \nu (M \cup {j} - \nu (M))
+    \right]
+\end{equation}
+
+
+
+
+
+
+
+
+Formally, we let \(f\) refer to the complex model to be explained, 
+and introduce an explanation model \(g\) that approximates \(f\).
+
+
+
+\begin{equation}
+    f(\vec{x}) \approx g(\vec{x})
+\end{equation}
+
+\begin{equation}
+    g(\vec{x}) 
+    = w_{0} + \sum_{j=1}^{m} w_j x_{j}
+\end{equation}
+
+These models attribute an effect \(w_j\) to each feature \(x_i\),
+and the sum of all feature effects (plus some offset), 
+approximates the complex model \(f\).
+
+
+
+
+\ac{SHAP} is an additive feature attribution method, 
+which means that 
+~\autocite{lundbergUnified2017}.
+
+
+The \ac{SHAP} method is based on Shapley values,
+a well-known concept from cooperative game theory.
+Shapley values is a method for quantifying individual contribution
+in cooperative games.
+In the context of \ac{ML}, the \enquote{game} is the prediction task
+and the \enquote{players} are the model features.
 
 One limitation of XAI models is the accuracy and relevance of explanations.
 Explainability algorithms such as SHAP are only approximations
@@ -451,83 +942,22 @@ is the explanation.
 However, for black-box models such as neural networks,
 it is the next best thing.
 
+\subsection{Scope of Explanations}
 
-\section{Regularization}
-\label{sec:regularization}
+The scope of an explanation is the difference between
+explanations for a complete model and
+explanations for a single output.
+Global explanation covers feature importance estimates 
+for the entire dataset.
+Local explanations, on the other hand, seeks to explain
+the impact of the specific example under scrutiny.
 
-One approach to avoid overfitting in neural networks
-is a technique known as dropout.
-At each step of model training,
-a random set of nodes in the network are disabled.
-In a sense, the result is a rough approximation of 
-an ensemble of different networks.
+A SHAP-waterfall plot is an example of a local explanation.
+A saliency map of a chest radiograph that shows
+which pixels contributed to the label \enquote{liver cancer}
+is another example.
 
+Shapley values measures the marginal contribution
+of each individual feature.
 
-Dropout introduces noise during training
-and thereby forces the network to be less senstive of noise.
-Hidden units trained with dropout needs to be useful 
-with or without the presence of neighboring units.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section{Miscellaneous}
-
-In his review on artificial intelligence in medicine%
-\autocite{topolHighperformance2019}, 
-Eric Topol expresses his view that in the future
-\blockquote{%
-almost every type of clinician, ranging from specialty doctor to paramedic,
-will be using AI technology, and in particular deep learning [...]
-}.
-
-The ability to predict adverse outcomes could make  
-healthcare resources more efficient.
-
-Systematic deugging and continuous monitoring and validation 
-is of utmost importance if we are to release AI algorithms into the wild%
-\autocite{topolHighperformance2019}.
-
-There has been much discussion about, and there are many opinions on, 
-the black-box nature of many machine learning algorithms and 
-how it should or should not affect the clinical use of such 
-\autocite{topolHighperformance2019, gunningXAI2019, vanderveldenExplainable2022}.
-
-In computer vision tasks in the medical domain,
-deep-learning models have achieved physician-level performance
-in many different diagnostic tasks
-ranging from \todo{finish sentence}.
-
-Automated diagnosis in ophthalmology 
-from optical coherence tomography scans~\autocite{defauwClinically2018}.
-
-\section{Computational models in cardiology}
-
-Using single-lead lectrocardiogram recordings from \num{53877} patients,
-Hannun et al.\autocite{hannunCardiologistlevel2019}
-constructed a deep neural network
-to identify 12 difference classes of cardiac rythm.
-In the validation of their algorithm on an independent test set,
-the authors were able to show that the computer model
-significantly outperforms the average cardiologist. 
-
-As the amount of available diagnostic data increases,
-it becomes more difficult for the treating physician
-to fully utilize the complete array of phenotypic information.
-Computational models can easily integrate all this data,
-and through automated identification of important clinical patterns
-they could serve as an important diagnostic support.
-
-\vskip 10em
-
-Historically, artificial neural networks (ANNs) have been predominantly
-employed for classification tasks, such as those typically found 
-in image recognition and natural language processing. 
-However, advancements have expanded their applicability, allowing ANNs 
-to be tailored for handling time-to-event data.
-This extension is particularly useful in fields like healthcare and systems
-biology, where survival analysis or event prediction over a time horizon is
-critical. 
-While the present chapter will not delve further into machine learning
-applications for time-to-event data, the topic will be revisited in the
-subsequent chapter.
 

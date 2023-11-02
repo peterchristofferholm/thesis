@@ -1,10 +1,6 @@
 
 \chapter*{Misc}
 
-
-%------------------------------------------------------------------------
-\vskip 5em
-
 For predictive models to be effective,
 they must enable clinicians to guide treatment by:
 %
@@ -151,11 +147,6 @@ Electronic health records make up an extremely rich resource of clinical
 information that have the possibility to fuel the development of the 
 precision medicine of tomorrow.
 
-
-
-
-
-
 Use data to improve decision making
 
 Subgroup identification seeks to identify groups of individuals with an
@@ -230,10 +221,6 @@ and the intensive care unit, but also in the health-and-disease space.
 
 \section{Clinical decision support systems}
 
-Deep learning can identify patterns in sparse, noisy,
-and very heterogenous data without the need for expert feature engineering
-\cite{norgeotCall2019}.
-
 Challenges in developing machine learning models from electronic health records
 includes syntactic interoperability, 
 which specifies the format and structure of the data.
@@ -265,10 +252,6 @@ Healthcare data are usually private and scattered across various applications,
 which makes it difficult to share data and generate robust results 
 that translate to different and diverse populations.
 
-
-Succesful implementation of data-driven applications
-require large and diverse data sets.
-
 AI approaches rely on data that accurately represent
 the real-life distribution of the underlying problem.
 We can not exclusively rely on data that have been carefully curated 
@@ -278,4 +261,45 @@ between health and disease patterns,
 we need to include many and diverse cases~%
 \autocite{riekeFuture2020}.
 
-Federated learning could solve some of these issues\autocite{riekeFuture2020}.
+Automated diagnosis in ophthalmology 
+from optical coherence tomography scans~\autocite{defauwClinically2018}.
+
+\section{Computational models in cardiology}
+
+Using single-lead lectrocardiogram recordings from \num{53877} patients,
+Hannun et al.\autocite{hannunCardiologistlevel2019}
+constructed a deep neural network
+to identify 12 difference classes of cardiac rythm.
+In the validation of their algorithm on an independent test set,
+the authors were able to show that the computer model
+significantly outperforms the average cardiologist. 
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Miscellaneous}
+
+Systematic deugging and continuous monitoring and validation 
+is of utmost importance if we are to release AI algorithms into the wild%
+\autocite{topolHighperformance2019}.
+
+In computer vision tasks in the medical domain,
+deep-learning models have achieved physician-level performance
+in many different diagnostic tasks
+ranging from \todo{finish sentence}.
+
+
+Deep learning is at its core a form of representation learning.
+~\autocite{estevaGuide2019}
+Each layer in a neural network is a different representation,
+and by stacking several of such layers on top of each others,
+the representation in one hidden layer
+feeds into the next layer and
+is thereby being transformed into an even more abstract representation%
+~\autocite{estevaGuide2019}.
+This allow neural network models to identify patterns in sparse, noisy,
+and highly heterogeneous data without the need for expert feature engineering,
+which makes them particularly pertinent to healthcare applications.% 
+~\sidecite[-2em]{norgeotCall2019}

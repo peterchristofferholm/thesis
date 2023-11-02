@@ -1,6 +1,7 @@
 \chapter{Time-to-Event Prediction with Neural Networks}
 \label{survival-analysis}
 
+
 %------------------------------------------------------------------------------
 \marginnote{%
     \setlength{\parindent}{0pt}
@@ -175,6 +176,18 @@ and \(\mathbf{x}_i\) is the covariate vector.
 %------------------------------------------------------------------------------
 
 
+Historically, artificial neural networks (ANNs) have been predominantly
+employed for classification tasks, such as those typically found 
+in image recognition and natural language processing. 
+However, advancements have expanded their applicability, allowing ANNs 
+to be tailored for handling time-to-event data.
+This extension is particularly useful in fields like healthcare and systems
+biology, where survival analysis or event prediction over a time horizon is
+critical. 
+While the present chapter will not delve further into machine learning
+applications for time-to-event data, the topic will be revisited in the
+subsequent chapter.
+
 
 
 
@@ -280,10 +293,6 @@ can be leveraged.
 
 Excluding subject for whom the event status is unknown
 will lead to a biased model with poor real-life performance.
-
-
-
-
 
 The DeepSurv model estimates the hazard function \(h(t|\mathbf{x})\).
 
@@ -605,7 +614,17 @@ For survival models, Harrel's C-index is typically used,
 although it is actually an improper scoring metric.
 Instead, the time-dependent AUC should be used instead.
 
+%% DEEPSURV
 
+In 2018, DeepSurv 
+
+In the approach by Faraggi-Simon, they use a neural network to 
+parameterise the log-risk function, using a slightly modified Cox partial 
+likelihood as the optimization target.
+~\autocite{faraggiNeural1995}
+The same approach was used in the \enquote{DeepSurv} paper,
+but instead paired with contemporary deep learning methods.
+~\autocite{katzmanDeepSurv2018a}
 
 
 

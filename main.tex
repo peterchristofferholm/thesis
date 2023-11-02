@@ -33,8 +33,6 @@
     citetracker=strict
 ]{biblatex}
 
-\renewbibmacro{in:}{}
-
 \DeclareCiteCommand{\cite}
   {\usebibmacro{prenote}}
   {\usebibmacro{citeindex}%
@@ -42,6 +40,11 @@
   {\multicitedelim}
   {\usebibmacro{cite:postnote}}
 
+\newcommand{\sidecite}[2][0em]{%
+	\unskip\sidenote[][#1]{\cite{#2}}%
+}
+
+\renewbibmacro{in:}{}
 \AtEveryCitekey{%
     \clearfield{pagetotal}%
     \clearfield{eprint}%
@@ -50,11 +53,11 @@
     \clearfield{series}%
     \clearfield{volume}%
     \clearfield{number}%
+    \clearfield{issue}%
     \clearlist{location}%
     \clearname{editor}%
 }
 \addbibresource{assets/pch-thesis.bib}
-
 
 % fix appearance of cited preprints
 \DeclareSourcemap{
@@ -69,34 +72,49 @@
     }
 }
 
+\DeclareStyleSourcemap{
+    \maps[datatype=bibtex]{
+        \map{
+            \pertype{inproceedings}
+            \step[fieldset=publisher, null=true]
+        }
+    }
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % load packages
 
 % fonts
+\usepackage[T1]{fontenc}
+
 \usepackage[p, osf]{ETbb}  % osf in text, tabular lining figures in math
 \usepackage[scaled=.95,type1]{cabin}  % sans serif in style of Gill Sans
-\usepackage[libertine,vvarbb]{newtxmath}  % recommended math font
+\usepackage[libertine, vvarbb]{newtxmath}
 
 % misc
+\usepackage{amsmath}
+\usepackage{amsfonts}
 \usepackage{microtype}
 \usepackage{booktabs}
 \usepackage{tabularx}
-\usepackage{lipsum}
+\usepackage{multicol}
 \usepackage{makecell}
 \usepackage{pdfpages}
-\usepackage{blindtext}
 \usepackage{appendix}
-\usepackage{amsmath}
-\usepackage{amsfonts}
 \usepackage{siunitx}
 \usepackage{todonotes}
+
+\usepackage{subcaption}
+\captionsetup{font=footnotesize}    
+
 \usepackage{appendix}
 \usepackage{twemojis}
 \usepackage{cleveref}
-\usepackage{bm}
 \usepackage{pgffor}
 \usepackage{relsize}  % easy scaling of fonts
+\usepackage{bm}
 
+\renewcommand{\mathbf}[1]{\bm{\mathsf{#1}}}
 
 % enumerate
 \usepackage[inline]{enumitem}
@@ -115,12 +133,28 @@
 
 % tikz 
 \usepackage{tikz}
+\usepackage{pgfplots}
+\usepgfplotslibrary{groupplots}
+\usepackage{listofitems}
+\usepackage{contour}
+
 \usetikzlibrary{positioning}
 \usetikzlibrary{arrows,shapes}
 \usetikzlibrary{quotes} 
 \usetikzlibrary{decorations.text}
 \usetikzlibrary{decorations.markings}
 \usepackage{annotate-equations}
+
+\definecolor{color0}{HTML}{001118}
+\definecolor{color1}{HTML}{005e72}
+\definecolor{color2}{HTML}{0a9395}
+\definecolor{color3}{HTML}{93d1bc}
+\definecolor{color4}{HTML}{e8d8a5}
+\definecolor{color5}{HTML}{ed9a00}
+\definecolor{color6}{HTML}{ca6702}
+\definecolor{color7}{HTML}{ba3d02}
+\definecolor{color8}{HTML}{ae1f11}
+\definecolor{color9}{HTML}{9a2126}
 
 % for graphics / images
 \usepackage{graphicx}
@@ -209,12 +243,14 @@
 %     pages=2-, pagecommand={}]%
 %     {assets/paper1-clustering.pdf}
 
+\cleardoublepage
 \includepdf[
     clip, trim=1cm 4cm 1cm 1.8cm, offset=0 -2.2cm, 
     frame=true, scale=0.8, 
     pages=1, pagecommand=\chapter{Paper 2}\label{chap:paper-2}]%
     {assets/paper1-clustering.pdf}
 
+\cleardoublepage
 \includepdf[
     clip, trim=1cm 4cm 1cm 1.8cm, offset=0 -2.2cm, 
     frame=true, scale=0.8, 
