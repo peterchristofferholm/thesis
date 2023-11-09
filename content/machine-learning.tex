@@ -232,7 +232,7 @@ we present an example of clustering analysis of patients with
 ischemic heart disease by considering the patterns of comorbidity 
 common in subgroups of patients.
 The specific methods used in this work is outlined 
-in the chapter \nameref{chap:outline-paper-1}.
+in \cref{chap:outline-paper-1}.
 
 \section{Generalization and Overfitting}
 \label{overfitting}
@@ -464,6 +464,8 @@ every neuron in one layer is connected to every neuron in the next.
 \end{figure}
 % }}}
 
+\subsection{Activation Functions}
+
 In the context of modern neural networks, 
 the simplistic step function in \cref{eq:step-function} 
 has certain limitations.
@@ -498,9 +500,9 @@ with the sigmoid, \ac{tanh}, and \ac{ReLU} being popular choices
             xmin=-5, xmax=5,
             ymin=-0.30, ymax=1.30
         ]
-        \addplot[mark=*, blue, thick, samples at={-5.1, 0},
+        \addplot[mark=*, color2, thick, samples at={-5.1, 0},
             mark options={fill=white}]  {0};
-        \addplot[mark=*, blue, thick, samples at={0, 5.1},
+        \addplot[mark=*, color2, thick, samples at={0, 5.1},
             mark options={}]  {1};
     %% 
     \nextgroupplot[
@@ -508,7 +510,7 @@ with the sigmoid, \ac{tanh}, and \ac{ReLU} being popular choices
             xmin=-5, xmax=5,
             ymin=-0.30, ymax=1.30
         ]
-        \addplot[domain=-10:10, blue, thick, samples=100] {1/(1+exp(-x))};
+        \addplot[domain=-10:10, color2, thick, samples=100] {1/(1+exp(-x))};
     %% 
     \nextgroupplot[
             title=Tanh, 
@@ -517,15 +519,15 @@ with the sigmoid, \ac{tanh}, and \ac{ReLU} being popular choices
             xmin=-5, xmax=5,
             ymin=-1.5, ymax=1.5
         ]
-        \addplot[domain=-10:10, blue, thick, samples=100] {tanh(x)};
+        \addplot[domain=-10:10, color2, thick, samples=100] {tanh(x)};
     \nextgroupplot[
             title=ReLU, 
             xlabel= \(z\),
             xmin=-5, xmax=5,
             ymin=-0.5, ymax=5
         ]
-        \addplot[domain=-10:0, blue, thick] {0};
-        \addplot[domain=0:10,  blue, thick] {x};
+        \addplot[domain=-10:0, color2, thick] {0};
+        \addplot[domain=0:10,  color2, thick] {x};
         
     \end{groupplot}
 \end{tikzpicture}% }}}
@@ -539,6 +541,8 @@ with the sigmoid, \ac{tanh}, and \ac{ReLU} being popular choices
     to show its respective output \(g(z)\).}
 \label{fig:act-fn}
 \end{figure}% }}}
+
+\subsection{Neural Network Architectures}
 
 In addition to feed forward neural networks, 
 ongoing research have developed other neural network architectures 
@@ -741,7 +745,7 @@ to the loss function \(\mathcal{L}\).
 \begin{equation}
     \widetilde{\mathcal{L}} (\vec{\phi} , \mathsf{X}, \vec{y}) =
     \mathcal{L} (\vec{\phi} , \mathsf{X}, \vec{y}) +
-    \eqnmarkbox[blue]{node1}{ \omega (\vec{\phi})}
+    \eqnmarkbox[color2]{node1}{ \omega (\vec{\phi})}
 \end{equation}
 \annotate[yshift=.5em]{left}{node1}{regularization term}
 
@@ -771,7 +775,8 @@ another commonly used regularization method is \textit{dropout}.
 ~\autocite{srivastava2014dropout}
 This method simply involves randomly dropping some of the output features
 of the hidden layers during each iteration of the training.
-This process in a sense creates a different architecture at every step, discouraging the model from becoming overly dependent on any single feature 
+This process in a sense creates a different architecture at every step,
+discouraging the model from becoming overly dependent on any single feature 
 and thereby enhances generalization. 
 ~\autocite{charniakIntroduction2019}
 Empirically, dropout have been found to give significant improvements across
@@ -846,7 +851,9 @@ including precision medicine,
 ongoing efforts seeks to adress this inherent limitation.
 ~\autocite{vanderveldenExplainable2022}
 
-In the discussion of \Ac{XAI}, there is 
+\subsection{Interpretability and Explanability}
+
+In the discussion of \ac{XAI}, there is 
 a meaningful distinction to be made between 
 interpretability and explainability:
 A model is said to be interpretable if we can 
@@ -867,97 +874,85 @@ A popular method for explainability analysis of neural network models
 is \ac{SHAP}, first published by
 \citeauthor{lundbergUnified2017} in \citeyear{lundbergUnified2017}
 ~\autocite{lundbergUnified2017}.
-
-The \ac{SHAP} method is based on Shapley values,
-a well-known concept from cooperative game theory.
-Shapley values is a method for quantifying individual contribution
-in cooperative games.
-In the context of \ac{ML}, the \enquote{game} is the prediction task
-and the \enquote{players} are the model features.
-
-
-
-The goal of \ac{SHAP} is to introduce a simple explanation model \(g\),
-that approximates the original complex model \(f\) in a manner
-such that the model prediction can be represented as a simple sum
-of the individual feature contributions.
-
-
-
-
-The Shapley Value is defined as the \(j\)th feature's 
-impact on the model output
-
+SHAP is a model-agnostic method grounded in co-operative game theory
+that provides a unified measure of feature importance for \ac{ML} models.
+It is based on the concept of Shapley values,  
+an approach for fairly distributing payoffs in a coalitional game
+based on the individual contributions of the players.
+~\autocite{shapley1953value}
+In this framework, 
+the \enquote{payoff} is the model output, 
+and the \enquote{players} are the features.
+For a specific realisation \(\check{\mathbf{x}}\) 
+of the feature vector \(\mathbf{x}\),
+we then decompose the model output \(f(\check{\mathbf{x}})\)
+into the individual feature contributions \(\check{v}_{j}\).
+~\autocite{aasExplaining2020}
 \begin{equation}
-    S_j = \sum_{M} \gamma_n (M) \left[
-        \nu (M \cup {j} - \nu (M))
-    \right]
+    \label{eq:explain}
+    f(\check{\mathbf{x}}) \approx v_0 + \sum_{j=1}^{M} \check{v}_{j}
 \end{equation}
+where \(v_0\) is a shared baseline and 
+\(\check{v}_{i}\) is the marginal contribrution for the \(j\)th 
+feature in \( \check{\mathbf{x}}\).
+The shared baseline is typically \(\EX[f(\mathbf{x})]\), 
+either the average or median prediction from the training set.
+~\autocite{aasExplaining2020}
+With this formulation, the Shapley values represent the difference between
+the prediction \(f(\check{\mathbf{x}})\) and the reference prediction,
+and from \cref{eq:explain} it follows that these are additive.
+~\autocite{aasExplaining2020}
+This enables visualizations such as \cref{fig:shap-local}.
 
+% figure: shap explanations{{{
+\begin{figure}[hbt]
+    \begin{tikzpicture}[%
+        x=\linewidth/100, 
+        y=2.7cm/100, 
+        font=\footnotesize
+    ]
+    \tikzstyle{shap}=[line width=11, -{Triangle Cap[]}]
 
+    \node (0) at (0,   50)  {};
+    \node (1) at (100, 50)  {};
+    \draw (0) -- (1);
 
+    \node (efz0) at (15, 100) { \(\EX [f(\mathbf{x})]\)};
+    \node (efz1) at (30,  85) { \(\EX [f(\mathbf{x}) \mid x_1         = \check{x}_{1}]\)};
+    \node (efz2) at (45, 100) { \(\EX [f(\mathbf{x}) \mid x_{1,2}     = \check{x}_{1,2}]\)};
+    \node (efz3) at (85, 100) { \(\EX [f(\mathbf{x}) \mid x_{1,2,3}   = \check{x}_{1,2,3}]\)};
+    \node (efz4) at (69,  85) { \(\EX [f(\mathbf{x}) \mid x_{1,2,3,4} = \check{x}_{1,2,3,4}]\)};
+    \node[fill=color4!50!white, draw=color5] 
+          (fx)   at (50,  70) { \(f(\mathbf{\check{x}})\)};
 
+    \draw[->, color2, shap] (efz0 |- 50, 40) -- node[white] {\(\check{v}_{1}\)} (efz1 |- 50, 40);
+    \draw[->, color2, shap] (efz1 |- 50, 25) -- node[white] {\(\check{v}_{2}\)} (efz2 |- 50, 25);
+    \draw[->, color2, shap] (efz2 |- 50, 10) -- node[white] {\(\check{v}_{3}\)} (efz3 |- 50, 10);
+    \draw[->, color6, shap] (efz3 |- 50, 25) -- node[white] {\(\check{v}_{4}\)} (efz4 |- 50, 25);
+    \draw[->, color6, shap] (efz4 |- 50, 40) -- node[white] {\(\check{v}_{5}\)} (fx   |- 50, 40);
 
+    \foreach \n in {efz0, efz1, efz2, efz3, efz4, fx}
+        \draw[->] (\n) -- ($(0)!(\n)!(1)+(0,1)$);
 
+    \end{tikzpicture}
+    \caption[Shapley Additive Explanations]{%
+       \Acf{SHAP} values represents the difference between the specific model
+       output \(f(\check{\mathbf{x}})\) and a baseline prediction
+       \(\EX [\mathbf{x}]\). 
+       The SHAP values \(v_i\) are additive and by adding them to the 
+       baseline prediction, we effetively condition the expected
+       model prediction on that feature.
+    }
+    \label{fig:shap-local}
+    \vspace{-2em}
+\end{figure}% }}}
 
-
-Formally, we let \(f\) refer to the complex model to be explained, 
-and introduce an explanation model \(g\) that approximates \(f\).
-
-
-
-\begin{equation}
-    f(\vec{x}) \approx g(\vec{x})
-\end{equation}
-
-\begin{equation}
-    g(\vec{x}) 
-    = w_{0} + \sum_{j=1}^{m} w_j x_{j}
-\end{equation}
-
-These models attribute an effect \(w_j\) to each feature \(x_i\),
-and the sum of all feature effects (plus some offset), 
-approximates the complex model \(f\).
-
-
-
-
-\ac{SHAP} is an additive feature attribution method, 
-which means that 
-~\autocite{lundbergUnified2017}.
-
-
-The \ac{SHAP} method is based on Shapley values,
-a well-known concept from cooperative game theory.
-Shapley values is a method for quantifying individual contribution
-in cooperative games.
-In the context of \ac{ML}, the \enquote{game} is the prediction task
-and the \enquote{players} are the model features.
-
-One limitation of XAI models is the accuracy and relevance of explanations.
-Explainability algorithms such as SHAP are only approximations
-of the complete model.
-In other words, the fidelity is not perfect and therefore neither
-is the explanation.
-However, for black-box models such as neural networks,
-it is the next best thing.
-
-\subsection{Scope of Explanations}
-
-The scope of an explanation is the difference between
-explanations for a complete model and
-explanations for a single output.
-Global explanation covers feature importance estimates 
-for the entire dataset.
-Local explanations, on the other hand, seeks to explain
-the impact of the specific example under scrutiny.
-
-A SHAP-waterfall plot is an example of a local explanation.
-A saliency map of a chest radiograph that shows
-which pixels contributed to the label \enquote{liver cancer}
-is another example.
-
-Shapley values measures the marginal contribution
-of each individual feature.
-
+It is beyond the scope of this thesis to detail 
+how Shapley values are computed in the \ac{SHAP} framework.
+However, it is important to note that their exact calculation 
+is NP-complete and therefore computationally intractable.
+~\autocite{dengComplexity1994}
+Instead, the \ac{SHAP} method have pioneered different 
+clever approximations that can be computed in reasonable time.
+~\autocite{lundbergUnified2017}
 

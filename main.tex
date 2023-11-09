@@ -114,7 +114,15 @@
 \usepackage{relsize}  % easy scaling of fonts
 \usepackage{bm}
 
-\renewcommand{\mathbf}[1]{\bm{\mathsf{#1}}}
+%\newcommand{\mbf}[1]{\bm{\mathrm{#1}}}
+\DeclareMathOperator{\EX}{\mathbb{E}} % expected value
+\DeclareMathOperator{\PR}{\mathbb{P}} % probability 
+\DeclareMathOperator{\I}{\mathbb{1}}  % indicator 
+\DeclareMathOperator{\CIF}{CIF}
+\newcommand{\diff}{\mathrm{d}}
+
+\newcommand{\xa}{\mathbf{x}}
+\newcommand{\xb}{\check{\xa}}
 
 % enumerate
 \usepackage[inline]{enumitem}
@@ -137,9 +145,13 @@
 \usepgfplotslibrary{groupplots}
 \usepackage{listofitems}
 \usepackage{contour}
+% \usetikzlibrary{external}
+% \tikzexternalize[optimize=false, prefix=figures/]
 
 \usetikzlibrary{positioning}
 \usetikzlibrary{arrows,shapes}
+\usetikzlibrary{arrows.meta} 
+\usetikzlibrary{graphs} 
 \usetikzlibrary{quotes} 
 \usetikzlibrary{decorations.text}
 \usetikzlibrary{decorations.markings}
@@ -189,34 +201,34 @@
 \frontmatter
 \maketitle
 
-\include{content/00-copyright.tex}      % [ ]
-\include{content/00-preface.tex}        % [ ]
+\include{content/00-copyright}      % [ ]
+\include{content/00-preface}        % [ ]
 
 \cleardoublepage
 \tableofcontents
 \listoffigures
 \listoftables
 
-\include{content/00-acronyms.tex}        % [ ]
-\include{content/01-manuscripts.tex}     % [ ]
-\include{content/01-summary.tex}         % [ ]
+\include{content/00-acronyms}        % [ ]
+\include{content/01-manuscripts}     % [ ]
+\include{content/01-summary}         % [ ]
 
 \cleardoublepage
-\include{content/overview.tex}           % [ ]
+\include{content/overview}           % [ ]
 
 \mainmatter %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \part{Background and Methods}
-\include{content/introduction.tex}       % [X]
-\include{content/machine-learning.tex}   % [ ]
-\include{content/survival-analysis.tex}  % [ ]
+\include{content/introduction}       % [X]
+\include{content/machine-learning}   % [X]
+\include{content/survival-analysis}  % [ ]
 
 \part{Outline of Papers}
-\include{content/data-foundation.tex}    % [ ]
-\include{content/results-paper1.tex}     % [ ]
-\include{content/results-paper2.tex}     % [ ]
-\include{content/results-paper3.tex}     % [ ]
-\include{content/conclusions.tex}        % [ ]
+\include{content/data-foundation}    % [ ]
+\include{content/results-paper1}     % [ ]
+\include{content/results-paper2}     % [ ]
+\include{content/results-paper3}     % [ ]
+\include{content/conclusions}        % [ ]
 
 \include{content/miscellaneous.tex}
 

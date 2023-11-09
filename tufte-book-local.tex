@@ -68,7 +68,9 @@
 \titleformat{\section}%
   [hang]%
   {\normalfont\Large\itshape}%
-  {\hspace{-3em}\makebox[3em]{\color{gray}\raggedleft\thesection}}%
+  {\hspace{-3em}\makebox[3em]{%
+    \normalsize\color{gray}\raggedleft\thesection}%
+  }%
   {0em}%
   {}%
   []%
@@ -76,7 +78,9 @@
 \titleformat{\subsection}%
   [hang]%
   {\normalfont\large\itshape}%
-  {\hspace{-3em}\makebox[3em]{\color{gray}\raggedleft\thesubsection}}%
+  {\hspace{-3em}\makebox[3em]{%
+    \normalsize\color{gray}\raggedleft\thesubsection}%
+  }%
   {0em}%
   {}%
   []%

@@ -303,3 +303,33 @@ This allow neural network models to identify patterns in sparse, noisy,
 and highly heterogeneous data without the need for expert feature engineering,
 which makes them particularly pertinent to healthcare applications.% 
 ~\sidecite[-2em]{norgeotCall2019}
+
+
+
+\subsection{Scope of Explanations}
+
+The scope of an explanation is the difference between
+explanations for a complete model and
+explanations for a single output.
+Global explanation covers feature importance estimates 
+for the entire dataset.
+Local explanations, on the other hand, seeks to explain
+the impact of the specific example under scrutiny.
+
+A SHAP-waterfall plot is an example of a local explanation.
+A saliency map of a chest radiograph that shows
+which pixels contributed to the label \enquote{liver cancer}
+is another example.
+
+Shapley values measures the marginal contribution
+of each individual feature.
+
+
+One limitation of XAI models is the accuracy and relevance of explanations.
+Explainability algorithms such as SHAP are only approximations
+of the complete model.
+In other words, the fidelity is not perfect and therefore neither
+is the explanation.
+However, for black-box models such as neural networks,
+it is the next best thing.
+
