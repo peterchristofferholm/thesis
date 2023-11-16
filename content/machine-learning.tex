@@ -1,18 +1,8 @@
 \chapter{Fundamentals of Machine Learning and Neural Networks}
-\label{ml-fundamentals}
-
-In modern medicine, 
-ever increasing amounts of data 
-is continuously being generated and collected.
-Ranging from structured administrative data 
-used primarily for billing purposes
-to advanced imaging and high-througput \enquote{omics} analyses,
-the array of available data is as diverse as it is plentiful.
-Making sense and making use of such massive amounts of data 
-necessitates automated methods for data analysis.
+\label{chap:ml-and-nn}
 
 % figure: hierarchy of artificial intelligence {{{
-\begin{marginfigure}[3em]
+\begin{marginfigure}[1em]
     \centering
 	\begin{tikzpicture}[scale=1.75]
         \draw[black, fill=black!10] (0,  0.00) circle (1.00);
@@ -36,6 +26,16 @@ necessitates automated methods for data analysis.
     }
     \label{fig:artificial-intelligence}
 \end{marginfigure}% }}}
+
+In modern medicine, 
+ever increasing amounts of data 
+is continuously being generated and collected.
+Ranging from structured administrative data 
+used primarily for billing purposes
+to advanced imaging and high-througput \enquote{omics} analyses,
+the array of available data is as diverse as it is plentiful.
+Making sense and making use of such massive amounts of data 
+necessitates automated methods for data analysis.
 
 \Ac{AI}, and specificically \ac{ML} (\cref{fig:artificial-intelligence}),
 seeks to address this need by development of methods and algorithms
@@ -683,10 +683,13 @@ the following list provides a high-level overview of the typical workflow:%
 \end{multicols}
 \end{fullwidth}
 
-\footnotetext{\cite{cholletDeep2021}}
-\footcitetext{lecunHandwritten1989}
-\footcitetext{cholletDeep2021}
-\footcitetext{goodfellow2016deep}
+% hacks to get the numbering correct!
+\marginnote{\vspace{6em}}
+\addtocounter{footnote}{-4} 
+\stepcounter{footnote}\footcitetext{cholletDeep2021}
+\stepcounter{footnote}\footcitetext{lecunHandwritten1989}
+\stepcounter{footnote}\footcitetext{cholletDeep2021}
+\stepcounter{footnote}\footcitetext{goodfellow2016deep}
 
 While presented as sequential steps, 
 the items in the list are almost all interrelated 

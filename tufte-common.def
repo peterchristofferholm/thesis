@@ -1283,15 +1283,23 @@
   }
 
 \newcommand{\@tufte@float@fullwidth}[3][0pt]{%
-  \ifthenelse{\boolean{@tufte@float@fwcaption}}{%
-    \ifthenelse{\NOT\boolean{@tufte@symmetric}\OR\boolean{@tufte@float@recto}}%
-      {\usebox{#2}\par\smash{\raisebox{#1}{\usebox{#3}}}\hfill\@tufte@float@debug{Caption position: [below left]}}% caption on the left
-      {\usebox{#2}\par\hfill\smash{\raisebox{#1}{\usebox{#3}}}\@tufte@float@debug{Caption position: [below right]}}% caption on the right
-  }{%
-      \ifthenelse{\NOT\boolean{@tufte@symmetric}\OR\boolean{@tufte@float@recto}}%
-        {\usebox{#2}\par\hfill\smash{\raisebox{#1}{\usebox{#3}}}\@tufte@float@debug{Caption position: [below right]}}% caption on the right
-        {\usebox{#2}\par\smash{\raisebox{#1}{\usebox{#3}}}\hfill\@tufte@float@debug{Caption position: [below left]}}% caption on the left
-  }
+  \ifthenelse{\boolean{@tufte@float@fwcaption}}%
+    % fullwidth caption
+    {\ifthenelse{\NOT\boolean{@tufte@symmetric}\OR\boolean{@tufte@float@recto}}%
+      {\usebox{#2}\par\smash{\raisebox{#1}{\usebox{#3}}}\hfill}% left
+      {\usebox{#2}\par\hfill\smash{\raisebox{#1}{\usebox{#3}}}}% right
+    }%
+    % marginwidth caption
+    {\ifthenelse{\equal{\floatalignment}{b}}%
+      {\ifthenelse{\NOT\boolean{@tufte@symmetric}\OR\boolean{@tufte@float@recto}}%
+        {\hfill\smash{\raisebox{#1}{\usebox{#3}}}\par\usebox{#2}}% right
+        {\smash{\raisebox{#1}{\usebox{#3}}}\hfill\par\usebox{#2}}% left 
+      }%
+      {\ifthenelse{\NOT\boolean{@tufte@symmetric}\OR\boolean{@tufte@float@recto}}%
+        {\usebox{#2}\par\hfill\smash{\raisebox{#1}{\usebox{#3}}}}% right
+        {\usebox{#2}\par\smash{\raisebox{#1}{\usebox{#3}}}\hfill}% left
+      }%
+    }%
 }
 
 \newcommand{\@tufte@float@textwidth}[3][0pt]{%

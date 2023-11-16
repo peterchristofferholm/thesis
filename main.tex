@@ -30,7 +30,8 @@
     sorting=nty,        % name, title, year
     autocite=footnote,  % put citation in sidenotes 
     citereset=chapter,  % reset citation tracker at each chapter
-    citetracker=strict
+    citetracker=strict,
+    trackfloats=true
 ]{biblatex}
 
 \DeclareCiteCommand{\cite}
@@ -107,6 +108,8 @@
 \usepackage{subcaption}
 \captionsetup{font=footnotesize}    
 
+
+\usepackage{marginfix}
 \usepackage{appendix}
 \usepackage{twemojis}
 \usepackage{cleveref}
@@ -119,10 +122,16 @@
 \DeclareMathOperator{\PR}{\mathbb{P}} % probability 
 \DeclareMathOperator{\I}{\mathbb{1}}  % indicator 
 \DeclareMathOperator{\CIF}{CIF}
+\DeclareMathOperator{\card}{\raisebox{-.22ex}{\#}}
+
+
+
+\DeclareMathOperator*{\argmin}{arg\,min}
 \newcommand{\diff}{\mathrm{d}}
 
 \newcommand{\xa}{\mathbf{x}}
 \newcommand{\xb}{\check{\xa}}
+\newcommand{\hzt}{\lambda_0\mspace{-1mu}(t)}
 
 % enumerate
 \usepackage[inline]{enumitem}

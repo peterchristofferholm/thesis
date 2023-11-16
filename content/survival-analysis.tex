@@ -44,8 +44,8 @@ Generally,
 survival analysis is the collection of statistical methods
 for the modelling and analysis of time-to-event data,
 which is data where the outcome variable of interest 
-is the time until \enquote{something} happens~%
-\autocite{kleinbaumSurvival2011}.
+is the time until \enquote{something} happens.~%
+~\autocite{kleinbaumSurvival2011}
 This \enquote{something} is a particular event of interest,
 which, depending on the type of analytical problem, 
 could be cancer relapse, 
@@ -76,8 +76,8 @@ until that particular event is likely to occur.
 Although this task can be daunting in its own right, 
 an additional complication to survival analysis 
 is the presence of observations that are subject to 
-\textit{censoring}.
-Censoring refers to cases 
+censoring.
+This concept, censoring, refers to cases 
 where the event of interest has not been observed 
 before the end of follow-up, 
 e.g. when a study or experiment has to be stopped.
@@ -88,50 +88,52 @@ but after the study period ends,
 we have no information on the status of the patient. 
 Including and utilizing this partial information
 is a cornerstone in many survival analysis problems.
-There are different forms of censoring,
+
+There exists different forms of censoring,
 such as right censoring, left censoring, and interval censoring.
 In the study designs used throughout this thesis 
 we have only had to deal with right censoring,
 the most common form of censoring,
-so the two other types  will not be described further.
+so the two other types will not be described further.
 See instead the text book by \citeauthor{kleinSurvival2003} 
 for more details on this.
-\sidecite[-3em]{kleinSurvival2003}
+~\autocite{kleinSurvival2003}
 
 \section{Fundamentals of Survival Analysis}
 
 In survival analysis, 
 the central outcome variable is survival time,
 a non-negative random variable denoted as \(T\). 
-When refering to specific values of \(T\),
-we typically use a lower case \(t\).
-In the following, I will initially be assuming that \(T\) is 
-continuous and that there is an absence of competing risks, 
-howver both of these will later be relaxed in the discussion 
-of competing risks and discrete-time survival analysis.
-
+When refering to specific values of \(T\), 
+a lower case \(t\) is typically used.  
 A survival dataset \(\mathfrak{D}\) of size \(n\) is given by
 \begin{equation}
-    \mathfrak{D}_n = \{(t_i, \delta_i, \mathbf{x}_i) \mid i = 1, \ldots, n\} 
+    \mathfrak{D}_n = \{(t_i, \sigma_i, \bm{x}_i) \mid i = 1, \ldots, n\} 
 \end{equation}
-where \(t_i = \min(T_i, C_i) \) is the survival time 
+where \(t_i = \min(T_{i}, C_i) \) is the survival time 
 for the \(i\)th subject,
 with \(T_i\) denoting the survival time
 and \(C_i\) denoting the censoring time. 
-\(\delta_i\) is the event indicator 
-and \(\mathbf{x}_i\) is the covariate vector.
-The event indicator \(\delta_i\) is defined as
+Also, \(\bm{x}_i = (x_1, x_2, \dots, x_p)'\) is the covariate vector
+and \(\sigma_i\) is the event indicator, which is defined as
 \begin{equation}
-    \delta_i =
+    \label{eq:sigma-def}
+    \sigma_i =
         \begin{cases}
-            1 & \text{if the event is observed} \; (T_i \leq C_i)\\
-            0 & \text{if the event is censored} \; (T_i >    C_i)
+            0 & \text{if subject is censored} \; (T_i >    C_i) \\
+            1 & \text{if event is observed} \; (T_i \leq C_i)
         \end{cases}
 \end{equation}
 
-\subsection{The Survival and Hazard Function}
+In the following, I will initially be assuming that \(T\) is 
+continuous and that there is an absence of competing risks, 
+however both of these assumptions will later be relaxed in the discussion 
+of competing risks and discrete-time survival analysis.
 
-% theoretical survival function{{{
+\subsection{Basic Survival Quantities}
+\label{sub:survival-quantities}
+
+% figure: theoretical survival function{{{
 \begin{marginfigure}%
 	\begin{tikzpicture}[scale=2]
 	  \draw[->] (0, 0) --  (2,0) 
@@ -151,66 +153,118 @@ The event indicator \(\delta_i\) is defined as
         [\cite{kleinSurvival2003}]
     }
     \label{fig:survival-function}
-\end{marginfigure}% }}}
+\end{marginfigure}%}}}
 
-In survival analysis, the two basic quantities of interest are
-the survival function \(S(t)\) and the hazard function \(\lambda(t)\).
-The survival function represents
-the probability of an
-individual still being alive 
-after some time \(t\), that is
+In survival analysis, 
+the central function of interest is 
+the survival function \(S(t)\), 
+that represents the probability 
+of an individual still being alive after 
+some specified duration of time, we have that 
 %
 \begin{equation}
-    S(t) = \PR (T > t).
+    S(t) = \PR (T > t), \quad 0 < t < \infty.
 \end{equation}
+
+The survival function is 
+the integral of the probability density function, \(f(t)\),
+and is the complement to the cumulative distribution function, \(F(t)\),
+which means that
+~\autocite{kleinSurvival2003}
 %
-The hazard function \(\lambda(t)\) describes 
-the same underlying distribution as \(S(t)\), 
-but instead represents the instantaneous failure rate 
-at a given timepoint:
+\begin{equation}
+    S(t) = 1 - F(t) 
+    \quad \text{and} \quad 
+    S(t) = \int_{t}^{\infty} f(u) \, \diff u
+\end{equation}
+
+Another fundamental quantity is the hazard function, or hazard rate,
+which represents the instantaneous failure rate at a given timepoint,
+and is defined as
 %
 \begin{equation}
     \label{eq:hazard-function}
     \lambda(t) = \lim_{\Delta t \to 0} 
-        \frac{\PR (t \leq T < t + \Delta t \mid T \geq t)}{\Delta t}.
+        \frac{\PR (t \leq T < t + \Delta t \mid T \geq t)}{\Delta t}
 \end{equation}
-
-The hazard function provides information 
-about the risk of experiencing the event of interest at a particular moment,
-given that the individual has survived up to that point in time.
+% 
+from which it can be shown that
 ~\autocite{kleinSurvival2003}
-The survival function and the hazard function is inextricably linked,
-as they are both representations of the same distribution.
-Knowing one is thus enough to obtain the other, since
 %
-\begin{align}
-    S(t) &= \exp \left[ - \int_{0}^{t}{\lambda(t) \, \diff t} \right] \\
-    \intertext{and correspondingly}
-    \lambda(t) &= - \frac{\diff }{\diff t} \log \left[S(t)\right].
-\end{align}
+\begin{equation}
+    \lambda(t) = \frac{f(t)}{S(t)} = -\frac{\diff}{\diff t} \ln[S(t)].
+\end{equation}
 %
+and thus the hazard function completely describes the distribution of \(T\),
+such that all the the other quantities can be obtained from it---%
+as well as the other way around.
+
+In terms of its interpretation, 
+from \cref{eq:hazard-function} it follows that \(\lambda(t)\Delta t\) 
+is a measure of the conditional probability of failure in a small time
+window, given that the individual is still alive at time \(t\).
+~\autocite{kleinSurvival2003}
+
+Analogous to the relation between \(f(t)\) and \(F(t)\), 
+integrating \(\lambda(t)\) with resport to \(t\),
+we obtain cumulative hazard function, defined as
+%
+\begin{equation}
+    \Lambda(t) = \int_{0}^{t} \lambda(u) \, \diff u = -\ln[S(t)].
+\end{equation}
 
 \subsection{The Kaplan-Meier Estimator}
 
 The survival function of a population,
-can be estimated using the Kaplan-Meier method. 
+can be estimated using the Kaplan-Meier method,
+which is the standard estimator of the survival function.
 ~\autocite{kaplan1958nonparametric}
-This approach, also known as the product-limit estimator,
-is the standard estimator of the survival function
 ~\autocite{kleinSurvival2003}
-and is calculated as 
+In this approach, 
+the distinct failure times are ordered such that%
+\footnotemark
+\begin{equation*}
+    t_{(1)} < t_{(2)} < \ldots < t_{(j)},
+\end{equation*}
 %
+and we introduce two quantities to keep track of
+the number of failures \(\widebar{D}(j)\), 
+as well as the number of subjects still at risk \(\widebar{A}(j)\).
+They are defined as
 \begin{equation}
-    \widehat{S} (t) = \prod_{\, t_j \leq t} \left(
-        1 - \frac{d_j}{|R_j|}
-    \right)
+\begin{aligned}
+    \bar{D}(j) &= \card \{i \in \{1, \dots, n\} \mid t_i = t_{(j)}, \sigma_i = 1\} \\
+    \bar{A}(j) &= \card \{i \in \{1, \dots, n\} \mid t_i > t_{(j)}\},
+\end{aligned}
 \end{equation}
-%
-where \(d_j\) is the number of events observed at \(t_j\),
-and \(|R_j|\) is the number of individuals at risk in the interval 
-\([t_{j-1}, t_j)\).
+and the Kaplan-Meier estimator can then be formulated as 
+\begin{equation}
+    \widehat{S}(t)
+    =   \prod_{j \mid t_{(j)} \leq t} 
+        \frac{
+            \bar{A}(j) -
+            \bar{D}(j)
+        }{
+            \bar{A}(j)
+        }
+    =   \prod_{j \mid t_{(j)} \leq t} 
+        1 - \frac{
+            \bar{D}(j)
+        }{
+            \bar{A}(j)
+        }.
+\end{equation}
+
+\footnotetext{%
+    Following the example of [\cite{kleinbaumSurvival2011}], 
+    the \(t\)'s denoted with subscripts within parentheses \(t_{(j)}\)
+    refers to the \(j\)th element of the ordered distinct failure times and
+    are thus different from \(t_1, t_2, \ldots, t_i\) that refers to the 
+    observed failure time of subject \(1\), \(2\), and \(i\)
+}
+
 The Kaplan-Meier estimator is thus as step-function that decreases
-after each observed follow-up time.
+after each observed event.
 While the Kaplan-Meier estimator is useful 
 for summarising the survival of a population, 
 it does not account for the effect of covariates.
@@ -223,68 +277,67 @@ and time-to-event phenomenons, a widely used statistical model is
 the Cox proportional hazards model. 
 ~\autocite{coxRegression1972}
 This model seeks to model the hazard function over time \(t\),
-of an individual with a covariate vector \(\mathbf{x}\),
+of an individual with a covariate vector \(\bm{x} = (x_1, x_2, \dots)'\),
 and assumes that it takes the form of
 %
 \begin{equation}
     \label{eq:cox}
-    \lambda (t \mid \mathbf{x}) = \lambda_0(t) \exp (g(\mathbf{x})),
+    \widehat{\lambda} (t \,|\, \bm{x}) = \hzt \exp [g(\bm{x})],
 \end{equation}
 %
-where \(\lambda_0(t)\) is the baseline hazard rate
-and \(g(\mathbf{x})\) is some parametric function.
-This function is in the classical formulation
-a linear combination of parameters 
-\(\bm{\beta}\) and covariates \(\mathbf{x}\), 
-that is
-
-\begin{equation}
-    g(\mathbf{x}) 
-    = \beta_1 x_1 + \beta_2 x_2 + \ldots + \beta_m x_m
-    = \bm{\beta} \cdot \mathbf{x} 
-\end{equation}
-
-In \cref{eq:cox},
-the baseline hazard \(\lambda_0(t)\)
-is treated as a nuisance function 
-and is left unspecified.
-In fitting a Cox model, 
-the coefficients \(\bm{\beta}\), 
-of the parametric part of the Cox model, 
-are estimated using maximum likelihood estimation of 
-a partial likelihood in which the baseline hazard is not included.
-~\autocite{kleinSurvival2003}
+where \(\hzt\)
+is an unspecified baseline hazard function,
+and \(g(\bm{x})\) is some parametric function.
 For this reason, the Cox model 
 is referred to as a semi-parametric model.
+In its classical formulation, 
+this function is a linear combination of parameters 
+\(\bm{\beta}\) and covariates \(\bm{x}\),
+as given by
 
-A key assumption of the Cox model, 
-is its namesake proportional hazards assumption.
-Let \(\mathbf{x}\) and \(\mathbf{\check{x}}\) be 
-two different covariate vectors,
-now the hazard ratio \(\mathrm{HR}\) is
+\begin{equation}
+    g(\bm{x}) 
+    = \bm{\beta}' \bm{x} 
+    = \beta_1 x_1 + \beta_2 x_2 + \ldots + \beta_p x_p
+\end{equation}
+
+In estimation of the parameters \(\bm{\beta}\),
+the baseline hazard \(\hzt\) is treated as a nuisance function
+and the coefficients are estimated by
+maximising a partial likelihood
+in which \(\hzt\) has been abstracted away.
+~\autocite{kalbfleischStatistical2002}
+
+A central assumption in the Cox model, 
+at least in the standard version with fixed covariates
+(\(\bm{\beta}\) instead of \(\bm{\beta}(t)\)),
+is that of proportional hazards.
+Let \(\bm{x}\) and \(\bm{x}'\) be two different 
+covariate vetors, now the ratio between their
+respective Cox-estimated hazards is
 
 \begin{equation}
     \label{eq:hazard-ratio}
-\begin{aligned}
-    \frac{ \lambda(t \mid \mathbf{x}) }{
-           \lambda(t \mid \check{\mathbf{x}}) } 
+    \begin{aligned}
+    \frac%
+        {\widehat{\lambda}(t \,|\, \bm{x} \hfill)}%
+        {\widehat{\lambda}(t \,|\, \bm{x'})}
     &=
-    \frac{ \lambda_0(t) \exp (\bm{\beta} \cdot \mathbf{x}) }{
-           \lambda_0(t) \exp (\bm{\beta} \cdot \check{\mathbf{x}}) } \\
+    \frac%
+        {\hzt \exp (\bm{\beta}\cdot\bm{x}\hfill)}%
+        {\hzt \exp (\bm{\beta}\cdot\bm{x'})} \\
     &=
-    \frac{ \exp (\bm{\beta} \cdot \mathbf{x}) }{
-           \exp (\bm{\beta} \cdot \check{\mathbf{x}}) } \\
-    &=
-    \exp (
-        \bm{\beta} \cdot (\mathbf{x} - \check{\mathbf{x}})
-    ).
-\end{aligned}
+    \frac%
+        {\exp (\bm{\beta}\cdot\bm{x}\hfill)}%
+        {\exp (\bm{\beta}\cdot\bm{x'})} \\
+    &= \exp (\bm{\beta} \cdot (\bm{x} - \bm{x'}))
+    \end{aligned}
 \end{equation}
 
 Since the right-hand side of the equation does not include a term for \(t\),
-the hazard ratio between the two samples are independent of time, 
-and the ratio is therefore a constant and thus proportional.
-This shows that by assuming that the hazard takes the form of \cref{eq:cox},
+the hazard ratio between the two samples are constant and 
+they are thus proportional to one another., 
+This shows that by assuming the hazard takes the form of \cref{eq:cox},
 then it is also assumed that the hazards between two subjects are proportional.
 Although this assumption is a strong one, 
 and the validity of the Cox model relies on it, 
@@ -294,11 +347,11 @@ For example,
 in an randomized clinical trial
 studying the survival effect of a new type of medication, 
 we can let \(x = 1\) represent the experimental treatment  
-and \(\check{x} = 0\) represent standard of care, 
+and \(x' = 0\) represent standard of care, 
 then the hazard ratio in \cref{eq:hazard-ratio} takes the form of
 %
 \begin{equation}
-      \exp \left(\beta (x - \check{x})\right)
+      \exp \left(\beta (x - x')\right)
     = \exp \left(\beta (1 - 0)\right)
     = \exp (\beta ),
 \end{equation}
@@ -312,7 +365,7 @@ This example is a slightly modified version of the
 one given in \cite[pp. 50]{tutzModeling2016}}
 
 
-\section{Competing Risks}
+\section{Analysis of Competing Risks}
 
 \begin{marginfigure}[3em]% {{{
     \tikzstyle{outcome}=[%
@@ -338,140 +391,281 @@ assumed the presence of only a single event type, such as all-cause mortality
 (\cref{fig:ssm}).
 In practice, particularly in clinical settings, 
 this single-event model can be too restrictive,
-and instead one needs to consider competing risks.
+and instead one needs to consider competing risks
+(\cref{fig:msm}).
 By definition, a competing risk is a secondary event whose occurence 
 prevents the primary event from occuring.
 For example,
 in a study where the primary outcome is cardiovascular mortality,
 deaths from non-cardiovascular causes are a competing risk.
 
-In such a setting, 
-the methodology have to be adjusted accordingly.
-For example, 
-simply treating competing events as censored 
-and applying the standard Kaplan-Meier estimator, 
-would lead to a biased estimate of the survival function.
-~\autocite{pepeKaplan1993}
-Instead, an alternative approach is the Aalen-Johansen estimator
-that allows estimation of the cause-specific cumulative incidences
-in the presence of competing risks.
-~\autocite{aalenEmpirical1978}
-
-A survival dataset \(\mathfrak{D}\) of size \(n\) is given by
+In the following, 
+we let \(R \in \{1, \dots, k\}\) denote the \(k\) different competing risks,
+and then slightly update the definition of the event indicator \(\sigma_i\)
+(\cref{eq:sigma-def}), such that
 \begin{equation}
-    \mathfrak{D}_n = \{(t_i, \delta_i, \mathbf{x}_i) \mid i = 1, \ldots, n\} 
-\end{equation}
-where \(t_i = \min(T_{i}, C_i) \) is the survival time 
-for the \(i\)th subject,
-with \(T_i\) denoting the survival time
-and \(C_i\) denoting the censoring time. 
-\(\delta_i\) is the event indicator 
-and \(\mathbf{x}_i\) is the covariate vector.
-The event indicator \(\delta_i\) is defined as
-\begin{equation}
-    \delta_i =
+    \sigma_i =
         \begin{cases}
-            1 & \text{if the event is observed} \; (T_i \leq C_i)\\
-            0 & \text{if the event is censored} \; (T_i >    C_i)
+            0 & \text{if subject is censored} \; (T_i >    C_i) \\
+            r & \text{if cause r is observed} \; (T_i \leq C_i, R = r).
         \end{cases}
 \end{equation}
 
-
-
-
-\begin{equation}
-    \widehat{F}_k (t) = 
-    \sum_{\{j \mid t_j \leq t}
-    d_{jk} |R_j|^{-1} \widehat{S}(t-1)
-\end{equation}
-
-
-\begin{equation}
-    \Lambda_1(t) = \sum_{t_j \leq t} \widehat{S}(t_{j-1}) 
-        \frac{d_j \I_{\{k\}}(\mathrm{cause})}{|R_j|}
-\end{equation}
-
-\vspace{5em}
-
-\begin{equation}
-    \lambda_r(t) = \lim_{\Delta t \to 0} 
-        \frac{\PR (t \leq 
-          \eqnmarkbox[color2]{node1}{T_r}
-        < t + \Delta t \mid T \geq t)}{\Delta t}.
-\end{equation}
-\annotate[yshift=.5em]{left}{node1}{time-to-event, cause \(r\)}
-
-
-
-Let \(r \in \{1, \ldots, m\}\) indicate the \(m\) different competing risks,
-then the \ac{CIF} for the \(r\)th cause is
-
-\begin{equation}
-    \CIF_r(t) = \PR (T \leq t, R = r)
-\end{equation}
-
-\begin{equation} 
-    S(t) = 1 - \sum_{r = 1}^{m} \CIF_r(t)
-\end{equation}
-
-In the context of competing risks, 
-the hazard function in 
-\cref{eq:hazard-function}
-is slightly altered to construct
-the cause-specific hazard
-\begin{equation}
-    \label{eq:cause-hazard}
-    \lambda_r(t) = \lim_{\Delta t \to 0} 
-        \frac{\PR (t \leq T < t + \Delta t, D = r, \mid T \geq t)}{\Delta t}.
-\end{equation}
-
-\begin{marginfigure}
+\begin{marginfigure}% {{{
     \tikzstyle{outcome}=[%
         rectangle, rounded corners, minimum height=5mm, fill=color3
     ]
     \centering
-    \begin{tikzpicture}[x=0.60\linewidth, y=1cm]
+    \begin{tikzpicture}[x=0.60\linewidth, y=0.85cm]
     \graph [edge quotes={font=\scriptsize, fill=white}, 
             nodes      ={draw, outcome, sloped, minimum width=1cm}]{
         alive [fill=color4] -> {
             cause 1 [> "\(\lambda_1(t)\)" ],
             cause 2 [> "\(\lambda_2(t)\)" ],
+            cause k [> "\(\lambda_k(t)\)" ],
         };
     };
     \end{tikzpicture}
+    \caption[A Multi-State Model]{
+        A survival analysis setup with competing risks
+        involves modelling transitions between states 
+        \enquote{alive} and \(k\) different absorbing
+        states, \enquote{cause 1} to \enquote{cause \(k\)}
+    }
+    \label{fig:msm}
 \end{marginfigure}
+% }}}
 
+\subsection{Cause-Specific Survival Quantities}
 
-
-
-
-
-
-
-
-
-
-Instead population level estimates of the survival curve in presence of competing 
-risks can be obtained using the Aalen-Johansen estimator,
-which estimate the cause specific cumulative incidences.
-
-
-
-Let \(t_1 < t_2 < \ldots < t_k\) be the distinct timepoint where 
-either of the competing risks occured.
-Let \(Y_i\) be the number of individuals still at risk at time \(t_i\).
-\(r_i\) is the number of individuals with the event of interest, 
-and \(d_i\) is the number with any of the competing evens.
-Now, the cumulative incidence function \(CIC(t)\) is defined as
+To describe time-to-event phenomena with competing risks, 
+we introduce the cause-specific hazard function and 
+cumulative-incidence function.
+With \(R \in \{1, \dots, k\}\) denoting the \(k\) different competing risks, 
+the cause-specific hazard function is defined as
 \begin{equation}
-    CIC(t) = \sum_{t_i \leq t} \prod_{j = 1}^{i - 1} 
-    \frac{1 - d_j + r_j}{Y_j} \frac{r_i}{Y_j}
+    \lambda_r(t) = \lim_{\Delta t \to 0} 
+        \frac{\PR (t \leq T < t + \Delta t, R=r \mid T \geq t)}{\Delta t}
+\end{equation}
+where \(r\) refers to a specific value of \(R\).
+The cause-specific cumulative incidence function is defined as
+~\autocite{kalbfleischStatistical2002}
+\begin{equation}
+    F_r(t) = \PR(T \leq t, R = r).
 \end{equation}
 
-For Cox regression, it is valid to marginally model the cause-specific hazard
-without consideration of the competing event.
+The overall hazard and cumulative incidence, 
+which combines failures of any of the \(k\) causes,
+correspond to the hazard function 
+and the cumulative distribution function 
+in the single-event setting, that is
+\begin{equation}
+    \lambda(t) = \sum_{r=1}^{k} \lambda_r(t)
+    \quad \text{and} \quad
+    F(t) = \sum_{r=1}^{k} F_r(t).
+\end{equation}
 
-\section{Discrete time survival analysis}
+\subsection{The Aalen-Johansen Estimator}
+
+In the competing risk setting, 
+the methodology previously presented
+have to be adjusted accordingly.
+For example, 
+simply treating competing events as censored 
+and applying the standard Kaplan-Meier estimator, 
+would lead to a biased estimate of \(F(t)\).
+~\autocite{pepeKaplan1993}
+Instead, an alternative approach is the Aalen-Johansen estimator
+that allows estimation of the cause-specific cumulative incidence.
+~\autocite{aalenEmpirical1978}
+Of note, the Aalen-Johansen is a general method for estimating
+transition probabilities in state-transition models,
+and can be used to describe complex multi-state models,
+including those with repeated events and with non-terminal states.
+~\autocite{survival-package}
+However, we will be assuming a standard competing-risk setting
+with \(k\) different terminal states, 
+as depicted in \cref{fig:msm}.
+ 
+If we again order the distinct failure times, 
+corresponding to any cause, 
+such that
+\(t_{(1)} < t_{(2)} < \ldots < t_{(j)}\),
+and update the definition of \(\bar{D}(j)\) to keep track of cause-specific
+events, such that we have
+\begin{equation}
+\begin{aligned}
+    \bar{D}(j, r) &= \card \{i \in \{1, \dots, n\} \mid t_i = t_{(j)}, r_i = r\} \\
+    \bar{A}(j)    &= \card \{i \in \{1, \dots, n\} \mid t_i > t_{(j)}\}.
+\end{aligned}
+\end{equation}
+Now, the Aalen-Johansen estimator of the cumulative incidence function
+can be defined as 
+
+\begin{equation}
+    \widehat{F}_r(t)
+    =   \sum_{j \mid t_{(j)} \leq t}{
+        \!\!
+        \widehat{S}(t_{(j-1)})
+        \frac{\bar{D}(j, r)}{\bar{A}(j)}
+    }
+\end{equation}
+
+\section{Time-to-Event Prediction}
+
+Up until now, 
+I have outlined various concepts foundational to survival analysis,
+focusing primarily on quantities and statistics of time-to-event outcomes
+at a popoulation level.
+These measures play an important role in understanding 
+and interpretation of survival data.
+
+In the context of precision medicine, however,
+the emphasis shifts towards making individualized predictions
+taking distinct patient-level characteristics into account.
+Consequently, as described in \cref{chap:ml-and-nn}, 
+the primary concern lies in 
+making accurate predictions on unseen data,
+rather than in the exploration of disease etiology and underlying mechanisms.
+
+For prediction of time-to-event outcomes, classical approaches 
+include models based on the previously presented semi-parametric Cox model 
+as well as various parametric survival models, 
+such as those based on exponential, Weibull, or log-normal distributions.
+~\autocite{kleinSurvival2003}
+This thesis, however, 
+explores the use of contemporary machine learning methods 
+in time-to-event prediction,
+with a particular emphasis on the application of neural networks.
+
+\subsection{Neural Networks and Time-to-Event Outcomes}
+
+The first application of neural networks for time-to-event prediction
+was demonstrated by
+\citeauthor{faraggiNeural1995} in
+\citeyear{faraggiNeural1995},
+and involves parameterising the parametric part of the Cox model
+with a neural network, 
+such that the \(g(\bm{x})\) term in \cref{eq:cox} is a 
+flexible neural network model instead of a simple linear function.
+\autocite{faraggiNeural1995}
+
+\vspace{1em}
+\begin{equation*}
+    \widehat{\lambda} (t \,|\, \bm{x}) = \hzt \exp [
+    \eqnmarkbox[color2]{node1}{
+        g(\bm{x})
+    }]
+\end{equation*}
+\annotate[yshift=.6em]{left}{node1}{use neural network}
+
+This approach was later further refined
+in the \emph{DeepSurv} paper from 
+\citeyear{katzmanDeepSurv2018a},
+in which modern neural network techniques
+were added to Faraggi-Simon framework, 
+which markedly improved its usefulness.
+~\autocite{katzmanDeepSurv2018a}
+\citeauthor{katzmanDeepSurv2018a} showed that the flexibility 
+offered by neural networks led to increased performance
+in both synthetic and real-life time-to-event prediction applications
+compared to a standard Cox model.
+~\autocite{katzmanDeepSurv2018a}
+
+
+
+
+
+
+
+\vspace{10em}
+
+
+
+
+
+Another tudy found that a comprehensive machine learning model, incorporating
+clinical and CT data, was superior in predicting 10-year cardiovascular and
+coronary heart disease deaths compared to traditional assessments. This model
+showed higher accuracy, with area under the curve values of 0.845 for
+cardiovascular death and 0.860 for coronary heart disease death. It
+outperformed both the coronary artery calcium score and the atherosclerotic
+cardiovascular disease risk score.
+~\autocite{nakanishiMachine2021}
+
+
+
+
+In an international collaboration involving \num{11011} patients, \citeauthor{thanMachine2019} developed a machine learning model 
+designed for objective assessment of myocardial infarction likelihood 
+in patients suspected of having this condition. 
+Their model demonstrated superior discrimination and calibration 
+compared to existing rule-out algorithms.
+~\autocite{thanMachine2019}
+
+
+
+
+
+
+\subsection{Types of Approaches}
+
+DeepSurv.
+A modern implementation of the Faraggi-Simon network.
+parameterises the hazard.
+single risk
+compares to cph,
+~\autocite{katzmanDeepSurv2018a}
+
+
+DeepHit
+parameterises the probability density function
+~\autocite{leeDeepHit2018}
+
+
+
+The N-MTLR approach, 
+an neural network version of MTLR,
+~\autocite{yuLearning2011}
+parameterises the survival function.
+~\autocite{fotsoDeep2018}
+
+
+
+DRSA
+
+RNN-SURV
+
+N-MTLR
+
+Dynamic-DeepHit
+
+Survtrace
+
+Deep-CSA
+
+
+
+
+
+
+
+\subsection{Cox-based}
+
+\subsection{Parameterising the Hazard}
+
+
+\section{Discrete-Time Survival Analysis}
+
+
+
+
+
+
+
+
+
+\section{Discrete-Time Survival Analysis}
 
 Most textbooks on survival analysis treats survival time as continuous, 
 and that is also usually the case across the biomedical litterature.
@@ -485,14 +679,10 @@ data have some advantages~\autocite{tutzModeling2016}:
 
 \begin{itemize}
     \item If observed event times are inherently discrete, 
-        then modelling them as such is more accurate and appropriate. 
-    \item In the discrete time setting, hazards can be formulated as 
+        then modelling them as such is arguably more appropriate. 
+    \item In the discrete-time setting, hazards can be formulated as 
         conditional probabilities which are much more intuitive to 
         both interpret and understand.
-    \item Tied event times, 
-        which is simply when two events happen at the exact same recorded time,
-        is, in contrast to continuous time methods,
-        not a problem for the discrete time alternatives.
     \item Discrete time-to-event models are more easily transferred to 
         other more general purpose modelling frameworks 
         such as generalized linear models, random survival forests, 
@@ -503,6 +693,8 @@ In \nameref{chap:paper-1} and \nameref{chap:paper-2},
 we take advantage of the latter,
 in constructing neural network-based survival models
 for precision prognostication in ischemic heart disease.
+The following section gives a brief outline of
+central concepts in discrete survival analysis. 
 
 \subsection{Definitions}
 
@@ -523,15 +715,19 @@ the event in that specific interval,
 given that the individual is still alive at the start of the interval
 %
 \begin{equation}
-    \lambda_{r}(t | \mathbf{x}) = \PR (T = t, R = r \mid T \geq t, \mathbf{x})
+    \lambda_{r}(t \,|\, \bm{x}) = \PR (T = t, R = r \mid T \geq t, \bm{x})
 \end{equation}
 %
-given a vector \(\mathbf{x}\) of predictor variables. 
+given a vector \(\bm{x}\) of predictor variables. 
 
-The discrete hazard function is defined as
-the probability of failure in the interval \(t\),
-given that the individual is still alive at the end of the preceding interval
-\(t - 1\).
+
+
+
+
+
+
+See kvamme for a review of the different methods
+
 
 
 
