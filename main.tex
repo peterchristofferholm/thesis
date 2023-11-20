@@ -108,7 +108,6 @@
 \usepackage{subcaption}
 \captionsetup{font=footnotesize}    
 
-
 \usepackage{marginfix}
 \usepackage{appendix}
 \usepackage{twemojis}
@@ -117,14 +116,29 @@
 \usepackage{relsize}  % easy scaling of fonts
 \usepackage{bm}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %\newcommand{\mbf}[1]{\bm{\mathrm{#1}}}
 \DeclareMathOperator{\EX}{\mathbb{E}} % expected value
-\DeclareMathOperator{\PR}{\mathbb{P}} % probability 
+\DeclareMathOperator{\PR}{\Pr} % probability 
 \DeclareMathOperator{\I}{\mathbb{1}}  % indicator 
 \DeclareMathOperator{\CIF}{CIF}
 \DeclareMathOperator{\card}{\raisebox{-.22ex}{\#}}
 
+\newcommand{\mat}[1]{\bm{\mathsf{#1}}}
+\renewcommand{\vec}[1]{\bm{#1}}
 
+\newcommand{\giv}{\,|\,}
+\newcommand{\lik}{\mathscr{l}}
+\newcommand{\Lik}{\mathcal{L}}
+
+
+\newcommand{\Tic}{{T_{\mathrm{c}}}}
+\newcommand{\Tid}{{T_{\mathrm{d}}}}
+\newcommand{\Cid}{{C_{\mathrm{d}}}}
+
+\newcommand{\tic}{t}
+\newcommand{\tid}{\tau}
 
 \DeclareMathOperator*{\argmin}{arg\,min}
 \newcommand{\diff}{\mathrm{d}}
@@ -132,6 +146,8 @@
 \newcommand{\xa}{\mathbf{x}}
 \newcommand{\xb}{\check{\xa}}
 \newcommand{\hzt}{\lambda_0\mspace{-1mu}(t)}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % enumerate
 \usepackage[inline]{enumitem}
@@ -256,7 +272,7 @@
 \includepdf[
     clip, trim=1cm 4cm 1cm 1.8cm, offset=0 -2.2cm, 
     frame=true, scale=0.8, 
-    pages=1, pagecommand=\chapter{Paper 1}\label{chap:paper-1}]%
+    pages=1, pagecommand=\chapter{Study 1}\label{chap:paper-1}]%
     {assets/paper1-clustering.pdf}
 % \includepdf[
 %     clip, trim=1cm 0 1cm 1.5cm, offset=0 0, 
@@ -268,14 +284,14 @@
 \includepdf[
     clip, trim=1cm 4cm 1cm 1.8cm, offset=0 -2.2cm, 
     frame=true, scale=0.8, 
-    pages=1, pagecommand=\chapter{Paper 2}\label{chap:paper-2}]%
+    pages=1, pagecommand=\chapter{Study 2}\label{chap:paper-2}]%
     {assets/paper1-clustering.pdf}
 
 \cleardoublepage
 \includepdf[
     clip, trim=1cm 4cm 1cm 1.8cm, offset=0 -2.2cm, 
     frame=true, scale=0.8, 
-    pages=1, pagecommand=\chapter{Paper 3}\label{chap:paper-3}]%
+    pages=1, pagecommand=\chapter{Study 3}\label{chap:paper-3}]%
     {assets/paper1-clustering.pdf}
 
 \end{document}

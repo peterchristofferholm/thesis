@@ -1,2 +1,207 @@
 \chapter{Paper 3: Time-to-Event Prediction with Competing Risks}
 \label{results-paper-3}
+
+\section{Model formulation}
+
+The proposed model parametrizes the cause-specific conditional hazards,
+and the output \(\Lambda\) is then a 
+\(n \times q \times (m + 1)\) matrix of probabilities
+where values across the last dimension all sum up to 1.
+
+
+In the case of several competing target events,
+it is necessary to define several hazard functions,
+one for each distinct outcome type.
+Let \(R \in \{1, ..., m\}\) denote the competing risks.
+Then, for disrete time \(T \in \{1, ..., q\}\), 
+the cause-specific hazard function from cause $r$ is defined by
+%
+\begin{equation*}
+    \lambda_{r}(t | \mathbf{x}) = \Pr (T = t, R = r | T \geq t, \mathbf{x})
+\end{equation*}
+%
+where \(\mathbf{x}\) is a vector of time-independent predictor variables. 
+The different hazard functions, 
+\(\lambda_{1}(t|\mathbf{x}), ..., \lambda_{m}(t|\mathbf{x})\) 
+can be combined into the overall hazard function defined as
+%
+\begin{equation}
+    \lambda(t|\mathbf{x}) 
+    = \sum_{r=1}^{m}(\lambda_{r}(t|\mathbf{x}))
+    = \Pr(T = t | t \leq T, \mathbf{x})
+\end{equation}
+%
+From this it follows that the survival function is
+%
+\begin{equation}
+    S(t|\mathbf{x})
+    = \Pr(T >= t|\mathbf{x})
+    = \prod_{i=1}^{t}(1 - \lambda(i|\mathbf{x}))
+\end{equation}
+
+The model uses $m + 1$ categorical responses.
+The responses are either any of the $m$ competings risks, 
+or conditional survival.
+%
+\begin{equation}
+    \Pr(T > t | T \geq t, \mathbf{x})
+    = 1 - \sum_{r = 1}^{m} \lambda_r (t | \mathbf{x})
+    = 1 - \lambda (t | \mathbf{x})
+\end{equation}
+
+\section{Model formulation}
+
+Continuous follow-up time is divided into into $q$ intervals
+%
+\begin{equation*}
+	[0, a_1), [a_1, a_2), ..., [a_{q-1}, a_q), [a_{q}, \infty)
+\end{equation*}
+%
+and the time to event variable \(T\) is denoted 
+with a positive integer \(t = 1, 2, ...\),
+which points to the interval \([a_{t-1}, a_{t})\).
+With this discrete time scale,
+the cause specific hazard function \(\lambda_{r}(t)\) is a conditional probability defined as
+%
+\begin{equation*}
+    \lambda_{r}(t | \mathbf{x}) = \Pr (T = t, R = r | T \geq t, \mathbf{x})
+\end{equation*}
+%
+given a vector \(\mathbf{x}\) of predictor variables.
+
+The discrete hazard function is defined as
+the probability of failure in the interval \(t\),
+given that the individual is still alive at the end of the preceding interval
+\(t - 1\).
+
+In a time-to-event model with several competing target events,
+we describe the process with multiple hazard functions, 
+that each describe a specific target outcome or risk.
+Typically, 
+we refer to the individual hazard functions as cause-specific hazards.
+
+For discrete time \(T \in \{1, ..., s+1\}\), and with a given vector \(\mathbf{x}\) of time-independent covariates,
+the cause-specific hazard from cause \(r\) is defined as
+
+\begin{equation}
+    \lambda_{r}(t|\mathbf{x}) 
+    = P(T = t, R = r | t \leq T, \mathbf{x})
+\end{equation}
+
+Which represents the probability of 
+
+The overall hazard function is
+
+\begin{equation}
+    \lambda(t|\mathbf{x}) 
+    = \sum_{r=1}^{m}(\lambda_{r}(t|\mathbf{x}))
+    = P(T = t | t \leq T, \mathbf{x})
+\end{equation}
+
+The survival function is the unconditional probability of an event in period \(t\) given the specific covariates is 
+
+\begin{equation}
+    S(t|\mathbf{x})
+    = P(T >= t|\mathbf{x})
+    = \prod_{i=1}^{t}(1 - \lambda(i|\mathbf{x}))
+\end{equation}
+
+From the hazard we can obtain the survival function 
+%
+\begin{equation*}
+    S(t | \mathbf{x}) 
+    = \Pr (T \geq t | \mathbf{x}) 
+    = \prod_{s = 1}^{t-1} (1 - \lambda(s | \mathbf{x}))
+\end{equation*}
+%
+which represents the unconditional probability of surviving interval \(t\) given the specific covariates cf. \autocite{tutzModeling2016}.
+
+Of note, this interpretation is considerably more accessible than the usual
+continuous hazard one.
+
+
+\begin{equation}
+    S(\tau) = P(T > \tau) = \sum_{i = 1}^{\tau - 1} (P(T = \tau - i))    
+\end{equation}
+
+The cause specific cumulative incidence function is
+
+\begin{equation}
+	CIF_r(t|\mathbf{x})
+	= \sum_{i=1}^{t}\lambda_{r}(t|\mathbf{x}) S(t-1|\mathbf{x})
+\end{equation}
+
+Let the data be given by \(t_{i}, r_{i}, \delta_{i}, \mathbf{x}_{i}\),
+where \(r_{i} \in \{1, ..., m\}\) indicates the target event. 
+Assuming random censoring at the end of the interval
+with \(t_i = \min\{T_i, C_i\}\), 
+where events are defined by the indicator function
+
+\begin{equation}
+\delta_i = 
+	\begin{cases}
+		1, & T_i \leq C_i \\
+		0, & T_i > C_i
+	\end{cases}
+\end{equation}
+
+\begin{subequations}
+\begin{equation}
+	nll =
+	- \sum_{i=1}^{n}
+	\sum_{t=1}^{ti}
+	\left(
+		\sum_{r \in C} \delta_{itr} \log(\lambda_{r} (t | \mathbf{x}))
+		+ \delta_{it0} \log\left(
+			1 - \sum_{r \in C} \lambda_{r} (t | \mathbf{x})
+		\right)
+	\right)
+\end{equation}
+
+Or alternatively 
+
+\begin{equation}
+	nll =
+	- \sum_{t=1}^{q}
+	\sum_{i \in R_s}
+	\delta_{is} \log(s|\mathbf{x}_i) 
+	+ (1 - \delta_{is}) (1 - \log(s|\mathbf{x}_i)))
+\end{equation}
+\end{subequations}
+
+In our approach, the neural network parametrises the logistic hazards.
+The goal is to learn \( \hat{h}(t | \mathbf{x}) \)
+for each of the competing events.
+
+
+
+
+The discrete probability function
+
+\begin{equation}
+    f_l = \Pr (T \in A_l) = S(t_{l-1}) - S(t|l)
+\end{equation}
+
+the discrete hazard rate
+
+\begin{equation}
+    h_l = \Pr (T \in A_l | T > t_{l-1}) = \frac{f_l}{S(t_{l-1})}
+\end{equation}
+
+    
+The contribution to the likelihood function of the \textit{i}th subject
+
+For uncensored subjects, the contribution is
+%
+\begin{equation}
+    \Pr (T_i \in A_{l_i}) = f_{l_i} = h_{l_i} \prod_{l=1}^{l_i-1}(1-h_{l_i})
+\end{equation}
+%
+while for censored subject, the contribution is
+%
+\begin{equation}
+    \Pr (T_i > t_{l_i}) = S(t_{l_i}) = \prod_{l=1}^{l}(1-h_{l_i})
+\end{equation}
+
+A similar approach have previously been described \autocite{biganzoliFeed1998}.
+

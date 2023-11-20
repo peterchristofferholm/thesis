@@ -236,3 +236,73 @@ is the explanation.
 However, for black-box models such as neural networks,
 it is the next best thing.
 
+Another tudy found that a comprehensive machine learning model, incorporating
+clinical and CT data, was superior in predicting 10-year cardiovascular and
+coronary heart disease deaths compared to traditional assessments. This model
+showed higher accuracy, with area under the curve values of 0.845 for
+cardiovascular death and 0.860 for coronary heart disease death. It
+outperformed both the coronary artery calcium score and the atherosclerotic
+cardiovascular disease risk score.
+~\autocite{nakanishiMachine2021}
+
+In an international collaboration involving \num{11011} patients, \citeauthor{thanMachine2019} developed a machine learning model 
+designed for objective assessment of myocardial infarction likelihood 
+in patients suspected of having this condition. 
+Their model demonstrated superior discrimination and calibration 
+compared to existing rule-out algorithms.
+~\autocite{thanMachine2019}
+
+
+\subsection{Discretization of Continuous Time}
+
+In applying discretization to continuous time, 
+we assume that both events and censorings occurs at 
+\(a_t\)
+
+%%%%%%
+
+\begin{equation}
+    S(t \giv \vec{x}) = \PR(\Tid > \tid \mid \vec{x}) = 
+    \prod_{i=1}^{\tid} (1 - \lambda(i \giv \vec{x}))
+\end{equation}
+
+\begin{equation}
+    \begin{aligned}
+    f(\tid \giv \vec{x}) 
+    &= \PR (\Tid = \tid \mid \vec{x}) \\
+    &= \PR (\Tid = \tid \mid \Tid \geq \tid, \vec{x}) 
+       \PR (\Tid  \geq \tid \mid \vec{x}) \\
+    &= \PR (\Tid = \tid \mid \Tid \geq \tid, \vec{x}) 
+       \PR (\Tid  > \tid - 1 \mid \vec{x}) \\
+    &= \lambda (\tid \giv \vec{x}) \, S(\tau - 1 \giv \vec{x})
+    \end{aligned}
+\end{equation}
+
+%%%%%%
+
+\citeauthor{gensheimerScalable2019} 
+parameterized the hazard using a neural network,
+and showed that their method provide well calibrated
+model estimates with high model discrimination.
+
+
+DeepHit parameterizes the probability mass function 
+of the survival distribution.
+They also include a ranking loss to improve model discrimination.
+\citeauthor{kvammeContinuous2021} showed that the DeepHit method
+has excellent discrimination but is poorly calibrated.
+
+
+Without competing risks,
+the negative log-likelihood of the model output is
+%
+\begin{equation}
+    \mathrm{NLL}(\Lambda) =
+	- \sum_{i=1}^{n}
+	\sum_{t=1}^{q}
+    y_{is} \log [\ \lambda(s|\mathbf{x}_i) ]\
+    + (1 - y_{is}) \log [\ 1 - \lambda(s|\mathbf{x}_i) ]\
+\end{equation}
+%
+which is the loss-function used in \citeauthor{gensheimerScalable2019}.
+

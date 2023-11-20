@@ -1,0 +1,151 @@
+\documentclass[a4paper, nobib]{tufte-book}
+
+\usepackage[libertine, vvarbb]{newtxmath}
+\usepackage{bm}
+\usepackage{booktabs}
+\usepackage{amsmath}
+
+\usepackage{tikz}
+\usetikzlibrary{matrix}
+\usetikzlibrary{positioning}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{decorations.pathreplacing}
+
+\renewcommand{\vec}[1]{\bm{#1}}
+\def\y#1#2{\hat{\lambda}_{#1#2}}
+\def\yy#1#2{1\!-\!\y{#1}{#2}}
+
+\begin{document}
+
+As an example, the following set of observations with discretized 
+time-to-event data with a single risk, e.g. all-cause mortality, 
+and a follow-up time that have been discretized into seven contiguous intervals,
+constitutes a survival dataset.
+
+\begin{equation}
+\begin{tabular}{r  ccccc}
+    \toprule
+    subject   \(i\)      & 1 & 2 & 3 & 4 & 5 \\
+    \midrule
+    time    \(\tau_i\)   & 5 & 7 & 4 & 5 & 3 \\
+    event   \(\sigma_i\) & 1 & 1 & 0 & 0 & 1 \\
+    \bottomrule
+\end{tabular}
+\end{equation}
+
+In this setting and with the Logistic-Hazard model, 
+the neural network output for this dataset is a 2-dimensional
+matrix with \(5\) rows  (subjects) and \(7\) columns (time intervals),
+and each entry is the predicted conditional hazard for the
+specific subject at a specific timepoint. We can write this as
+\begin{equation}
+\hat{\bm{\Lambda}}= 
+\begin{tikzpicture}
+[   on grid,
+    font = \small,
+    baseline = -.7ex,
+    inner sep=1pt,
+    outer sep=0pt,
+    minimum width=9mm,
+    minimum height=6mm,
+    every left delimiter/.style={xshift=2.5ex},
+    every right delimiter/.style={xshift=-3.0ex}
+]
+\matrix (pred) [
+	matrix of math nodes, 
+    left delimiter={[}, 
+    right delimiter={]},
+]{ 
+\y{1}{1} & \y{1}{2} & \y{1}{3} & \y{1}{4} & \y{1}{5} & \y{1}{6} & \y{1}{7} \\
+\y{2}{1} & \y{2}{2} & \y{2}{3} & \y{2}{4} & \y{2}{5} & \y{2}{6} & \y{2}{7} \\
+\y{3}{1} & \y{3}{2} & \y{3}{3} & \y{3}{4} & \y{3}{5} & \y{3}{6} & \y{3}{7} \\
+\y{4}{1} & \y{4}{2} & \y{4}{3} & \y{4}{4} & \y{4}{5} & \y{4}{6} & \y{4}{7} \\
+\y{5}{1} & \y{5}{2} & \y{5}{3} & \y{5}{4} & \y{5}{5} & \y{5}{6} & \y{5}{7} \\
+};
+\useasboundingbox[anchor=center] (pred.north west) rectangle (pred.south east);
+\draw[->, black!50] ([xshift=2ex] pred-1-7.north east) -- ([xshift=2ex] pred-2-7.east)
+    node [midway, font=\scriptsize, above, sloped] {subject};
+\draw[->, black!50] ([yshift=1ex] pred-1-6.north) -- ([yshift=1ex] pred-1-7.north)
+    node [midway, font=\scriptsize, above] {time};
+\end{tikzpicture}
+\end{equation}
+
+Now, the matrix-version of the indicator function can be created 
+using the definition and the observed data.
+\begin{equation}
+\bar{\bm{Y}}=
+\begin{tikzpicture}
+[   on grid,
+    font = \small,
+    baseline = -.7ex,
+    inner sep=1pt,
+    outer sep=0pt,
+    minimum width=9mm,
+    minimum height=6mm,
+    every left delimiter/.style={xshift=2.5ex},
+    every right delimiter/.style={xshift=-3.0ex}
+]
+
+\matrix (mask) [
+	matrix of math nodes, 
+    left delimiter={[}, 
+    right delimiter={]}
+]{ 
+0 & 0 & 0 & 0 & 1 & - & - \\
+0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+0 & 0 & 0 & 0 & - & - & - \\
+0 & 0 & 0 & 0 & 0 & - & - \\
+0 & 0 & 1 & - & - & - & - \\
+};
+\useasboundingbox[anchor=center] (mask.north west) rectangle (mask.south east);
+\end{tikzpicture}
+\end{equation}
+
+Now, combining these two matrices according to the formula, 
+we get the likelihood in matrix form
+\begin{equation}
+    \mathcal{L} = 
+\begin{tikzpicture}
+[   on grid,
+    font = \small,
+    baseline = -.7ex,
+    inner sep=1pt,
+    outer sep=0pt,
+    minimum width=9mm,
+    minimum height=6mm,
+    every left delimiter/.style={xshift=2.5ex},
+    every right delimiter/.style={xshift=-3.0ex}
+]
+\matrix (loss) [
+	matrix of math nodes, 
+    left delimiter={[}, 
+    right delimiter={]},
+    nodes={font=\footnotesize}
+]{ 
+\yy{1}{1} & \yy{1}{2} & \yy{1}{3} & \yy{1}{4} & \y{1}{5}  & -         & -         \\
+\yy{2}{1} & \yy{2}{2} & \yy{2}{3} & \yy{2}{4} & \yy{2}{5} & \yy{2}{6} &  \y{2}{7} \\
+\yy{3}{1} & \yy{3}{2} & \yy{3}{3} & \yy{3}{4} & -         & -         & -         \\
+\yy{4}{1} & \yy{4}{2} & \yy{4}{3} & \yy{4}{4} & \yy{4}{5} & -         & -         \\
+\yy{5}{1} & \yy{5}{2} & \y{5}{3}  & -         & -         & -         & -         \\
+};
+\useasboundingbox[anchor=center] (loss.north west) rectangle (loss.south east);
+\end{tikzpicture}
+\end{equation}
+
+\begin{fullwidth}
+\begin{equation}
+    \small
+\begin{split}
+    \mathscr{l}(\bm{\hat{\Lambda}}, \bm{\bar{Y}})
+    &={} \log (\yy{1}{1}) + \log(\yy{1}{2}) + \log(\yy{1}{3}) + \log(\yy{1}{4}) 
+     +  \log(\y{1}{5}) \\ 
+    &+{} \log (\yy{2}{1}) + \log(\yy{2}{2}) + \log(\yy{2}{3}) + \log(\yy{2}{4}) 
+     +  \log(\yy{2}{5}) + \log(\yy{2}{6}) +  \log(\y{2}{7}) \\
+    &+{} \log (\yy{3}{1}) + \log(\yy{3}{2}) + \log(\yy{3}{3}) + \log(\yy{3}{4}) \\
+    &+{} \log (\yy{4}{1}) + \log(\yy{4}{2}) + \log(\yy{4}{3}) + \log(\yy{4}{4}) + \yy{4}{5}  \\
+    &+{} \log (\yy{5}{1}) + \log(\yy{5}{2}) + \log(\y{5}{3} )
+\end{split}
+\end{equation}
+\end{fullwidth}
+
+\end{document}

@@ -106,15 +106,15 @@ the central outcome variable is survival time,
 a non-negative random variable denoted as \(T\). 
 When refering to specific values of \(T\), 
 a lower case \(t\) is typically used.  
-A survival dataset \(\mathfrak{D}\) of size \(n\) is given by
+A survival dataset \(\mathfrak{D}\) of size \(N\) is given by
 \begin{equation}
-    \mathfrak{D}_n = \{(t_i, \sigma_i, \bm{x}_i) \mid i = 1, \ldots, n\} 
+    \mathfrak{D}_N = \{(t_i, \sigma_i, \vec{x}_i) \mid i = 1, \ldots, N\} 
 \end{equation}
 where \(t_i = \min(T_{i}, C_i) \) is the survival time 
 for the \(i\)th subject,
 with \(T_i\) denoting the survival time
 and \(C_i\) denoting the censoring time. 
-Also, \(\bm{x}_i = (x_1, x_2, \dots, x_p)'\) is the covariate vector
+Also, \(\vec{x}_i = (x_1, x_2, \dots, x_p)'\) is the covariate vector
 and \(\sigma_i\) is the event indicator, which is defined as
 \begin{equation}
     \label{eq:sigma-def}
@@ -277,31 +277,31 @@ and time-to-event phenomenons, a widely used statistical model is
 the Cox proportional hazards model. 
 ~\autocite{coxRegression1972}
 This model seeks to model the hazard function over time \(t\),
-of an individual with a covariate vector \(\bm{x} = (x_1, x_2, \dots)'\),
+of an individual with a covariate vector \(\vec{x} = (x_1, x_2, \dots)'\),
 and assumes that it takes the form of
 %
 \begin{equation}
     \label{eq:cox}
-    \widehat{\lambda} (t \,|\, \bm{x}) = \hzt \exp [g(\bm{x})],
+    \widehat{\lambda} (t \,|\, \vec{x}) = \hzt \exp [g(\vec{x})],
 \end{equation}
 %
 where \(\hzt\)
 is an unspecified baseline hazard function,
-and \(g(\bm{x})\) is some parametric function.
+and \(g(\vec{x})\) is some parametric function.
 For this reason, the Cox model 
 is referred to as a semi-parametric model.
 In its classical formulation, 
 this function is a linear combination of parameters 
-\(\bm{\beta}\) and covariates \(\bm{x}\),
+\(\vec{\beta}\) and covariates \(\vec{x}\),
 as given by
 
 \begin{equation}
-    g(\bm{x}) 
-    = \bm{\beta}' \bm{x} 
+    g(\vec{x}) 
+    = \vec{\beta}' \vec{x} 
     = \beta_1 x_1 + \beta_2 x_2 + \ldots + \beta_p x_p
 \end{equation}
 
-In estimation of the parameters \(\bm{\beta}\),
+In estimation of the parameters \(\vec{\beta}\),
 the baseline hazard \(\hzt\) is treated as a nuisance function
 and the coefficients are estimated by
 maximising a partial likelihood
@@ -310,27 +310,27 @@ in which \(\hzt\) has been abstracted away.
 
 A central assumption in the Cox model, 
 at least in the standard version with fixed covariates
-(\(\bm{\beta}\) instead of \(\bm{\beta}(t)\)),
+(\(\vec{\beta}\) instead of \(\vec{\beta}(t)\)),
 is that of proportional hazards.
-Let \(\bm{x}\) and \(\bm{x}'\) be two different 
-covariate vetors, now the ratio between their
+Let \(\vec{x}\) and \(\vec{x}'\) be two different 
+covariate vectors, now the ratio between their
 respective Cox-estimated hazards is
 
 \begin{equation}
     \label{eq:hazard-ratio}
     \begin{aligned}
     \frac%
-        {\widehat{\lambda}(t \,|\, \bm{x} \hfill)}%
-        {\widehat{\lambda}(t \,|\, \bm{x'})}
+        {\widehat{\lambda}(t \,|\, \vec{x} \hfill)}%
+        {\widehat{\lambda}(t \,|\, \vec{x'})}
     &=
     \frac%
-        {\hzt \exp (\bm{\beta}\cdot\bm{x}\hfill)}%
-        {\hzt \exp (\bm{\beta}\cdot\bm{x'})} \\
+        {\hzt \exp (\vec{\beta}\cdot\vec{x}\hfill)}%
+        {\hzt \exp (\vec{\beta}\cdot\vec{x'})} \\
     &=
     \frac%
-        {\exp (\bm{\beta}\cdot\bm{x}\hfill)}%
-        {\exp (\bm{\beta}\cdot\bm{x'})} \\
-    &= \exp (\bm{\beta} \cdot (\bm{x} - \bm{x'}))
+        {\exp (\vec{\beta}\cdot\vec{x}\hfill)}%
+        {\exp (\vec{\beta}\cdot\vec{x'})} \\
+    &= \exp (\vec{\beta} \cdot (\vec{x} - \vec{x'}))
     \end{aligned}
 \end{equation}
 
@@ -400,10 +400,11 @@ in a study where the primary outcome is cardiovascular mortality,
 deaths from non-cardiovascular causes are a competing risk.
 
 In the following, 
-we let \(R \in \{1, \dots, k\}\) denote the \(k\) different competing risks,
+we let \(R \in \{1, \dots, \kappa\}\) denote the \(\kappa\) different competing risks,
 and then slightly update the definition of the event indicator \(\sigma_i\)
 (\cref{eq:sigma-def}), such that
 \begin{equation}
+    \label{eq:sigma-def-2}
     \sigma_i =
         \begin{cases}
             0 & \text{if subject is censored} \; (T_i >    C_i) \\
@@ -422,7 +423,7 @@ and then slightly update the definition of the event indicator \(\sigma_i\)
         alive [fill=color4] -> {
             cause 1 [> "\(\lambda_1(t)\)" ],
             cause 2 [> "\(\lambda_2(t)\)" ],
-            cause k [> "\(\lambda_k(t)\)" ],
+            cause k [> "\(\lambda_\kappa(t)\)" ],
         };
     };
     \end{tikzpicture}
@@ -430,7 +431,7 @@ and then slightly update the definition of the event indicator \(\sigma_i\)
         A survival analysis setup with competing risks
         involves modelling transitions between states 
         \enquote{alive} and \(k\) different absorbing
-        states, \enquote{cause 1} to \enquote{cause \(k\)}
+        states, \enquote{cause 1} to \enquote{cause \(\kappa\)}
     }
     \label{fig:msm}
 \end{marginfigure}
@@ -441,7 +442,7 @@ and then slightly update the definition of the event indicator \(\sigma_i\)
 To describe time-to-event phenomena with competing risks, 
 we introduce the cause-specific hazard function and 
 cumulative-incidence function.
-With \(R \in \{1, \dots, k\}\) denoting the \(k\) different competing risks, 
+With \(R \in \{1, \dots, \kappa\}\) denoting the \(\kappa\) different competing risks, 
 the cause-specific hazard function is defined as
 \begin{equation}
     \lambda_r(t) = \lim_{\Delta t \to 0} 
@@ -455,21 +456,21 @@ The cause-specific cumulative incidence function is defined as
 \end{equation}
 
 The overall hazard and cumulative incidence, 
-which combines failures of any of the \(k\) causes,
+which combines failures of any of the \(\kappa\) causes,
 correspond to the hazard function 
 and the cumulative distribution function 
 in the single-event setting, that is
 \begin{equation}
-    \lambda(t) = \sum_{r=1}^{k} \lambda_r(t)
+    \lambda(t) = \sum_{r=1}^{\kappa} \lambda_r(t)
     \quad \text{and} \quad
-    F(t) = \sum_{r=1}^{k} F_r(t).
+    F(t) = \sum_{r=1}^{\kappa} F_r(t).
 \end{equation}
 
 \subsection{The Aalen-Johansen Estimator}
 
 In the competing risk setting, 
-the methodology previously presented
-have to be adjusted accordingly.
+some of the methodology previously presented
+have to be slightly adjusted.
 For example, 
 simply treating competing events as censored 
 and applying the standard Kaplan-Meier estimator, 
@@ -484,7 +485,7 @@ and can be used to describe complex multi-state models,
 including those with repeated events and with non-terminal states.
 ~\autocite{survival-package}
 However, we will be assuming a standard competing-risk setting
-with \(k\) different terminal states, 
+with \(\kappa\) different terminal states, 
 as depicted in \cref{fig:msm}.
  
 If we again order the distinct failure times, 
@@ -546,15 +547,15 @@ was demonstrated by
 \citeyear{faraggiNeural1995},
 and involves parameterising the parametric part of the Cox model
 with a neural network, 
-such that the \(g(\bm{x})\) term in \cref{eq:cox} is a 
+such that the \(g(\vec{x})\) term in \cref{eq:cox} is a 
 flexible neural network model instead of a simple linear function.
 \autocite{faraggiNeural1995}
 
-\vspace{1em}
+\vspace{.5em}
 \begin{equation*}
-    \widehat{\lambda} (t \,|\, \bm{x}) = \hzt \exp [
+    \widehat{\lambda} (t \,|\, \vec{x}) = \hzt \exp [
     \eqnmarkbox[color2]{node1}{
-        g(\bm{x})
+        g(\vec{x})
     }]
 \end{equation*}
 \annotate[yshift=.6em]{left}{node1}{use neural network}
@@ -570,111 +571,54 @@ which markedly improved its usefulness.
 offered by neural networks led to increased performance
 in both synthetic and real-life time-to-event prediction applications
 compared to a standard Cox model.
-~\autocite{katzmanDeepSurv2018a}
+However, the \emph{DeepSurv} approach is still limited by the 
+assumption of proportional hazards.
 
+\subsection{Overview of Approaches}
 
+Recently, there have been considerable interest in neural network-based
+time-to-event prediction models, and as a consequence, many new methods 
+have since been developed.
+For a thorough overview of the existing approaches, 
+\textcite{wiegrebeDeep2023} and 
+\textcite{kvammeContinuous2021} provide valuable insights.
+Generally, two prevailing types of approaches exists:
+continuous-time methods based on the Cox model, 
+which includes \emph{DeepSurv},
+and discrete-time methods as exemplified by 
+\textcite{leeDeepHit2018} and \textcite{gensheimerScalable2019}.
 
+The discrete-time approaches offer several advantages that 
+make them particularly relevant for neural network. 
+Furthermore, they have been shown to offer better predictive
+performance compared to the Cox-based methods.
+~\autocite{kvammeContinuous2021, leeDeepHit2018, gensheimerScalable2019}
+Notably, \emph{DeepHit}\autocite{leeDeepHit2018}
+and \emph{Logistic-Hazard}\autocite{gensheimerScalable2019}
+are the two most cited papers in this context as of the time of writing.
+Among these and other tested approaches,
+\textcite{kvammeContinuous2021} found that 
+DeepHit offers excellent discrimination but suffers from poor calibration.
+In contrast, the Logistic-Hazard model have nearly as good discrimination
+and also significantly better calibration. 
+Consequently, the Logistic-Hazard model, and an extension hereof, 
+was chosen for application in 
+\nameref{chap:paper-2} and \nameref{chap:paper-3}.
 
-
-
-
-\vspace{10em}
-
-
-
-
-
-Another tudy found that a comprehensive machine learning model, incorporating
-clinical and CT data, was superior in predicting 10-year cardiovascular and
-coronary heart disease deaths compared to traditional assessments. This model
-showed higher accuracy, with area under the curve values of 0.845 for
-cardiovascular death and 0.860 for coronary heart disease death. It
-outperformed both the coronary artery calcium score and the atherosclerotic
-cardiovascular disease risk score.
-~\autocite{nakanishiMachine2021}
-
-
-
-
-In an international collaboration involving \num{11011} patients, \citeauthor{thanMachine2019} developed a machine learning model 
-designed for objective assessment of myocardial infarction likelihood 
-in patients suspected of having this condition. 
-Their model demonstrated superior discrimination and calibration 
-compared to existing rule-out algorithms.
-~\autocite{thanMachine2019}
-
-
-
-
-
-
-\subsection{Types of Approaches}
-
-DeepSurv.
-A modern implementation of the Faraggi-Simon network.
-parameterises the hazard.
-single risk
-compares to cph,
-~\autocite{katzmanDeepSurv2018a}
-
-
-DeepHit
-parameterises the probability density function
-~\autocite{leeDeepHit2018}
-
-
-
-The N-MTLR approach, 
-an neural network version of MTLR,
-~\autocite{yuLearning2011}
-parameterises the survival function.
-~\autocite{fotsoDeep2018}
-
-
-
-DRSA
-
-RNN-SURV
-
-N-MTLR
-
-Dynamic-DeepHit
-
-Survtrace
-
-Deep-CSA
-
-
-
-
-
-
-
-\subsection{Cox-based}
-
-\subsection{Parameterising the Hazard}
-
-
-\section{Discrete-Time Survival Analysis}
-
-
-
-
-
-
-
-
+In the following section, I will be giving a brief description of
+this discrete-time formulation of time-to-event analysis and 
+elaborate on the Logistic-Hazard model in more detail.
 
 \section{Discrete-Time Survival Analysis}
 
 Most textbooks on survival analysis treats survival time as continuous, 
 and that is also usually the case across the biomedical litterature.
-However, handling time as a something discrete might be advantegous.
+However, handling time as a something discrete can be advantegous.
 In practice, most measurements of time is inherently discrete 
 with durations being recorded in, for example, days; months; and weeks.
-The continuous time approaches presented so far, 
-are applicable on discrete time data,
-however, methods that are designed specifically for discrete time-to-event 
+The continuous time approaches presented earlier in this chapter, 
+are also applicable to discrete time data,
+however, methods designed specifically for discrete time-to-event 
 data have some advantages~\autocite{tutzModeling2016}:
 
 \begin{itemize}
@@ -689,311 +633,148 @@ data have some advantages~\autocite{tutzModeling2016}:
         neural networks.
 \end{itemize}
 
-In \nameref{chap:paper-1} and \nameref{chap:paper-2}, 
-we take advantage of the latter,
-in constructing neural network-based survival models
-for precision prognostication in ischemic heart disease.
-The following section gives a brief outline of
-central concepts in discrete survival analysis. 
+The latter point is the main motivation behind both 
+the \emph{DeepHit} and \emph{Logistic-Hazard} approach.
+For a complete overview of the theory enabling these two approaches,
+the book by \textcite{tutzModeling2016} is a valuable resource, 
+and serves as the main source of reference for the following.
 
-\subsection{Definitions}
+\subsection{Notation and Definitions}
 
-In a discrete-time framework, 
-continuous follow-up time is divided into into \(q\) contiguous intervals
+In the discrete-time framework, 
+continuous follow-up time \(\Tic\) is divided into \(q\) contiguous intervals,
+that is
 %
 \begin{equation*}
-	[0, a_1), [a_1, a_2), ..., [a_{q-1}, a_q), [a_{q}, \infty)
+	(0, a_1], (a_1, a_2], \dots, (a_{q-1}, a_q]
 \end{equation*}
 %
-and the time to event variable \(T\) is denoted 
-with a positive integer \(t = 1, 2, ...\),
-which points to the interval \([a_{t-1}, a_{t})\).
-With this discrete time scale,
-the cause-specific hazard function \(\lambda_{r}(t)\) is 
-the conditional probability of an individual experiencing 
-the event in that specific interval,
-given that the individual is still alive at the start of the interval
+and \(\Tid \in \{1, \dots, q\}\) is a discrete random  variable
+such that if \(\Tid = \tid\) is observed, then the event 
+falls in the interval \((a_{\tid-1}, a_{\tid}]\).
+Similarly, the discretized censoring time is \(\Cid \in \{1, \dots, q\}\).
+
+With this discrete time scale, 
+the distribution of \(\Tid\), 
+given some vector of covariates \(\vec{x}\),
+can be described using discrete equivalents of the previously 
+outlined basic quantities of survival analysis, that is
 %
+\begin{align}
+    \text{probability mass function:} \qquad
+    f(\tid \giv \vec{x}) 
+    &= \PR (\Tid = \tid \mid \vec{x}) \\
+    %
+    \text{cumulative mass function:} \qquad
+    F(\tid \giv \vec{x}) 
+    &= \PR (\Tid \leq \tid \mid \vec{x}) \\
+    %
+    \label{eq:discrete-hazard}
+    \text{hazard function:} \qquad
+    \lambda(\tid \giv \vec{x}) 
+    &= \PR (\Tid = \tid \mid \Tid \geq \tid, \vec{x}) \\
+    %
+    \text{survival function:} \qquad
+    S(\tid \giv \vec{x}) 
+    &= \PR (\Tid > \tid \mid \vec{x})
+\end{align}
+
+\subsection{The Logistic-Hazard Model}
+
+\Citeauthor{gensheimerScalable2019}'s approach, 
+which they refer to as \enquote{Nnet-survival},
+~\autocite{gensheimerScalable2019}
+is more accurately characterized as the Logistic-Hazard method, 
+as described in \textcite{kvammeContinuous2021}.
+In the Logistic-Hazard method, 
+the time-to-event data is described by 
+modelling the effect of covariates on the discrete hazard function 
+(\cref{eq:discrete-hazard}) 
+using a neural network.
+The concept is not novel, 
+employing the discrete hazard for statistical modeling is a common method, 
+as covered extensively in \textcite{tutzModeling2016}. 
+In addition, a neural-network based model with the same general idea 
+was presented by \citeauthor{brownUse1997} in 1997.
+~\autocite{brownUse1997}
+However, 
+\citeauthor{gensheimerScalable2019} were the first to adapt the approach
+to current neural network methodologies.
+
+\subsection{Log-Likelihood of the Discrete Hazard}
+
+Let \(\mathfrak{D}_{\mathrm{d}}\) 
+be a discrete-time survival dataset of size \(N\),
 \begin{equation}
-    \lambda_{r}(t \,|\, \bm{x}) = \PR (T = t, R = r \mid T \geq t, \bm{x})
+    \mathfrak{D}_{\mathrm{d}} = 
+    \{(\tid_i, \sigma_i, \vec{x}_i) \mid i = 1, \ldots, N\},
 \end{equation}
-%
-given a vector \(\bm{x}\) of predictor variables. 
-
-
-
-
-
-
-
-See kvamme for a review of the different methods
-
-
-
-
-\vspace{10em}
-
-We 
-
-The DeepSurv model estimates the hazard function \(h(t|\mathbf{x})\).
-
+where \(\tid_i\) is the discretized survival time, 
+\(\sigma_i\) is the event indicator as defined in \cref{eq:sigma-def},
+and \(\vec{x}_i = (x_1, x_2, \dots, x_p)'\) is the feature vector.
+With the assumption of \emph{noninformative censoring},
+~\autocite{kalbfleischStatistical2002}
+in the Logistic-Hazard model, 
+the contribution of the \(i\)th individual to the likelihood function
+can be shown to be  
+~\autocite{tutzModeling2016}
 \begin{equation}
-    h(t | \mathbf{x}) = h_0(t) \exp(f(x, \theta))
-\end{equation}
-
-\begin{itemize}
-    \item Random survival trees and forest
-    \item Penalized or boosted Cox regression
-    \item Neural network-based extensions
-\end{itemize}
-
-
-
-
-\citeauthor{gensheimerScalable2019} 
-parameterized the hazard using a neural network,
-and showed that their method provide well calibrated
-model estimates with high model discrimination.
-
-It is an approach with the same idea as the one presented by 
-\citeauthor{brownUse1997} in 1997 \autocite{brownUse1997}.
-
-
-DeepHit parameterizes the probability mass function 
-of the survival distribution.
-They also include a ranking loss to improve model discrimination.
-\citeauthor{kvammeContinuous2021} showed that the DeepHit method
-has excellent discrimination but is poorly calibrated.
-
-
-\section{Model formulation}
-
-Let \(C_i\) be the right-censoring time 
-and \(T_i\) be the event time for for individual \(i\).
-A discrete time survival dataset \(\mathfrak{D}\) is a set of \(n\) tuples
-\((t_{i}, \delta_{i}, \mathbf{x}_{i})\)
-where \(t_i = \min\{T_i, C_i\}\) is the event time,
-\(\delta_{i} \in \{0, ..., m\}\) is the event indicator 
-(with \(\delta_i = 0\) defined as censoring),
-and \(\mathbf{x}_{i} \in \mathbb{R}^d\) 
-is a \(d\)-dimensional vector of time-independent predictors or covariates.
-
-The proposed model parametrizes the cause-specific conditional hazards,
-and the output \(\Lambda\) is then a 
-\(n \times q \times (m + 1)\) matrix of probabilities
-where values across the last dimension all sum up to 1.
-
-Without competing risks,
-the negative log-likelihood of the model output is
-%
-\begin{equation}
-    \mathrm{NLL}(\Lambda) =
-	- \sum_{i=1}^{n}
-	\sum_{t=1}^{q}
-    y_{is} \log [\ \lambda(s|\mathbf{x}_i) ]\
-    + (1 - y_{is}) \log [\ 1 - \lambda(s|\mathbf{x}_i) ]\
-\end{equation}
-%
-which is the loss-function used in \citeauthor{gensheimerScalable2019}.
-
-
-In the case of several competing target events,
-it is necessary to define several hazard functions,
-one for each distinct outcome type.
-Let \(R \in \{1, ..., m\}\) denote the competing risks.
-Then, for disrete time \(T \in \{1, ..., q\}\), 
-the cause-specific hazard function from cause $r$ is defined by
-%
-\begin{equation*}
-    \lambda_{r}(t | \mathbf{x}) = \Pr (T = t, R = r | T \geq t, \mathbf{x})
-\end{equation*}
-%
-where \(\mathbf{x}\) is a vector of time-independent predictor variables. 
-The different hazard functions, 
-\(\lambda_{1}(t|\mathbf{x}), ..., \lambda_{m}(t|\mathbf{x})\) 
-can be combined into the overall hazard function defined as
-%
-\begin{equation}
-    \lambda(t|\mathbf{x}) 
-    = \sum_{r=1}^{m}(\lambda_{r}(t|\mathbf{x}))
-    = \Pr(T = t | t \leq T, \mathbf{x})
-\end{equation}
-%
-From this it follows that the survival function is
-%
-\begin{equation}
-    S(t|\mathbf{x})
-    = \Pr(T >= t|\mathbf{x})
-    = \prod_{i=1}^{t}(1 - \lambda(i|\mathbf{x}))
+    \Lik_i = %
+    \begin{cases}
+        \PR (\Tid_i = \tid_i) & \text{if non-censored} \\
+        \PR (\Tid_i > \tid_i) & \text{if censored}.
+    \end{cases}
 \end{equation}
 
-The model uses $m + 1$ categorical responses.
-The responses are either any of the $m$ competings risks, 
-or conditional survival.
-%
+These two probabilities can be expressed using the discrete hazards,
+as it can be seen that
+\begin{align}
+    \begin{split}
+    \PR (\Tid = \tid) 
+    &= \PR (\Tid = \tid \mid \Tid \geq \tid) \PR (\Tid  \geq \tid) \\
+    &= \PR (\Tid = \tid \mid \Tid \geq \tid) \PR (\Tid  > \tid - 1) \\
+    &= \lambda (\tid) \, \prod_{s=1}^{\tid - 1} (1 - \lambda(s))
+    \end{split} \\
+    \intertext{and similarly}
+    \begin{split}
+    \PR (\Tid > \tid) 
+        &= \PR (\Tid > \tid \mid \Tid \geq \tid) \PR (\Tid  \geq \tid) \\
+        &= (1 - \PR (\Tid = \tid \mid \Tid \geq \tid)) \PR (\Tid  \geq \tid) \\
+        &= (1 - \PR (\Tid = \tid \mid \Tid \geq \tid)) \PR (\Tid  > \tid - 1) \\
+        &= \prod_{s=1}^{\tid} (1 - \lambda(i)).
+    \end{split}
+\end{align}
+
+Now, by introducing an indicator function, 
+defined according to \textcite{tutzModeling2016} as 
 \begin{equation}
-    \Pr(T > t | T \geq t, \mathbf{x})
-    = 1 - \sum_{r = 1}^{m} \lambda_r (t | \mathbf{x})
-    = 1 - \lambda (t | \mathbf{x})
+    \bar{y}_i(\tid) = \begin{cases}
+        1, & \text{if individual fails in \((a_{\tid-1}, a_{\tid}]\),} \\
+        0, & \text{if individual survives \((a_{\tid-1}, a_{\tid}]\),}
+    \end{cases}
+\end{equation}
+and by including the discrete hazard function and the covariates, 
+the likelihood contribution for the \(i\)th individual can be expressed as
+\begin{equation}
+    \Lik_i = \prod_{s=1}^{\tid_i} 
+        \lambda(s \giv \vec{x}_i)^{\bar{y}_i(s)}
+        (1 - \lambda(s \giv \vec{x}_i))^{1 - \bar{y}_i(s)}.
 \end{equation}
 
-\section{Model formulation}
-
-Continuous follow-up time is divided into into $q$ intervals
-%
-\begin{equation*}
-	[0, a_1), [a_1, a_2), ..., [a_{q-1}, a_q), [a_{q}, \infty)
-\end{equation*}
-%
-and the time to event variable \(T\) is denoted 
-with a positive integer \(t = 1, 2, ...\),
-which points to the interval \([a_{t-1}, a_{t})\).
-With this discrete time scale,
-the cause specific hazard function \(\lambda_{r}(t)\) is a conditional probability defined as
-%
-\begin{equation*}
-    \lambda_{r}(t | \mathbf{x}) = \Pr (T = t, R = r | T \geq t, \mathbf{x})
-\end{equation*}
-%
-given a vector \(\mathbf{x}\) of predictor variables.
-
-The discrete hazard function is defined as
-the probability of failure in the interval \(t\),
-given that the individual is still alive at the end of the preceding interval
-\(t - 1\).
-
-In a time-to-event model with several competing target events,
-we describe the process with multiple hazard functions, 
-that each describe a specific target outcome or risk.
-Typically, 
-we refer to the individual hazard functions as cause-specific hazards.
-
-For discrete time \(T \in \{1, ..., s+1\}\), and with a given vector \(\mathbf{x}\) of time-independent covariates,
-the cause-specific hazard from cause \(r\) is defined as
-
+The total log-likelihood of all datapoints then gives the loss-function
+used in the Logistic-Hazard model, 
+~\autocite{gensheimerScalable2019, tutzModeling2016}
+which can be expressed
 \begin{equation}
-    \lambda_{r}(t|\mathbf{x}) 
-    = P(T = t, R = r | t \leq T, \mathbf{x})
+    \label{eq:negloglik-single}
+    \lik = 
+        \sum_{i = 1}^{N} 
+            \sum_{s=1}^{\tid_i} 
+                \bar{y}_i(s) \log (\lambda(s\giv\vec{x}_i))
+                + (1 - \bar{y}_i(s)) \log (1 - \lambda(s\giv\vec{x}_i)).
 \end{equation}
 
-Which represents the probability of 
-
-The overall hazard function is
-
-\begin{equation}
-    \lambda(t|\mathbf{x}) 
-    = \sum_{r=1}^{m}(\lambda_{r}(t|\mathbf{x}))
-    = P(T = t | t \leq T, \mathbf{x})
-\end{equation}
-
-The survival function is the unconditional probability of an event in period \(t\) given the specific covariates is 
-
-\begin{equation}
-    S(t|\mathbf{x})
-    = P(T >= t|\mathbf{x})
-    = \prod_{i=1}^{t}(1 - \lambda(i|\mathbf{x}))
-\end{equation}
-
-From the hazard we can obtain the survival function 
-%
-\begin{equation*}
-    S(t | \mathbf{x}) 
-    = \Pr (T \geq t | \mathbf{x}) 
-    = \prod_{s = 1}^{t-1} (1 - \lambda(s | \mathbf{x}))
-\end{equation*}
-%
-which represents the unconditional probability of surviving interval \(t\) given the specific covariates cf. \autocite{tutzModeling2016}.
-
-Of note, this interpretation is considerably more accessible than the usual
-continuous hazard one.
-
-
-\begin{equation}
-    S(\tau) = P(T > \tau) = \sum_{i = 1}^{\tau - 1} (P(T = \tau - i))    
-\end{equation}
-
-The cause specific cumulative incidence function is
-
-\begin{equation}
-	CIF_r(t|\mathbf{x})
-	= \sum_{i=1}^{t}\lambda_{r}(t|\mathbf{x}) S(t-1|\mathbf{x})
-\end{equation}
-
-Let the data be given by \(t_{i}, r_{i}, \delta_{i}, \mathbf{x}_{i}\),
-where \(r_{i} \in \{1, ..., m\}\) indicates the target event. 
-Assuming random censoring at the end of the interval
-with \(t_i = \min\{T_i, C_i\}\), 
-where events are defined by the indicator function
-
-\begin{equation}
-\delta_i = 
-	\begin{cases}
-		1, & T_i \leq C_i \\
-		0, & T_i > C_i
-	\end{cases}
-\end{equation}
-
-\begin{subequations}
-\begin{equation}
-	nll =
-	- \sum_{i=1}^{n}
-	\sum_{t=1}^{ti}
-	\left(
-		\sum_{r \in C} \delta_{itr} \log(\lambda_{r} (t | \mathbf{x}))
-		+ \delta_{it0} \log\left(
-			1 - \sum_{r \in C} \lambda_{r} (t | \mathbf{x})
-		\right)
-	\right)
-\end{equation}
-
-Or alternatively 
-
-\begin{equation}
-	nll =
-	- \sum_{t=1}^{q}
-	\sum_{i \in R_s}
-	\delta_{is} \log(s|\mathbf{x}_i) 
-	+ (1 - \delta_{is}) (1 - \log(s|\mathbf{x}_i)))
-\end{equation}
-\end{subequations}
-
-In our approach, the neural network parametrises the logistic hazards.
-The goal is to learn \( \hat{h}(t | \mathbf{x}) \)
-for each of the competing events.
-
-
-
-
-The discrete probability function
-
-\begin{equation}
-    f_l = \Pr (T \in A_l) = S(t_{l-1}) - S(t|l)
-\end{equation}
-
-the discrete hazard rate
-
-\begin{equation}
-    h_l = \Pr (T \in A_l | T > t_{l-1}) = \frac{f_l}{S(t_{l-1})}
-\end{equation}
-
-    
-The contribution to the likelihood function of the \textit{i}th subject
-
-For uncensored subjects, the contribution is
-%
-\begin{equation}
-    \Pr (T_i \in A_{l_i}) = f_{l_i} = h_{l_i} \prod_{l=1}^{l_i-1}(1-h_{l_i})
-\end{equation}
-%
-while for censored subject, the contribution is
-%
-\begin{equation}
-    \Pr (T_i > t_{l_i}) = S(t_{l_i}) = \prod_{l=1}^{l}(1-h_{l_i})
-\end{equation}
-
-A similar approach have previously been described \autocite{biganzoliFeed1998}.
-
-
+\subsection{A Visual Explanation}
 
 
 \section{Evaluating prediction models}
@@ -1035,9 +816,6 @@ likelihood as the optimization target.
 The same approach was used in the \enquote{DeepSurv} paper,
 but instead paired with contemporary deep learning methods.
 ~\autocite{katzmanDeepSurv2018a}
-
-
-
 
 
 In survival analysis of competing risks, 

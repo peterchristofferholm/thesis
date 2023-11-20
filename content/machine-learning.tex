@@ -125,8 +125,7 @@ Two other examples of supervised learning tasks is presented in
 within this thesis.
 However, these tasks differ from classical supervised learning
 in that they involve time-to-event predictions and censored labels.
-This subject matter will be elaborated upon in the next chapter:
-\nameref{survival-analysis}.
+This subject matter will be elaborated upon in \cref{survival-analysis}.
 
 \section{Unsupervised Learning}
 
@@ -746,8 +745,8 @@ to the loss function \(\mathcal{L}\).
 
 \vspace{1.5em}
 \begin{equation}
-    \widetilde{\mathcal{L}} (\vec{\phi} , \mathsf{X}, \vec{y}) =
-    \mathcal{L} (\vec{\phi} , \mathsf{X}, \vec{y}) +
+    \widetilde{\mathcal{L}} (\vec{\phi} , \mat{X}, \vec{y}) =
+    \mathcal{L} (\vec{\phi} , \mat{X}, \vec{y}) +
     \eqnmarkbox[color2]{node1}{ \omega (\vec{\phi})}
 \end{equation}
 \annotate[yshift=.5em]{left}{node1}{regularization term}
@@ -787,7 +786,7 @@ many different architectures
 ~\autocite{srivastava2014dropout}
 and is a consequence broadly utilized.
 ~\autocite{charniakIntroduction2019}
-The droput rate, which controls the probability \(p\) of dropping out each
+The droput rate, which controls the probability of dropping out each
 individual unit, is a hyperparameter that needs to be specified.
 
 \section{Hyperparameter Optimization}
@@ -883,27 +882,29 @@ It is based on the concept of Shapley values,
 an approach for fairly distributing payoffs in a coalitional game
 based on the individual contributions of the players.
 ~\autocite{shapley1953value}
+
 In this framework, 
 the \enquote{payoff} is the model output, 
 and the \enquote{players} are the features.
-For a specific realisation \(\check{\mathbf{x}}\) 
-of the feature vector \(\mathbf{x}\),
-we then decompose the model output \(f(\check{\mathbf{x}})\)
-into the individual feature contributions \(\check{v}_{j}\).
+For a specific feature vector 
+\(\vec{x}'\) 
+we decompose the model output \(f(\vec{x}')\)
+into the individual feature contributions \(v_{j}\).
 ~\autocite{aasExplaining2020}
 \begin{equation}
     \label{eq:explain}
-    f(\check{\mathbf{x}}) \approx v_0 + \sum_{j=1}^{M} \check{v}_{j}
+    f(\vec{x}') \approx v_0 + \sum_{j} v_{j}
 \end{equation}
 where \(v_0\) is a shared baseline and 
-\(\check{v}_{i}\) is the marginal contribrution for the \(j\)th 
-feature in \( \check{\mathbf{x}}\).
-The shared baseline is typically \(\EX[f(\mathbf{x})]\), 
+\(\check{v}_{j}\) is the marginal contribrution for the \(j\)th 
+feature in \( \vec{x}\).
+
+The shared baseline is typically \(\EX[f(\vec{x})]\), 
 either the average or median prediction from the training set.
 ~\autocite{aasExplaining2020}
 With this formulation, the Shapley values represent the difference between
-the prediction \(f(\check{\mathbf{x}})\) and the reference prediction,
-and from \cref{eq:explain} it follows that these are additive.
+the prediction \(f(\vec{x}')\) and this reference prediction,
+and from \cref{eq:explain} it follows that these contributions are additive.
 ~\autocite{aasExplaining2020}
 This enables visualizations such as \cref{fig:shap-local}.
 
@@ -920,19 +921,19 @@ This enables visualizations such as \cref{fig:shap-local}.
     \node (1) at (100, 50)  {};
     \draw (0) -- (1);
 
-    \node (efz0) at (15, 100) { \(\EX [f(\mathbf{x})]\)};
-    \node (efz1) at (30,  85) { \(\EX [f(\mathbf{x}) \mid x_1         = \check{x}_{1}]\)};
-    \node (efz2) at (45, 100) { \(\EX [f(\mathbf{x}) \mid x_{1,2}     = \check{x}_{1,2}]\)};
-    \node (efz3) at (85, 100) { \(\EX [f(\mathbf{x}) \mid x_{1,2,3}   = \check{x}_{1,2,3}]\)};
-    \node (efz4) at (69,  85) { \(\EX [f(\mathbf{x}) \mid x_{1,2,3,4} = \check{x}_{1,2,3,4}]\)};
+    \node (efz0) at (15, 100) { \(\EX [f(\vec{x})]\)};
+    \node (efz1) at (30,  85) { \(\EX [f(\vec{x}) \mid x_1         = x'_{1}]\)};
+    \node (efz2) at (45, 100) { \(\EX [f(\vec{x}) \mid x_{1,2}     = x'_{1,2}]\)};
+    \node (efz3) at (85, 100) { \(\EX [f(\vec{x}) \mid x_{1,2,3}   = x'_{1,2,3}]\)};
+    \node (efz4) at (69,  85) { \(\EX [f(\vec{x}) \mid x_{1,2,3,4} = x'_{1,2,3,4}]\)};
     \node[fill=color4!50!white, draw=color5] 
-          (fx)   at (50,  70) { \(f(\mathbf{\check{x}})\)};
+          (fx)   at (50,  70) { \(f(\vec{x})\)};
 
-    \draw[->, color2, shap] (efz0 |- 50, 40) -- node[white] {\(\check{v}_{1}\)} (efz1 |- 50, 40);
-    \draw[->, color2, shap] (efz1 |- 50, 25) -- node[white] {\(\check{v}_{2}\)} (efz2 |- 50, 25);
-    \draw[->, color2, shap] (efz2 |- 50, 10) -- node[white] {\(\check{v}_{3}\)} (efz3 |- 50, 10);
-    \draw[->, color6, shap] (efz3 |- 50, 25) -- node[white] {\(\check{v}_{4}\)} (efz4 |- 50, 25);
-    \draw[->, color6, shap] (efz4 |- 50, 40) -- node[white] {\(\check{v}_{5}\)} (fx   |- 50, 40);
+    \draw[->, color2, shap] (efz0 |- 50, 40) -- node[white] {\(v_{1}\)} (efz1 |- 50, 40);
+    \draw[->, color2, shap] (efz1 |- 50, 25) -- node[white] {\(v_{2}\)} (efz2 |- 50, 25);
+    \draw[->, color2, shap] (efz2 |- 50, 10) -- node[white] {\(v_{3}\)} (efz3 |- 50, 10);
+    \draw[->, color6, shap] (efz3 |- 50, 25) -- node[white] {\(v_{4}\)} (efz4 |- 50, 25);
+    \draw[->, color6, shap] (efz4 |- 50, 40) -- node[white] {\(v_{5}\)} (fx   |- 50, 40);
 
     \foreach \n in {efz0, efz1, efz2, efz3, efz4, fx}
         \draw[->] (\n) -- ($(0)!(\n)!(1)+(0,1)$);
@@ -940,9 +941,9 @@ This enables visualizations such as \cref{fig:shap-local}.
     \end{tikzpicture}
     \caption[Shapley Additive Explanations]{%
        \Acf{SHAP} values represents the difference between the specific model
-       output \(f(\check{\mathbf{x}})\) and a baseline prediction
-       \(\EX [\mathbf{x}]\). 
-       The SHAP values \(v_i\) are additive and by adding them to the 
+       output \(f(\vec{x}')\) and a baseline prediction
+       \(\EX [\vec{x}]\). 
+       The SHAP values \(v_j\) are additive and by adding them to the 
        baseline prediction, we effetively condition the expected
        model prediction on that feature.
     }
@@ -958,4 +959,3 @@ is NP-complete and therefore computationally intractable.
 Instead, the \ac{SHAP} method have pioneered different 
 clever approximations that can be computed in reasonable time.
 ~\autocite{lundbergUnified2017}
-
