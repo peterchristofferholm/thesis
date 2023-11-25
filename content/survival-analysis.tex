@@ -26,7 +26,7 @@ In the previous chapter,
 I gave an overview of machine learning and neural networks,
 highlighting key ideas and concepts related to the studies in this thesis.
 Neural networks specifically, 
-were used in \nameref{chap:paper-2} and \nameref{chap:paper-3} to develop
+were used in \studyii{} and \studyiii{} to develop
 prediction models for ischemic heart disease.
 These models, however, diverge from classical neural network methods.
 Instead, they include modifications that make them applicable
@@ -35,8 +35,8 @@ This chapter will provide an introduction to the fundamentals
 of survival analysis and will cover the
 theory that enables the implementation of such analyses with
 neural network models.
-The chapter concludes with a discussion on different 
-validation methods for time-to-event prediction models.
+% The chapter concludes with a discussion on different 
+% validation methods for time-to-event prediction models.
 
 \section{What is Survival Analysis?}
 
@@ -603,7 +603,7 @@ In contrast, the Logistic-Hazard model have nearly as good discrimination
 and also significantly better calibration. 
 Consequently, the Logistic-Hazard model, and an extension hereof, 
 was chosen for application in 
-\nameref{chap:paper-2} and \nameref{chap:paper-3}.
+\studyii{} and \studyiii{}.
 
 In the following section, I will be giving a brief description of
 this discrete-time formulation of time-to-event analysis and 
@@ -748,6 +748,7 @@ as it can be seen that
 Now, by introducing an indicator function, 
 defined according to \textcite{tutzModeling2016} as 
 \begin{equation}
+    \label{eq:lh-indicator}
     \bar{y}_i(\tid) = \begin{cases}
         1, & \text{if individual fails in \((a_{\tid-1}, a_{\tid}]\),} \\
         0, & \text{if individual survives \((a_{\tid-1}, a_{\tid}]\),}
@@ -756,6 +757,7 @@ defined according to \textcite{tutzModeling2016} as
 and by including the discrete hazard function and the covariates, 
 the likelihood contribution for the \(i\)th individual can be expressed as
 \begin{equation}
+    \label{eq:lh-likelihood}
     \Lik_i = \prod_{s=1}^{\tid_i} 
         \lambda(s \giv \vec{x}_i)^{\bar{y}_i(s)}
         (1 - \lambda(s \giv \vec{x}_i))^{1 - \bar{y}_i(s)}.
@@ -766,7 +768,7 @@ used in the Logistic-Hazard model,
 ~\autocite{gensheimerScalable2019, tutzModeling2016}
 which can be expressed
 \begin{equation}
-    \label{eq:negloglik-single}
+    \label{eq:lh-loglikelihood}
     \lik = 
         \sum_{i = 1}^{N} 
             \sum_{s=1}^{\tid_i} 
@@ -774,63 +776,139 @@ which can be expressed
                 + (1 - \bar{y}_i(s)) \log (1 - \lambda(s\giv\vec{x}_i)).
 \end{equation}
 
-\subsection{A Visual Explanation}
+\subsection{Loss Function Explained}
 
+\def\y#1#2{\hat{\lambda}_{#1#2}}
+\def\yy#1#2{1\!-\!\y{#1}{#2}}
 
-\section{Evaluating prediction models}
+As an example, the following set of observations with discretized 
+time-to-event data with a single risk, e.g. all-cause mortality, 
+and a follow-up time that have been discretized into seven contiguous intervals,
+constitutes a survival dataset.
 
-Visualization of model performance.
-A calibration shows the link between 
-expected outcome proportion 
-and predicted probabilities.
+\begin{equation}
+\begin{tabular}{r  ccccc}
+    \toprule
+    subject   \(i\)      & 1 & 2 & 3 & 4 & 5 \\
+    \midrule
+    time    \(\tau_i\)   & 5 & 7 & 4 & 5 & 3 \\
+    event   \(\sigma_i\) & 1 & 1 & 0 & 0 & 1 \\
+    \bottomrule
+\end{tabular}
+\end{equation}
 
-\subsection{Calibration}
+In this setting,  using the Logistic-Hazard model, 
+the neural network output for this dataset is a 2-dimensional
+matrix with \(5\) rows  (subjects) and \(7\) columns (time intervals),
+and each entry is the predicted conditional hazard for the
+specific subject at a specific timepoint. We can write this as
+\begin{equation}
+\hat{\bm{\Lambda}}= \!\!\!\!
+\begin{tikzpicture}
+[   on grid,
+    font = \small,
+    baseline = -.7ex,
+    inner sep=1pt,
+    outer sep=0pt,
+    minimum width=9mm,
+    minimum height=6mm,
+    every left delimiter/.style={xshift=2.5ex},
+    every right delimiter/.style={xshift=-3.0ex}
+]
+\matrix (pred) [
+	matrix of math nodes, 
+    left delimiter={[}, 
+    right delimiter={]},
+]{ 
+\y{1}{1} & \y{1}{2} & \y{1}{3} & \y{1}{4} & \y{1}{5} & \y{1}{6} & \y{1}{7} \\
+\y{2}{1} & \y{2}{2} & \y{2}{3} & \y{2}{4} & \y{2}{5} & \y{2}{6} & \y{2}{7} \\
+\y{3}{1} & \y{3}{2} & \y{3}{3} & \y{3}{4} & \y{3}{5} & \y{3}{6} & \y{3}{7} \\
+\y{4}{1} & \y{4}{2} & \y{4}{3} & \y{4}{4} & \y{4}{5} & \y{4}{6} & \y{4}{7} \\
+\y{5}{1} & \y{5}{2} & \y{5}{3} & \y{5}{4} & \y{5}{5} & \y{5}{6} & \y{5}{7} \\
+};
+\useasboundingbox[anchor=center] (pred.north west) rectangle (pred.south east);
+\draw[->, black!50] ([xshift=2ex] pred-1-7.north east) -- ([xshift=2ex] pred-2-7.east)
+    node [midway, font=\scriptsize, above, sloped] {subject};
+\draw[->, black!50] ([yshift=1ex] pred-1-6.north) -- ([yshift=1ex] pred-1-7.north)
+    node [midway, font=\scriptsize, above] {time};
+\end{tikzpicture}
+\end{equation}
 
-A model is said to be well-calibrated
-if the probabilistic predictions are reliable.
+Now, the indicator function can be computed 
+using the defintion in \cref{eq:lh-indicator}
+and the observed data \(\tid_i\) and \(\sigma_i\). 
+In matrix form, the output of this function is
+\begin{equation}
+\bar{\bm{Y}}= \!\!\!\!
+\begin{tikzpicture}
+[   on grid,
+    font = \small,
+    baseline = -.7ex,
+    inner sep=1pt,
+    outer sep=0pt,
+    minimum width=9mm,
+    minimum height=6mm,
+    every left delimiter/.style={xshift=2.5ex},
+    every right delimiter/.style={xshift=-3.0ex}
+]
 
-With a reliable model, 
-in a group of individuals predicted to develop diabetes
-with a \SI{10}{\percent} risk, 
-we would expect to exactly \SI{10}{\percent} to actually develop diabetes.
+\matrix (mask) [
+	matrix of math nodes, 
+    left delimiter={[}, 
+    right delimiter={]}
+]{ 
+0 & 0 & 0 & 0 & 1 & - & - \\
+0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+0 & 0 & 0 & 0 & - & - & - \\
+0 & 0 & 0 & 0 & 0 & - & - \\
+0 & 0 & 1 & - & - & - & - \\
+};
+\useasboundingbox[anchor=center] (mask.north west) rectangle (mask.south east);
+\end{tikzpicture}
+\end{equation}
 
-
-\subsection{Discrimination}
-
-Discrimination refers to a models ability to rank individuals according 
-to their actual risk of experiencing a given event.
-The main measure for discrimination is the area under the receiver
-operating characteristic curve (AUC).
-For survival models, Harrel's C-index is typically used,
-although it is actually an improper scoring metric.
-Instead, the time-dependent AUC should be used instead.
-
-%% DEEPSURV
-
-In 2018, DeepSurv 
-
-In the approach by Faraggi-Simon, they use a neural network to 
-parameterise the log-risk function, using a slightly modified Cox partial 
-likelihood as the optimization target.
-~\autocite{faraggiNeural1995}
-The same approach was used in the \enquote{DeepSurv} paper,
-but instead paired with contemporary deep learning methods.
-~\autocite{katzmanDeepSurv2018a}
-
-
-In survival analysis of competing risks, 
-different risks can be modelled marginally,
-independently of one another.
-This relies on the latent failure assumption.
-
-However, in real-life, the different competing risks 
-or \enquote{failure modes} can influence one another
-by some shared mechanisms.
-Therefore, marginal independent time-to-event models
-can therefore be to simplistic.
-Instead, it is in such cases
-more reasonable to model the competing risks jointly,
-such that the dependence structure shared between them
-can be leveraged.
-
-
+Now, combining these two matrices according to the formula
+in \cref{eq:lh-likelihood}, we obtain the likelihood in matrix form as
+\begin{equation}
+    \mathcal{L}(\bm{\hat{\Lambda}}, \bm{\bar{Y}}) = \!\!\!\!
+\begin{tikzpicture}
+[   on grid,
+    font = \small,
+    baseline = -.7ex,
+    inner sep=1pt,
+    outer sep=0pt,
+    minimum width=9mm,
+    minimum height=6mm,
+    every left delimiter/.style={xshift=2.5ex},
+    every right delimiter/.style={xshift=-3.0ex}
+]
+\matrix (loss) [
+	matrix of math nodes, 
+    left delimiter={[}, 
+    right delimiter={]},
+    nodes={font=\footnotesize}
+]{ 
+\yy{1}{1} & \yy{1}{2} & \yy{1}{3} & \yy{1}{4} & \y{1}{5}  & -         & -         \\
+\yy{2}{1} & \yy{2}{2} & \yy{2}{3} & \yy{2}{4} & \yy{2}{5} & \yy{2}{6} &  \y{2}{7} \\
+\yy{3}{1} & \yy{3}{2} & \yy{3}{3} & \yy{3}{4} & -         & -         & -         \\
+\yy{4}{1} & \yy{4}{2} & \yy{4}{3} & \yy{4}{4} & \yy{4}{5} & -         & -         \\
+\yy{5}{1} & \yy{5}{2} & \y{5}{3}  & -         & -         & -         & -         \\
+};
+\useasboundingbox[anchor=center] (loss.north west) rectangle (loss.south east);
+\end{tikzpicture}
+\end{equation}
+from which the log-likelihood, \cref{eq:lh-loglikelihood}, is then
+\begin{equation*}
+    \small
+\begin{split}
+    \mathscr{l}(\bm{\hat{\Lambda}}, \bm{\bar{Y}})
+    &={} \log (\yy{1}{1}) + \log(\yy{1}{2}) + \log(\yy{1}{3}) + \log(\yy{1}{4}) 
+     +  \log(\y{1}{5}) \\ 
+    &+{} \log (\yy{2}{1}) + \log(\yy{2}{2}) + \log(\yy{2}{3}) + \log(\yy{2}{4}) 
+     +  \log(\yy{2}{5}) + \log(\yy{2}{6}) +  \log(\y{2}{7}) \\
+    &+{} \log (\yy{3}{1}) + \log(\yy{3}{2}) + \log(\yy{3}{3}) + \log(\yy{3}{4}) \\
+    &+{} \log (\yy{4}{1}) + \log(\yy{4}{2}) + \log(\yy{4}{3}) + \log(\yy{4}{4}) 
+    + \log(\yy{4}{5})  \\
+    &+{} \log (\yy{5}{1}) + \log(\yy{5}{2}) + \log(\y{5}{3} )
+\end{split}
+\end{equation*}

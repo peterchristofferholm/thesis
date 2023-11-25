@@ -1352,7 +1352,6 @@
   {\ifvmode\else\unskip\fi\begin{@tufte@float}[#1]{figure}{star}{fwcaption}}
   {\end{@tufte@float}}
 
-
 %%
 % Full-width table
 

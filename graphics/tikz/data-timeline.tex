@@ -1,0 +1,43 @@
+\input{preamble.tex}
+
+\begin{document}
+
+\begin{fullwidth}
+\begin{tikzpicture}[
+    x=\linewidth,
+    tbox/.style={minimum height=5mm, thick, yshift=1em},
+    ttex/.style={color=black, font=\sffamily},
+]
+    \foreach \year 
+        [evaluate=\year as \x using (\year-1965)/(2025-1965)] 
+            in {1965, 1966, ..., 2025} \node [anchor=center] (\year) at (\x, 0) {};
+
+    \draw [->] (1965) -- (2025) node[midway, below] (timeline) {};
+
+    % labels
+    \node [below] at (1968) {1968};
+    \node [below] at (1977) {1977};
+    \node [below] at (1994) {1994};
+    \node [below] at (2023) {2023};
+    \node [below] at (2000) {2000};
+    \node [below] at (2006) {2006};
+    \node [below] at (2016) {2016};
+
+    \node [tbox, fit={(1968 |- 0,1ex)   (2023 |- 0,1ex)},   fill=color1] (1) {};
+    \node [tbox, fit={(1970 |- 1.north) (2023 |- 1.north)}, fill=color2] (2) {};
+    \node [tbox, fit={(1977 |- 2.north) (1994.west |- 2.north)}, fill=color3] (3) {};
+    \node [tbox, fit={(1994.east |- 2.north) (2023 |- 2.north)}, fill=color3] (4) {};
+    \node [tbox, fit={(2000 |- 4.north) (2023 |- 4.north)}, fill=color4] (5) {};
+    \node [tbox, fit={(2006 |- 5.north) (2016 |- 5.north)}, fill=color5] (6) {};
+
+    \node [ttex] at (1.center) {CPR};
+    \node [ttex] at (2.center) {DAR};
+    \node [ttex] at (3.center) {DNPR (ICD-8)};
+    \node [ttex] at (4.center) {DNPR (ICD-10)};
+    \node [ttex] at (5.center) {EDHR};
+    \node [ttex] at (6.center) {BigTempHealth};
+\end{tikzpicture}
+\end{fullwidth}
+
+\end{document}
+

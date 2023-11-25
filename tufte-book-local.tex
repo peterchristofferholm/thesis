@@ -3,6 +3,7 @@
 \setcounter{tocdepth}{0}
 \setcounter{secnumdepth}{2}
 
+\usepackage{appendix}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % FORMATTING TABLE OF CONTENTS
@@ -49,10 +50,11 @@
 % FORMATTING TITLES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
 \titleformat{\chapter}%
 	[display]%
     {\relax\begin{fullwidth}}%
-    {\Large\sffamily Chapter \thechapter}
+    {\Large\sffamily \@chapapp{} \thechapter}
     {0em}
     {\huge\rmfamily\itshape}
 	[\end{fullwidth}]
@@ -88,3 +90,10 @@
 \titlespacing*{\chapter}{0pt}{50pt}{40pt}
 \titlespacing*{\section}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
 \titlespacing*{\subsection}{0pt}{2.5ex plus 1ex minus .2ex}{1.5ex plus.2ex}
+
+
+\renewcommand{\appendixname}{Appendix}
+% \renewcommand{\appendixpagename}{List of Manuscripts}
+% \renewcommand{\appendixtocname}{List of Manuscripts}
+
+

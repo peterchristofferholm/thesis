@@ -1,3 +1,5 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% documentclass→
 \PassOptionsToPackage{full}{textcomp}
 \documentclass[a4paper, twoside, nobib]{tufte-book}
 \hypersetup{colorlinks}
@@ -11,9 +13,9 @@
     Graduate School of Health and Medical Sciences
     University of Copenhagen%
 }
-
+% ←
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% biblatex configuration
+% biblatex configuration →
 
 \usepackage[%
     style=verbose-note,
@@ -49,7 +51,6 @@
 \AtEveryCitekey{%
     \clearfield{pagetotal}%
     \clearfield{eprint}%
-    \clearfield{url}%
     \clearfield{pages}%
     \clearfield{series}%
     \clearfield{volume}%
@@ -60,15 +61,24 @@
 }
 \addbibresource{assets/pch-thesis.bib}
 
+% \urlstyle{tt}
+% \DeclareUrlCommand\url{\smaller[0.5]}
+
 % fix appearance of cited preprints
 \DeclareSourcemap{
     \maps[datatype=bibtex]{
         \map{
             \pertype{online}
-            \step[typesource=online, typetarget=article]
+            % \step[typesource=online, typetarget=article]
+            % \step[fieldset=url, null=true]
             \step[fieldsource=eprinttype, fieldtarget=journaltitle]
-            \step[fieldsource=journaltitle,
-                match={arxiv}, replace={arXiv}]
+            \step[fieldsource=journaltitle, match={arxiv}, replace={arXiv}]
+        }
+        \map{
+            \step[
+                fieldsource=url, 
+                match=\regexp{\A (https?...)?(www.)}, replace={}
+            ]
         }
     }
 }
@@ -81,9 +91,9 @@
         }
     }
 }
-
+% ←
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% load packages
+% load packages →
 
 % fonts
 \usepackage[T1]{fontenc}
@@ -91,6 +101,7 @@
 \usepackage[p, osf]{ETbb}  % osf in text, tabular lining figures in math
 \usepackage[scaled=.95,type1]{cabin}  % sans serif in style of Gill Sans
 \usepackage[libertine, vvarbb]{newtxmath}
+\usepackage[scaled=.90]{FiraMono}
 
 % misc
 \usepackage{amsmath}
@@ -101,8 +112,7 @@
 \usepackage{multicol}
 \usepackage{makecell}
 \usepackage{pdfpages}
-\usepackage{appendix}
-\usepackage{siunitx}
+\usepackage[mode=match]{siunitx}
 \usepackage{todonotes}
 
 \usepackage{subcaption}
@@ -116,9 +126,79 @@
 \usepackage{relsize}  % easy scaling of fonts
 \usepackage{bm}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% enumerate
+\usepackage[inline]{enumitem}
+\renewlist{enumerate*}{enumerate*}{1}
+\setlist[enumerate*]{
+    label=(\roman*), itemjoin={{; }}, itemjoin*={{; and }}
+}
 
-%\newcommand{\mbf}[1]{\bm{\mathrm{#1}}}
+% context aware quotation marks
+\usepackage{csquotes}  
+\renewcommand{\mkcitation}[1]{~\autocite{#1}}
+
+% acro 
+\usepackage[nohyperlinks]{acronym}
+\renewcommand*{\acsfont}[1]{\lfstyle \textsmaller[.5]{#1}}
+
+% tikz 
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepgfplotslibrary{groupplots}
+\usepackage{listofitems}
+\usepackage{contour}
+\usepackage[most]{tcolorbox}
+
+\usetikzlibrary{positioning}
+\usetikzlibrary{matrix}
+\usetikzlibrary{arrows,shapes}
+\usetikzlibrary{arrows.meta} 
+\usetikzlibrary{graphs} 
+\usetikzlibrary{trees} 
+\usetikzlibrary{quotes} 
+\usetikzlibrary{decorations.text}
+\usetikzlibrary{decorations.markings}
+
+
+\definecolor{color0}{HTML}{001118}
+\definecolor{color1}{HTML}{005e72}
+\definecolor{color2}{HTML}{0a9395}
+\definecolor{color3}{HTML}{93d1bc}
+\definecolor{color4}{HTML}{e8d8a5}
+\definecolor{color5}{HTML}{ed9a00}
+\definecolor{color6}{HTML}{ca6702}
+\definecolor{color7}{HTML}{ba3d02}
+\definecolor{color8}{HTML}{ae1f11}
+\definecolor{color9}{HTML}{9a2126}
+
+% for graphics / images
+\usepackage{graphicx}
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+\graphicspath{{graphics/}}
+
+\usepackage{annotate-equations}
+
+% adjust verbatim environments
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}% ←
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% custom macros→
+
+% Hanging parentheses and asterisks
+\newcommand{\hangp}[1]{\makebox[0pt][r]{(}#1\makebox[0pt][l]{)}}
+\newcommand{\hangstar}{\makebox[0pt][l]{*}}
+
+% prints the month name (e.g., january) and the year (e.g., 2008)
+\newcommand{\monthyear}{%
+  \ifcase\month\or January\or February\or March\or April\or May\or June\or
+  July\or August\or September\or October\or November\or
+  December\fi\space\number\year
+}
+
+% misc
+\newcommand{\na}{\quad--}
+\newcommand{\blankpage}{\newpage\hbox{}\thispagestyle{empty}\newpage}
+
 \DeclareMathOperator{\EX}{\mathbb{E}} % expected value
 \DeclareMathOperator{\PR}{\Pr} % probability 
 \DeclareMathOperator{\I}{\mathbb{1}}  % indicator 
@@ -147,80 +227,12 @@
 \newcommand{\xb}{\check{\xa}}
 \newcommand{\hzt}{\lambda_0\mspace{-1mu}(t)}
 
+\newcommand{\studyi}{\hyperref[outline-study-1]{Study I}}
+\newcommand{\studyii}{\hyperref[outline-study-2]{Study II}}
+\newcommand{\studyiii}{\hyperref[outline-study-3]{Study III}}
+% ←
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% enumerate
-\usepackage[inline]{enumitem}
-\renewlist{enumerate*}{enumerate*}{1}
-\setlist[enumerate*]{
-    label=(\roman*), itemjoin={{; }}, itemjoin*={{; and }}
-}
-
-% context aware quotation marks
-\usepackage{csquotes}  
-\renewcommand{\mkcitation}[1]{~\autocite{#1}}
-
-% acro 
-\usepackage[nohyperlinks]{acronym}
-%\renewcommand*{\acsfont}[1]{{\relsize{+0.5}\smallcaps{#1}}}
-
-% tikz 
-\usepackage{tikz}
-\usepackage{pgfplots}
-\usepgfplotslibrary{groupplots}
-\usepackage{listofitems}
-\usepackage{contour}
-% \usetikzlibrary{external}
-% \tikzexternalize[optimize=false, prefix=figures/]
-
-\usetikzlibrary{positioning}
-\usetikzlibrary{arrows,shapes}
-\usetikzlibrary{arrows.meta} 
-\usetikzlibrary{graphs} 
-\usetikzlibrary{quotes} 
-\usetikzlibrary{decorations.text}
-\usetikzlibrary{decorations.markings}
-\usepackage{annotate-equations}
-
-\definecolor{color0}{HTML}{001118}
-\definecolor{color1}{HTML}{005e72}
-\definecolor{color2}{HTML}{0a9395}
-\definecolor{color3}{HTML}{93d1bc}
-\definecolor{color4}{HTML}{e8d8a5}
-\definecolor{color5}{HTML}{ed9a00}
-\definecolor{color6}{HTML}{ca6702}
-\definecolor{color7}{HTML}{ba3d02}
-\definecolor{color8}{HTML}{ae1f11}
-\definecolor{color9}{HTML}{9a2126}
-
-% for graphics / images
-\usepackage{graphicx}
-\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
-\graphicspath{{graphics/}}
-
-% adjust verbatim environments
-\usepackage{fancyvrb}
-\fvset{fontsize=\normalsize}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% custom macros
-
-% Hanging parentheses and asterisks
-\newcommand{\hangp}[1]{\makebox[0pt][r]{(}#1\makebox[0pt][l]{)}}
-\newcommand{\hangstar}{\makebox[0pt][l]{*}}
-
-% prints the month name (e.g., january) and the year (e.g., 2008)
-\newcommand{\monthyear}{%
-  \ifcase\month\or January\or February\or March\or April\or May\or June\or
-  July\or August\or September\or October\or November\or
-  December\fi\space\number\year
-}
-
-% misc
-\newcommand{\na}{\quad--}
-\newcommand{\blankpage}{\newpage\hbox{}\thispagestyle{empty}\newpage}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
 \frontmatter
@@ -244,15 +256,17 @@
 \mainmatter %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \part{Background and Methods}
-\include{content/introduction}       % [X]
-\include{content/machine-learning}   % [X]
-\include{content/survival-analysis}  % [ ]
-
-\part{Outline of Papers}
+% \include{content/introduction}       % [X]
+% \include{content/machine-learning}   % [X]
+% \include{content/survival-analysis}  % [X]
 \include{content/data-foundation}    % [ ]
+
+\part{Outline of Studies}
 \include{content/results-paper1}     % [ ]
 \include{content/results-paper2}     % [ ]
 \include{content/results-paper3}     % [ ]
+
+\part{Discussion}
 \include{content/conclusions}        % [ ]
 
 \include{content/miscellaneous.tex}
@@ -270,10 +284,11 @@
 \cleardoublepage
 
 \includepdf[
-    clip, trim=1cm 4cm 1cm 1.8cm, offset=0 -2.2cm, 
-    frame=true, scale=0.8, 
-    pages=1, pagecommand=\chapter{Study 1}\label{chap:paper-1}]%
+    clip, trim=1cm 6cm 1cm 1.8cm, offset=0 -2.2cm, 
+    frame=true, scale=0.8, pages=1, 
+    pagecommand=\chapter{Manuscript for Study I}\label{chap:paper-1}]%
     {assets/paper1-clustering.pdf}
+
 % \includepdf[
 %     clip, trim=1cm 0 1cm 1.5cm, offset=0 0, 
 %     frame=true, scale=0.8, 
@@ -282,16 +297,16 @@
 
 \cleardoublepage
 \includepdf[
-    clip, trim=1cm 4cm 1cm 1.8cm, offset=0 -2.2cm, 
-    frame=true, scale=0.8, 
-    pages=1, pagecommand=\chapter{Study 2}\label{chap:paper-2}]%
+    clip, trim=1cm 6cm 1cm 1.8cm, offset=0 -2.2cm, 
+    frame=true, scale=0.8, pages=1, 
+    pagecommand=\chapter{Manuscript for Study II}\label{chap:paper-2}]%
     {assets/paper1-clustering.pdf}
 
 \cleardoublepage
 \includepdf[
-    clip, trim=1cm 4cm 1cm 1.8cm, offset=0 -2.2cm, 
-    frame=true, scale=0.8, 
-    pages=1, pagecommand=\chapter{Study 3}\label{chap:paper-3}]%
+    clip, trim=1cm 6cm 1cm 1.8cm, offset=0 -2.2cm, 
+    frame=true, scale=0.8, pages=1, 
+    pagecommand=\chapter{Manuscript for Study III}\label{chap:paper-3}]%
     {assets/paper1-clustering.pdf}
 
 \end{document}

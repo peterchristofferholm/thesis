@@ -1,7 +1,61 @@
-\chapter{Paper 1: Multimorbidity Clustering in Ischemic Heart Disease}
-\label{chap:outline-paper-1}
+\chapter{Study I: Comorbidity Clustering in Ischemic Heart Disease}
+\label{outline-study-1}
 
-Describe clustering methods.
 
-\section{Related Work}
+\section{Background and Rationale}
+
+\ac{IHD} is highly heterogeneous in its onset, burden, and progression.
+Part of this heterogeneity is likely to be explained by differences in 
+the number and types of comorbidities present amont patients.
+
+In this study, we sought out to characterise the spectrum of multimorbidity
+in \ac{IHD} taking a data-driven approach and using unsupervised
+machine learning techniques to identify subgroups with distinct and clinically
+relevant comorbidity profiles.
+
+The study recognizes that over 85\% of \ac{IHD} patients have diagnosed chronic
+conditions, creating a need for better methods to understand and characterize
+this cardiometabolic multimorbidity.
+
+
+
+
+\section{Study Design and Data Collection}
+
+Utilizing data from the Danish National Patient Registry and other health data sources, the study focused on IHD patients in Denmark from 2004 to 2016. 
+Only patients who had undergone coronary arteriography or coronary computed
+tomography angiography were included. 
+The aim was to increase the accuracy of IHD diagnoses and align patient
+inclusion criteria over time.
+
+\section{Methodology}
+
+The study employed the Markov cluster algorithm to analyze patient 
+multimorbidity prior to their IHD diagnosis. 
+This approach used a patient-specific vector representation based on diagnoses, 
+creating a matrix from which the clustering analysis was conducted. 
+Notably, ICD-10 codes for IHD and those assigned to less than five patients were excluded, resulting in 3046 unique ICD-10 codes for analysis.
+
+
+
+
+Cohort Demographics
+
+The study included 72,249 patients, predominantly male, with a mean age of 63.9 years. The most common IHD diagnosis was angina pectoris, followed by acute myocardial infarction and chronic IHD. Common comorbidities included hypertension, dyslipidemia, and non-insulin-dependent diabetes.
+
+Findings and Cluster Analysis
+
+The clustering identified 31 distinct patient subgroups, varying in risk for new ischemic events and death from non-IHD causes. Analysis revealed that certain clusters had significantly different risks compared to others. This stratification by risk highlighted the diverse nature of multimorbidity in IHD patients.
+
+Laboratory and Genetic Associations
+
+The study extended its analysis to laboratory measurements and genetic data. Significant differences were found in the distribution of test results across clusters, indicating a correlation between the phenotypic patterns identified and the clinical laboratory test results. This aspect underscored the biological relevance of the clustering findings.
+
+Discussion and Implications
+
+The study's methodology allowed for a nuanced understanding of multimorbidity in IHD, identifying clusters with varying risks and providing insights into disease-disease associations that are often underappreciated. The findings support the notion that different subtypes of diabetes and other conditions significantly influence IHD risk. This approach, blending phenotypic and genetic data, represents a significant stride in precision medicine, offering new perspectives on patient subgrouping and treatment customization in IHD.
+
+Conclusion
+
+This study stands out for its large-scale, data-driven approach, analyzing over 70,000 patients with more than 3,000 input features without prior feature selection bias. It highlights the complexity of multimorbid patients with IHD and the clinical relevance of detailed patient subgrouping. This methodology offers potential applications in other diseases and clinical data types, ultimately aiming to guide more precise and effective treatment strategies in IHD and beyond.
 
