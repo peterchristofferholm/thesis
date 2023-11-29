@@ -98,7 +98,7 @@
 % fonts
 \usepackage[T1]{fontenc}
 
-\usepackage[p, osf]{ETbb}  % osf in text, tabular lining figures in math
+\usepackage[osf, p]{ETbb}  % osf in text, tabular lining figures in math
 \usepackage[scaled=.95,type1]{cabin}  % sans serif in style of Gill Sans
 \usepackage[libertine, vvarbb]{newtxmath}
 \usepackage[scaled=.90]{FiraMono}
@@ -114,6 +114,7 @@
 \usepackage{pdfpages}
 \usepackage[mode=match]{siunitx}
 \usepackage{todonotes}
+\usepackage{bookmark}
 
 \usepackage{subcaption}
 \captionsetup{font=footnotesize}    
@@ -125,6 +126,7 @@
 \usepackage{pgffor}
 \usepackage{relsize}  % easy scaling of fonts
 \usepackage{bm}
+\usepackage[morefloats=200]{morefloats}
 
 % enumerate
 \usepackage[inline]{enumitem}
@@ -139,7 +141,7 @@
 
 % acro 
 \usepackage[nohyperlinks]{acronym}
-\renewcommand*{\acsfont}[1]{\lfstyle \textsmaller[.5]{#1}}
+\renewcommand*{\acsfont}[1]{\textlf{\textsmaller[.5]{#1}}}
 
 % tikz 
 \usepackage{tikz}
@@ -158,6 +160,7 @@
 \usetikzlibrary{quotes} 
 \usetikzlibrary{decorations.text}
 \usetikzlibrary{decorations.markings}
+\usetikzlibrary{fit}
 
 
 \definecolor{color0}{HTML}{001118}
@@ -230,6 +233,12 @@
 \newcommand{\studyi}{\hyperref[outline-study-1]{Study I}}
 \newcommand{\studyii}{\hyperref[outline-study-2]{Study II}}
 \newcommand{\studyiii}{\hyperref[outline-study-3]{Study III}}
+
+\newcommand{\cbox}[2]{%
+    \tcbox[on line, colback=#1, boxsep=1.5pt, colframe=black,
+           valign=center, left=0pt, right=0pt, top=0pt, bottom=0pt, boxrule=1pt]{#2}%
+}
+
 % ←
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -238,8 +247,8 @@
 \frontmatter
 \maketitle
 
-\include{content/00-copyright}      % [ ]
-\include{content/00-preface}        % [ ]
+\include{content/00-copyright.tex}      % [ ]
+\include{content/00-preface.tex}        % [ ]
 
 \cleardoublepage
 \tableofcontents
@@ -261,15 +270,17 @@
 % \include{content/survival-analysis}  % [X]
 \include{content/data-foundation}    % [ ]
 
+
 \part{Outline of Studies}
-\include{content/results-paper1}     % [ ]
-\include{content/results-paper2}     % [ ]
-\include{content/results-paper3}     % [ ]
+% \include{content/results-paper1}     % [ ]
+% \include{content/results-paper2}     % [ ]
+% \include{content/results-paper3}     % [ ]
 
 \part{Discussion}
 \include{content/conclusions}        % [ ]
+% \include{content/miscellaneous.tex}
 
-\include{content/miscellaneous.tex}
+\bookmarksetup{startatroot}
 
 \backmatter %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

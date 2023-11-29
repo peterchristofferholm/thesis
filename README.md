@@ -9,19 +9,17 @@ latexmk -pdf -pvc main.tex
 ## Timeline
 
 ```
-11/25: data overview
-11/26: data overview
 11/27: data overview
-11/28: paper 1
-11/29: paper 1
+11/28: data overview
+11/29: data overview
 11/30: paper 1
 12/01: paper 1
-12/02: paper 2
-12/03: paper 2
+12/02: paper 1
+12/03: paper 1
 12/04: paper 2
 12/05: paper 2
 12/06: paper 2
-12/07: paper 3
+12/07: paper 2
 12/08: paper 3
 12/09: paper 3
 12/10: paper 3
