@@ -34,19 +34,6 @@ of other neighboring lesions and future acute thrombotic events.
     is therefore recommended for risk assessment.%
 }
 
-\textquote[knuuti20192020]{% class I recommendation
-    Invasive coronary angiography is recommended as an alternative test to
-    diagnose \textsc{CAD} \textins{coronary artery disease} in patients with a high
-    clinical likelihood, severe symptoms refractory to medical therapy or
-    typical angina at a low level of exercise, and clinical evaluation that
-    indicates high event risk.%
-}
-
-\textquote[knuuti20192020]{% class IIa recommendation
-    Invasive coronary angiography with the availability of invasive functional
-    evaluation should be considered for confirmation of the diagnosis of CAD in
-    patients with an uncertain diagnosis on non-invasive testing%
-}
 
 Myocardial tissue damage can be detected with high sensitivity by measuring 
 the release troponins and creatinine-kinase from the sarcolemma.
@@ -363,3 +350,119 @@ such that the dependence structure shared between them
 can be leveraged.
 
 
+
+%%
+
+\textcite{mohammadDevelopment2022} developed a neural network model
+for prediction of 1-year all-cause mortality and admission with heart failure 
+after an incident myorcardial infarction.
+The model was trained using data from the Swedish \acsfont{SWEDEHEART}
+registry and externally validated using the Western Denmark
+Heart Registry.
+~\autocite{mohammadDevelopment2022}
+The model showed great discrimination in both internal and external
+validation cohorts.
+
+
+
+Many different clustering algorithms exists, 
+but the choice of using the \ac{MCL} algorithm was motivated by 
+the following aspects. 
+First, the \ac{MCL} algorithm is fast and has been explicitly designed 
+to clustering analysis of very large networks with huge amounts 
+of vertices and edges.
+Secondly, the number of clusters neither can or should be specified in
+advance, and instead the issue of \enquote{how many clusters} is
+is not dealt with in an arbitrary manner, but
+rather by a strong internal logic.
+~\autocite{vandongenGraph2008}
+The granularity, or coarseness, of the clustering is instead controlled 
+by the so-called inflation parameter.
+
+
+Specifying the number of clusters is neither needed nor possible, 
+instead the issue of \enquote{how many clusters} is handled by the
+algorithm itself.
+
+
+
+In this study, we used the broadest possible definition of comorbidites,
+and considered 
+
+\subsection{Defining Comorbidities}
+
+For instance, the definition of multimorbidity used in 
+\textcite{formanMultimorbidity2018} is 
+\textquote{two or more medical diseases or conditions, 
+each lasting more than one year}.
+
+Other studies have limited their definition 
+to cover only 20 common chronic conditions.
+\autocite{roccaPrevalence2014}
+
+We defined comorbidity as the historical co-occurence
+of different diagnosis codes in the individual patient record.
+
+% The sizes, average age, and hazard ratios are aditionally reported 
+% in \cref{tab:cluster-results}.
+% \begin{table}[htbp]% →
+% \centering
+% \footnotesize
+% \sisetup{
+%     detect-all
+% }
+% \setlength{\tabcolsep}{2pt}
+% \begin{tabular}{
+%   l
+%   S[table-format=4.0]
+%   S[table-format=2.1]
+%   S[parse-numbers=false]
+%   S[table-format=1.3]
+%   S[table-format=1.3]
+% }
+%     %\multirow{2}[3]{*}{Size} & 
+% \toprule
+% {} & {\multirow{2}{*}{Size}} &
+% \multicolumn{2}{c}{Age} & 
+% \multicolumn{1}{c}{New Ischemic Events} & 
+% \multicolumn{1}{c}{Non-\ac{IHD} mortality} \\
+% \cmidrule(lr){3-4} \cmidrule(lr){5-5} \cmidrule(lr){6-6}
+% %%%%
+% {}  & {} & { \(\mu\)} & {(SD)} & {HR} & {HR}  \\
+% \midrule
+% C1  & 7191  & 64.8 & (11.3)  & 1.000 & 0.856 \\
+% C2  & 5990  & 58.6 & (11.5)  & 0.825 & 0.600 \\
+% C3  & 4641  & 56.8 & (11.4)  & 0.757 & 0.586 \\
+% C4  & 4401  & 69.6 & (10.2)  & 0.920 & 1.461 \\
+% C5  & 4290  & 63.9 & (10.7)  & 1.402 & 1.629 \\ [0.8ex]
+% C6  & 3589  & 59.7 & (10.9)  & 0.969 & 0.675 \\
+% C7  & 3309  & 63.8 & (11.0)  & 0.889 & 0.611 \\
+% C8  & 2802  & 71.1 & (10.9)  & 0.943 & 0.842 \\
+% C9  & 2581  & 63.7 & (11.8)  & 1.314 & 1.789 \\
+% C10 & 2562  & 74.2 & (9.6)   & 0.978 & 0.928 \\ [0.8ex]
+% C11 & 2292  & 66.1 & (11.0)  & 0.926 & 0.650 \\
+% C12 & 2213  & 70.3 & (10.2)  & 0.920 & 0.805 \\
+% C13 & 2070  & 58.6 & (10.2)  & 0.946 & 0.577 \\
+% C14 & 2070  & 68.2 & (9.6)   & 1.146 & 3.390 \\
+% C15 & 2040  & 63.9 & (10.1)  & 1.031 & 0.784 \\ [0.8ex]
+% C16 & 1654  & 64.1 & (12.1)  & 1.107 & 1.761 \\
+% C17 & 1281  & 65.3 & (9.9)   & 1.001 & 1.761 \\
+% C18 & 1251  & 68.2 & (9.8)   & 1.790 & 3.421 \\
+% C19 & 1168  & 58.5 & (9.7)   & 0.752 & 1.571 \\
+% C20 & 1119  & 71.5 & (11.3)  & 1.213 & 1.782 \\ [0.8ex]
+% C21 & 1000  & 61.0 & (11.0)  & 1.116 & 0.890 \\
+% C22 & 988   & 69.2 & (10.4)  & 1.023 & 0.978 \\
+% C23 & 935   & 58.7 & (12.2)  & 1.609 & 2.275 \\
+% C24 & 932   & 67.9 & (10.1)  & 0.787 & 1.589 \\
+% C25 & 860   & 56.2 & (9.9)   & 0.978 & 2.691 \\ [0.8ex]
+% C26 & 852   & 58.7 & (12.1)  & 0.939 & 1.108 \\
+% C27 & 823   & 65.1 & (10.9)  & 1.201 & 1.289 \\
+% C28 & 686   & 71.7 & (8.0)   & 0.866 & 1.786 \\
+% C29 & 550   & 57.2 & (11.1)  & 0.906 & 0.985 \\
+% C30 & 533   & 61.2 & (11.7)  & 1.874 & 5.364 \\ [0.8ex]
+% C31 & 520   & 64.4 & (11.2)  & 1.052 & 1.484 \\
+% \bottomrule
+% \end{tabular}
+% \caption{Clinical characteristics of the study population by cluster}
+% \label{tab:cluster-results}
+% \end{table}% ←

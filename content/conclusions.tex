@@ -1,7 +1,105 @@
+\chapter{Limitations}
+
+A number of methodological limitations and perspectives is 
+relevant to discuss in the context of \studyi{}.
+
+A common limitation of clustering applications is 
+the lack of established techniques for \enquote{validation}.
+For supervised learning, its relatively straightforward to 
+apply ones model to a test-set, ideally from a totally different population,
+and then directly measure if the model is able to generalize.
+The lack of defined labels in unsupervised clustering applications, however,
+makes such a strategy impossible.
+Instead, one can of course apply the clustering approach on a comparable 
+cohort and then observe if the overall patterns detected are similar.
+However, this is not really quantifiable and thus also represents
+an unfeasible approach.
+Other strategies involves ...
+In the light of the presented study,
+we argue that the results should be used for hypothesis-generation,
+and instead one can try to validate specific patterns hightlighted by our research.
+We do not claim that the presented clustering is necessarily the "best",
+as described in <reference to earlier in the thesis>, 
+such a clustering is highly context dependent.
+In this work, we used clustering as a tool to condense the occurence of more
+than 3000 different diagnosis codes into 31 clusters that was possible to 
+both visualise and understand.
+
+
+Acknowledging the inherent limitations of unsupervised clustering
+methodologies, particularly the absence of established validation techniques,
+we emphasize the need to approach the findings of our study with a
+hypothesis-driven perspective. 
+
+
+Unlike supervised learning, where models can be
+evaluated on independent test sets, clustering algorithms lack defined labels,
+making direct validation challenging. Nevertheless, utilizing clustering as a
+tool to condense a vast array of diagnostic codes (over 3,000) into 31
+interpretable clusters provides valuable insights into the multimorbidity
+landscape associated with \ac{IHD}.
+
+
+The methodological landscape of unsupervised clustering algorithms, such as
+those employed in \studyi{}, is marked by a unique set of challenges and
+considerations. One of the most prominent limitations is the absence of
+established validation techniques. Unlike supervised learning, where models are
+trained to classify or predict predefined labels, unsupervised clustering
+algorithms operate in the absence of such labels. This inherent characteristic
+makes the conventional approach of validating models on independent test sets
+infeasible.
+
+The lack of direct validation methodologies necessitates a shift in perspective
+when evaluating clustering results. Rather than aiming for absolute validation,
+researchers should adopt a hypothesis-driven approach, utilizing the insights
+derived from clustering to generate testable hypotheses. This approach
+acknowledges the context-dependent nature of clustering, where the validity of
+the identified clusters is contingent on the specific dataset and research
+objectives.
+
+In the context of \studyi{}, the clustering methodology was employed to
+condense a vast array of diagnostic codes (over 3,000) into 31 interpretable
+clusters. These clusters represent distinct patterns of co-occurring
+comorbidities associated with \ac{IHD}. While direct validation of these
+clusters is challenging, the patterns they reveal can serve as valuable
+starting points for further investigation and hypothesis generation.
+
+It is important to emphasize that the presented clustering approach is not
+intended to be the definitive or universally applicable solution for exploring
+the complex multimorbidity landscape of \ac{IHD}. Instead, it serves as a
+valuable tool for generating hypotheses and guiding future research. As
+research progresses and understanding of the underlying mechanisms of
+multimorbidity deepens, more sophisticated clustering techniques and validation
+strategies may emerge.
+
+In summary, while the lack of established validation methods poses a challenge
+for unsupervised clustering, adopting a hypothesis-driven approach and
+acknowledging the context-dependent nature of clustering can still provide
+valuable insights into complex data structures. The clustering results obtained
+in \studyi{} have generated promising hypotheses that warrant further
+investigation and validation. As the field of multimorbidity research continues
+to advance, the methodological landscape of clustering is likely to evolve as
+well, enabling more robust and generalizable analyses of complex comorbidity
+patterns.
+
+
 \chapter{Conclusions and Future Perspectives}
 \label{conclusions}
 
+\section{Study I}
 
+
+
+
+
+
+
+
+
+We primarily used hospital data which might result in underrepresentation of
+conditions commonly managed in primary care settings,
+including non-complex infections, hypertension, and soft-tissue disorders.
+~\autocite{finleyWhat2018}
 
 Leveraging population-level genomic datasets from large biobanks,
 it should be possible to implement genetics informed risk stratification
@@ -32,3 +130,18 @@ how it should or should not affect the clinical use of such models.
     and has been carefully maintained,
     but comes with no guaranted explanation?
 }
+
+\textquote[knuuti20192020]{% class I recommendation
+    Invasive coronary angiography is recommended as an alternative test to
+    diagnose \textsc{CAD} \textins{coronary artery disease} in patients with a
+    high clinical likelihood, severe symptoms refractory to medical therapy or
+    typical angina at a low level of exercise, and clinical evaluation that
+    indicates high event risk.%
+}
+
+\textquote[knuuti20192020]{% class IIa recommendation
+    Invasive coronary angiography with the availability of invasive functional
+    evaluation should be considered for confirmation of the diagnosis of CAD in
+    patients with an uncertain diagnosis on non-invasive testing%
+}
+

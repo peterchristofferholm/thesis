@@ -20,10 +20,9 @@
 \usepackage[%
     style=verbose-note,
     %% disable these fields in the citation %%
-    url=false,
+    % url=false,
     isbn=false,
     doi=false,
-    eprint=false,
     eprint=false,
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     date=year,
@@ -48,49 +47,55 @@
 }
 
 \renewbibmacro{in:}{}
-\AtEveryCitekey{%
-    \clearfield{pagetotal}%
-    \clearfield{eprint}%
-    \clearfield{pages}%
-    \clearfield{series}%
-    \clearfield{volume}%
-    \clearfield{number}%
-    \clearfield{issue}%
-    \clearlist{location}%
-    \clearname{editor}%
-}
 \addbibresource{assets/pch-thesis.bib}
 
-% \urlstyle{tt}
-% \DeclareUrlCommand\url{\smaller[0.5]}
-
-% fix appearance of cited preprints
 \DeclareSourcemap{
     \maps[datatype=bibtex]{
         \map{
-            \pertype{online}
-            % \step[typesource=online, typetarget=article]
-            % \step[fieldset=url, null=true]
-            \step[fieldsource=eprinttype, fieldtarget=journaltitle]
-            \step[fieldsource=journaltitle, match={arxiv}, replace={arXiv}]
+            \pertype{incollection}
+            \step[fieldset=url, null]
+            \step[fieldset=urldate, null]
         }
         \map{
-            \step[
-                fieldsource=url, 
-                match=\regexp{\A (https?...)?(www.)}, replace={}
-            ]
+            \pertype{article}
+            \step[fieldset=url, null]
+            \step[fieldset=urldate, null]
         }
-    }
-}
-
-\DeclareStyleSourcemap{
-    \maps[datatype=bibtex]{
+        \map{
+            \pertype{online}
+            \step[fieldsource=eprinttype, final=true]
+            \step[typesource=online, typetarget=article]
+            \step[fieldsource=eprinttype, fieldtarget=journaltitle]
+            \step[fieldsource=journaltitle, match={arxiv}, replace={arXiv}]
+            \step[fieldset=urldate, null]
+        }
+        \map{
+            \step[fieldset=pages, null]
+            \step[fieldset=pagetotal, null]
+            \step[fieldset=series, null]
+            \step[fieldset=issue, null]
+            \step[fieldset=volume, null]
+            \step[fieldset=number, null]
+            \step[fieldset=location, null]
+            \step[fieldset=editor, null]
+            \step[fieldset=eprint, null]
+        }
         \map{
             \pertype{inproceedings}
             \step[fieldset=publisher, null=true]
         }
+        \map{
+             \step[fieldsource=url, final=true]
+             \step[fieldset=verba, origfieldval, final=true]
+             \step[fieldsource=verba, match=\regexp{\A(https?...)?(www.)}, replace={}]
+        }
     }
 }
+
+\DeclareFieldFormat{url}{%
+  \mkbibacro{URL}\addcolon\space
+  \href{#1}{\nolinkurl{\thefield{verba}}}}
+
 % ←
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % load packages →
@@ -108,6 +113,7 @@
 \usepackage{amsfonts}
 \usepackage{microtype}
 \usepackage{booktabs}
+\usepackage{multirow}
 \usepackage{tabularx}
 \usepackage{multicol}
 \usepackage{makecell}
@@ -140,8 +146,13 @@
 \renewcommand{\mkcitation}[1]{~\autocite{#1}}
 
 % acro 
+\usepackage{etoolbox}
 \usepackage[nohyperlinks]{acronym}
 \renewcommand*{\acsfont}[1]{\textlf{\textsmaller[.5]{#1}}}
+
+\makeatletter
+\pretocmd{\@makechapterhead}{\acresetall}{}{}
+\makeatother
 
 % tikz 
 \usepackage{tikz}
@@ -230,14 +241,46 @@
 \newcommand{\xb}{\check{\xa}}
 \newcommand{\hzt}{\lambda_0\mspace{-1mu}(t)}
 
-\newcommand{\studyi}{\hyperref[outline-study-1]{Study I}}
-\newcommand{\studyii}{\hyperref[outline-study-2]{Study II}}
+\newcommand{\studyi  }{\hyperref[outline-study-1]{Study I}}
+\newcommand{\studyii }{\hyperref[outline-study-2]{Study II}}
 \newcommand{\studyiii}{\hyperref[outline-study-3]{Study III}}
 
 \newcommand{\cbox}[2]{%
     \tcbox[on line, colback=#1, boxsep=1.5pt, colframe=black,
            valign=center, left=0pt, right=0pt, top=0pt, bottom=0pt, boxrule=1pt]{#2}%
 }
+
+\DeclareRobustCommand{\uporange}{%
+    \begingroup
+    \raisebox{-.2\height}{%
+      \includegraphics[width=1em]{graphics/upregulated-icon-orange.pdf}%
+    }%
+    \endgroup
+}
+\DeclareRobustCommand{\downorange}{%
+    \begingroup
+    \raisebox{-.2\height}{%
+      \includegraphics[width=1em, angle=180, origin=c]%
+        {graphics/upregulated-icon-orange.pdf}%
+    }%
+    \endgroup
+}
+\DeclareRobustCommand{\upblue}{%
+    \begingroup
+    \raisebox{-.2\height}{%
+      \includegraphics[width=1em]{graphics/upregulated-icon-blue.pdf}%
+    }%
+    \endgroup
+}
+\DeclareRobustCommand{\downblue}{%
+    \begingroup
+    \raisebox{-.2\height}{%
+      \includegraphics[width=1em, angle=180, origin=c]%
+        {graphics/upregulated-icon-blue.pdf}%
+    }%
+    \endgroup
+}
+
 
 % ←
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -265,20 +308,19 @@
 \mainmatter %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \part{Background and Methods}
-% \include{content/introduction}       % [X]
+\include{content/introduction}       % [X]
 % \include{content/machine-learning}   % [X]
 % \include{content/survival-analysis}  % [X]
-\include{content/data-foundation}    % [ ]
-
+% \include{content/data-foundation}    % [X]
 
 \part{Outline of Studies}
-% \include{content/results-paper1}     % [ ]
+\include{content/results-paper1}     % [ ]
 % \include{content/results-paper2}     % [ ]
 % \include{content/results-paper3}     % [ ]
 
 \part{Discussion}
-\include{content/conclusions}        % [ ]
-% \include{content/miscellaneous.tex}
+\include{content/conclusions}          % [ ]
+\include{content/miscellaneous.tex}
 
 \bookmarksetup{startatroot}
 
