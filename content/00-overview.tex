@@ -1,0 +1,263 @@
+\chapter{Overview and Structure} 
+\label{chap:overview}
+
+With the overall aim of furthering our knowledge on 
+\ac{IHD}, the scope of this thesis is in
+developing and establishing methods and approaches for 
+precision diagnostics and risk-stratification 
+for patients with \ac{IHD}. 
+By leveraging large-scale heterogeneous healthcare data,
+the primary objective is thus to contribute to the advancement of 
+precision medicine for secondary prevention in \ac{IHD}.
+Specifically, the research presented in this thesis belongs to  
+two subject areas within this overall objective:
+
+\begin{enumerate}
+    \item Characterizing the complex patterns of multimorbidity in 
+        ischemic heart disease and assessing its impact on 
+        disease risk and progression.
+    \item Developing risk-prediction tools from real-world healthcare 
+        data using \ac{ML} approaches that can allows modelling of 
+        time-to-event data with censoring.
+\end{enumerate}
+
+These subject areas illustrates 
+the convergence of precision medicine and artificial
+intelligence as a transformative approach in the diagnosis, management,
+and treatment of disease.
+While the research is concentrated on ischemic heart disease and cardiology,
+the methodologies and findings could potentially be extrapolated to other
+medical fields, given their broad applicability.
+
+\section*{Organization}
+
+The thesis is written in the form a synopsis 
+and is as such based on three key manuscripts around 
+which the content of thesis is centered.
+The following gives an overview of the structure, 
+giving an high-level outline of the included chapters.
+
+\begin{itemize} 
+    \item In \cref{chap:precision-medicine}
+
+
+    \item In the chapter \nameref{pm-in-ihd}, I provide an
+        in-depth discussion of the pathophysiology and disease manifestations of
+        ischemic heart disease, which serves as the focal point of this thesis.
+        I offer an overview of the methodologies involved in developing data-driven
+        precision medicine. Throughout the thesis, precision medicine is
+        primarily contextualized within the frameworks of \enquote{big data} 
+        and \enquote{machine learning}.
+
+    \item The chapter \nameref{ml-fundamentals} introduces the core concepts of
+        machine learning, with a specific focus on neural networks. While the
+        chapter is generally broad in scope, it places particular emphasis on
+        the tools and techniques utilized in the research presented.
+
+    \item The final background chapter, \nameref{survival-analysis}, provides a
+        comprehensive overview of survival analysis. It further delves into the
+        specific approach we have employed for modeling time-to-event data
+        using neural networks.  
+
+    \item In \nameref{results}, I summarize each of the three included papers,
+        briefly outline the methodologies employed, and highlight the key
+        findings.  Additionally, I contextualize the research within the
+        broader scientific literature.
+
+    \item In \nameref{conclusions}, I offer final thoughts on the thesis and
+        outline areas that warrant further investigation.
+
+    \item The \nameref{appendix} includes the three full-length scientific
+        manuscripts that form the core of this thesis.
+
+\end{itemize}
+
+In Denmark, almost half a million people suffer 
+from cardiological diseases and \qty{25}{\percent} of all deaths 
+is attributed to cardiac causes. 
+
+Coronary artery disease
+is the largest cardiological disease group in Denmark with
+more than 50,000 patients annually
+presenting with symptoms such as chest-pain, dyspnea, and
+syncope—all connected to an
+extensive number of workups and expenditures.
+
+For such patients, presently applied treatment
+regimens for patients with cardiovascular disease is best de
+scribed as “one-size-fits-all”. Although
+currently employed treatment regimens have been
+extremely effective in reducing overall mortality,
+there is a growing concern that a considerable number of pati
+ents are overtreated and overdiagnosed.
+For patients, overtreatment and overdiagnosis represent unnece
+ssary stigmatization, anxiety, depression and reduced quality of life,
+risks associated with procedures (bleeding, infection, stroke etc.), 
+potential side-effects of drugs, costs of drugs, leaves for follow-ups, etc. 
+
+We hypothesize that machine-learning driven robust 
+identification of patients with little to no risk of developing complications
+can be used to address the issues related to harmful overtreatment. 
+
+Adapting, reshaping, and integrating the heterogenous health c
+are data in EHR systems paves the
+way for an unprecedented description of patient disease- and
+treatment history, which we plan to
+utilize in developing and establishing novel patient-stratifi
+cation principles for the tailored
+treatment of patients with ischemic heart disease. Additionally
+, by li
+nking the
+fine
+-grained
+phenotypic description with genetic data we hope to uncover
+phenotype – genotype mappings
+that might further our knowledge on both disease etiology an
+d causality. Many EHR systems are
+however not designed with such secondary usage directly
+in mind—as a consequence many
+challenges precede their research use. 
+
+In a review by Jensen et al.
+some of these challenges are
+listed as: the lack of control over data definitions and data col
+lection processes in healthcare
+facilities, the need for computable definitions
+of cohorts and outcomes of interest, extracting
+information from written or dictated clinical narratives, and th
+e intricacies of demonstrating that
+data are of adequate quality to support research conclusions.
+
+Designing good solutions and workarounds for a number of these challenge
+s is an important constituent in the different milestones of th e described
+PhD project
+
+
+The
+second
+key milestone is a thorough investigation on the process
+of using disease-history and
+patient phenotypes to create
+novel sub-stratifications of
+a patient population with ischemic heart
+disease which can be used to discover new disease 
+progression patterns. 
+To this end, I will in close
+collaboration with clinicians work on the creation of high-q
+uality definitions for both inclusion and
+progression events on the basis of combinations of structured data such as diag
+nosis and procedure billing codes, clinical laboratory values, and
+medication codes.
+
+Followingly,
+heterogenous clinical and para-clinical patient information will be use
+d to perform deep phenotyping of included patients 
+(expected to be around 100,000) using state-
+of
+-the art unsupervised machine-
+learning methods and data-mining techniques in order to cr
+eate meaningful clusters of patients
+with similar progression patterns and phenotypic profiles
+.
+Such sub
+-stratification is expected to
+generate clinical knowledge on important subgroups that poten
+tially can be used to better tailor
+treatment regimens. Similar work in the context of diabetes hav
+e already been undertaken by
+previo
+us and current members of the Brunak-
+grou
+p
+,
+and a lot of experiences and established
+pipelines can therefore be drawn from that work and reused
+in the context of ischemic heart
+disease
+12
+. Any key findings from this second milestone is expe
+cted to provide important features
+for the risk-prediction modelling in the third milestone
+.
+The third milestone is the development of risk-predictio
+n models for ischemic heart disease by
+integrating conventional clinical findings and risk factors
+with disease courses, co-morbidities and
+other clinical and paraclinical data. These data types are highly
+heterogeneous, with many
+differences in data types (e.g. continuous, categorical, or
+binary), quality, volumes, and time
+spans. Established
+risk
+-prediction models in the domain (e.g. SCORE, Framingham,
+GRACE)
+use
+classical statistical methods such as Cox multiple regression
+, logistic regression, or generalized
+additive models to provide risk-estimates
+13
+–
+16
+.
+However, such models fail to account for non-linear
+effects and are not able to integrate very heterogenous data with
+a large number of different
+features—at least not without a very exhaustive feature selection an
+d engineering process and
+expert domain knowledge. However, sophisticated new machin
+e-learning models (e.g., those used
+in “deep learning” [a class of machine-learning algorithms
+that use artificial neural networks that
+can learn extremely complex relationships between features
+and labels and have been shown to
+exceed human abilities in performing tasks such as classif
+ication of images]) are well suited to
+learn from the complex and heterogeneous kinds of data that ar
+e generated from modern clinical
+care and genomic data to help make medically relevant predicti
+ons
+17
+. In order to include and
+manage the multitude of potential risk factors, I will focus o
+n utilizing deep learning applications;
+more specifi
+cally, a focus on Recurrent Neural Networks (RNN) and Natural
+Language Processing
+(NLP) for their ability to handle time-stamped numeric and te
+xt data.
+The decision of which model
+to use is strictly bounded to the kind of input the model
+receives. In case of time series, the
+recurrent neural networks have proved their ability to reme
+mber short- and long-term
+dependencies, thus reaching higher performances.
+Given that the overall motivation of creating novel risk-pred
+iction and stratification models is to
+provide treating physicians with a
+clinical decision support system
+to identity low and high-
+risk
+patients on a solid scientific basis, it is of the utmost imp
+ortance that produced models are readily
+interpretable. An often-raised concern with some machine l
+earning applications, and specifically
+deep
+-learning models, is the lack of interpretability and their
+“black box” nature. Although
+interpretability is not always straightforward with such models
+, there are
+now numerous
+approaches that can be used to provide interpretable informati
+on that can lead to discovery of
+previously unknown markes of clinical value. Examples o
+f such are local interpretable model-
+agnostic explanations (LIME) and Shapley additive explanations (SHA
+P)
+18,19
+.
+In the development
+and refinement of models for the third milestones, there
+will be an extensive focus on utilizing
+these approaches.
+
+

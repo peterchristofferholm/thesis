@@ -19,12 +19,10 @@
 
 \usepackage[%
     style=verbose-note,
-    %% disable these fields in the citation %%
-    % url=false,
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     isbn=false,
     doi=false,
     eprint=false,
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     date=year,
     maxcitenames=2,     % when should "et al." be triggered?
     maxbibnames=4,      % when should "et al." be triggered? (in bib)
@@ -62,12 +60,23 @@
             \step[fieldset=urldate, null]
         }
         \map{
+            \pertype{book}
+            \step[fieldset=url, null]
+            \step[fieldset=urldate, null]
+        }
+        \map{
             \pertype{online}
             \step[fieldsource=eprinttype, final=true]
             \step[typesource=online, typetarget=article]
             \step[fieldsource=eprinttype, fieldtarget=journaltitle]
             \step[fieldsource=journaltitle, match={arxiv}, replace={arXiv}]
             \step[fieldset=urldate, null]
+        }
+        \map{
+            \pertype{inproceedings}
+            \step[fieldset=publisher, null=true]
+            \step[fieldset=url, null=true]
+            \step[fieldset=urldate, null=true]
         }
         \map{
             \step[fieldset=pages, null]
@@ -81,13 +90,13 @@
             \step[fieldset=eprint, null]
         }
         \map{
-            \pertype{inproceedings}
-            \step[fieldset=publisher, null=true]
-        }
-        \map{
-             \step[fieldsource=url, final=true]
-             \step[fieldset=verba, origfieldval, final=true]
-             \step[fieldsource=verba, match=\regexp{\A(https?...)?(www.)}, replace={}]
+            \step[fieldsource=url, final=true]
+            \step[fieldset=verba, origfieldval, final=true]
+            \step[
+               fieldsource=verba, 
+               match=\regexp{\A(https?...)?(www.)?}, 
+               replace={}
+            ]
         }
     }
 }
@@ -113,13 +122,13 @@
 \usepackage{amsfonts}
 \usepackage{microtype}
 \usepackage{booktabs}
+\usepackage[danish, british]{babel}
 \usepackage{multirow}
 \usepackage{tabularx}
 \usepackage{multicol}
 \usepackage{makecell}
 \usepackage{pdfpages}
 \usepackage[mode=match]{siunitx}
-\usepackage{todonotes}
 \usepackage{bookmark}
 
 \usepackage{subcaption}
@@ -241,6 +250,8 @@
 \newcommand{\xb}{\check{\xa}}
 \newcommand{\hzt}{\lambda_0\mspace{-1mu}(t)}
 
+\newcommand{\pmhnet}[1]{\texttt{PMHnetV#1}}
+
 \newcommand{\studyi  }{\hyperref[outline-study-1]{Study I}}
 \newcommand{\studyii }{\hyperref[outline-study-2]{Study II}}
 \newcommand{\studyiii}{\hyperref[outline-study-3]{Study III}}
@@ -285,47 +296,64 @@
 % ←
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{document}
+\includeonly{%
+    content/00-copyright.tex,
+    content/00-preface.tex,
+    content/00-acronyms.tex,
+    content/00-summary.tex,
+    content/00-manuscripts.tex,
+    content/00-overview.tex,
+    content/introduction.tex,
+    content/machine-learning.tex,
+    content/survival-analysis.tex,
+    content/data-foundation.tex,
+    content/study1-outline.tex,
+    content/study2-outline.tex,
+    content/study3-outline.tex,
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \frontmatter
 \maketitle
 
-\include{content/00-copyright.tex}      % [ ]
-\include{content/00-preface.tex}        % [ ]
+\include{content/00-copyright.tex}  
+\include{content/00-preface.tex}
+\include{content/00-summary}        
+\include{content/00-manuscripts}        
 
 \cleardoublepage
+
 \tableofcontents
 \listoffigures
 \listoftables
 
-\include{content/00-acronyms}        % [ ]
-\include{content/01-manuscripts}     % [ ]
-\include{content/01-summary}         % [ ]
+\include{content/00-acronyms}      
 
 \cleardoublepage
-\include{content/overview}           % [ ]
+\include{content/00-overview}   
 
 \mainmatter %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \part{Background and Methods}
 \include{content/introduction}       % [X]
-% \include{content/machine-learning}   % [X]
-% \include{content/survival-analysis}  % [X]
-% \include{content/data-foundation}    % [X]
+\include{content/machine-learning}   % [X]
+\include{content/survival-analysis}  % [X]
+\include{content/data-foundation}    % [X]
 
 \part{Outline of Studies}
-\include{content/results-paper1}     % [ ]
-% \include{content/results-paper2}     % [ ]
-% \include{content/results-paper3}     % [ ]
+\include{content/study1-outline.tex} 
+\include{content/study2-outline.tex} 
+\include{content/study3-outline.tex} 
 
-\part{Discussion}
-\include{content/conclusions}          % [ ]
+\part{Conclusions and Perspectives}
+\include{content/conclusions}        % [ ]
 \include{content/miscellaneous.tex}
-
-\bookmarksetup{startatroot}
 
 \backmatter %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\bookmarksetup{startatroot}
 \addcontentsline{toc}{chapter}{List of References}
 \printbibliography
 
@@ -339,7 +367,7 @@
 \includepdf[
     clip, trim=1cm 6cm 1cm 1.8cm, offset=0 -2.2cm, 
     frame=true, scale=0.8, pages=1, 
-    pagecommand=\chapter{Manuscript for Study I}\label{chap:paper-1}]%
+    pagecommand=\chapter{Manuscript for Study I}\label{chap:study1-paper}]%
     {assets/paper1-clustering.pdf}
 
 % \includepdf[
@@ -350,16 +378,22 @@
 
 \cleardoublepage
 \includepdf[
-    clip, trim=1cm 6cm 1cm 1.8cm, offset=0 -2.2cm, 
+    clip, trim=1cm 4cm 1cm 4cm, offset=0 -2.2cm, 
     frame=true, scale=0.8, pages=1, 
-    pagecommand=\chapter{Manuscript for Study II}\label{chap:paper-2}]%
-    {assets/paper1-clustering.pdf}
+    pagecommand=\chapter{Manuscript for Study II}\label{chap:study2-paper}]%
+    {assets/paper2-pmhnet-v1.pdf}
+
+% \includepdf[
+%     clip, trim=1cm 2cm 1cm 3.2cm, offset=0 0, 
+%     frame=true, scale=0.8, pages=2-, 
+%     pagecommand={}]%
+%     {assets/paper2-pmhnet-v1.pdf}
 
 \cleardoublepage
 \includepdf[
     clip, trim=1cm 6cm 1cm 1.8cm, offset=0 -2.2cm, 
     frame=true, scale=0.8, pages=1, 
-    pagecommand=\chapter{Manuscript for Study III}\label{chap:paper-3}]%
+    pagecommand=\chapter{Manuscript for Study III}\label{chap:study3-paper}]%
     {assets/paper1-clustering.pdf}
 
 \end{document}
