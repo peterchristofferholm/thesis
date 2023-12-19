@@ -11,24 +11,20 @@ Subgrouping multimorbid patients with ischemic heart disease by
 means of unsupervised clustering: A cohort study of 72,249
 patients defined comprehensively by diagnoses prior to
 presentation}, is currently under revision.
-
-I co-authored the manuscript with Amalie Dahl Haue,
-sharing the first authorship.
-An earlier version of this manuscript was also included in 
-her thesis, and have been deposited on a preprint server. 
+An earlier version have been deposited on the medRxiv preprint server. 
 \autocite{haueSubgrouping2023}
 The revised, full-length manuscript is included in 
-\cref{chap:paper-1}.
+\cref{chap:study1-paper}.
 
-\section{Background and Aims}
+\section{Background and Rationale}
 
 \Ac{IHD} is highly heterogeneous in its onset, burden, and progression.
-As delineated in \cref{pm-in-ihd}, its manifestations range from 
+As delineated in \cref{chap:precision-medicine}, its manifestations range from 
 \ac{AMI} to slowly progressing chronic coronary syndromes.
 This heterogeneity is partly explained, and further complicated,
 by the fact that most patients with \ac{IHD} have one or more 
 comorbidities.
-Current clinical practice is historically based on a single-disease paradigm
+Current clinical practice is historically mainly based on a single-disease paradigm
 and thus, complexities imposed by concurrent comorbid diseases are therefore 
 often overlooked.
 ~\autocite{formanMultimorbidity2018}
@@ -52,7 +48,7 @@ who underwent \ac{CAG} or \ac{CCTA} between 2004 and 2016
 (\num{72249} patients in total).
 We used the date of the first \ac{CAG} or \ac{CCTA} as the index date. 
 All \ac{ICD-10} codes before this date were collected
-for clustering analysis, excluding any \ac{IHD} codes.
+for clustering analysis, excluding any \ac{IHD} codes (\ac{ICD-10}: I20-25).
 
 In our study, we defined two main outcomes to assess the risk
 profiles of the different multimorbidity subgroups: (i) new ischemic events
@@ -61,7 +57,7 @@ New ischemic events, a composite outcome, included
 (a) hospital admission for \ac{AMI} or \ac{UA} after 30 days of follow-up
 (b) revascularization procedures unrelated to the index \ac{CAG}/\ac{CCTA},
 and (c) any deaths with \ac{IHD} as the primary or secondary
-cause on the death certificate.
+cause registered on the death certificate.
 
 We used days since the index procedure as the time-scale and limited 
 follow-up to at most five years. The two main outcomes were treated
@@ -88,7 +84,7 @@ In this study, we represented multimorbidity by constructing patient-level
 vectors that aggregated all diagnosis codes assigned up until the index date 
 (as illustrated by steps 1 and 2 in \cref{fig:dishisclust}).
 We excluded \ac{IHD} codes (\ac{ICD-10}: I20-25) and
-codes belonging to chapters XV, XVI, XVII, XIX, XX, and XXI.%
+codes belonging from chapters XV, XVI, XVII, XIX, XX, and XXI.%
 \sidenote{%→
     These chapters are in the Danish \ac{ICD-10} version defined as
     \begin{itemize}[itemsep=1pt, parsep=0pt]
@@ -106,7 +102,7 @@ codes belonging to chapters XV, XVI, XVII, XIX, XX, and XXI.%
     \end{itemize}
 }
 % ←
-In addition, we removed rare codes assigned to less than five patients.
+In addition, we removed rarely used codes assigned to less than five patients.
 
 The remaining codes were then counted (step 3), 
 and embedded in a vector space model 
@@ -139,7 +135,7 @@ using the \ac{MCL} algorithm
 (step 6). 
 The clusters obtained were then characterised (step 7).
 This characterisation involved four key aspects 
-(i) estimation of \acp{HR} using Cox proportional hazards models,
+(i) estimation of \acp{HR} for cluster comparisons using Cox proportional hazards models,
 (ii) phenotypic enrichment analysis, 
 (iii) examination of clusters based on laboratory test profiles,
 and (iv) testing for genetic associations through \acp{PRS}.
@@ -175,7 +171,7 @@ and will otherwise refer to the full-length manuscript.
 %and instead focused the characterisation to the remaining 31 clusters.
 
 The clustering resulted in 31 distinct patient subgroups, 
-each characterised by specific patterns multimorbidity.
+each characterised by specific patterns of multimorbidity.
 We incorporated cluster membership in Cox regression models, 
 which was further adjusted for sex and age. 
 This was to obtain estimates for the risk associated with the comorbidity
@@ -184,7 +180,7 @@ age or sex.
 The \acp{HR} were estimated 
 by contrasting each single cluster against all others.
 The size of clusters, mean age at index, and average propotion of males, 
-aswell as the adjusted \acp{HR} for the two outcomes, are
+and the adjusted \acp{HR} for the two outcomes, are
 depicted in \cref{fig:cluster-results}.
 
 \begin{figure*}[t!]% →
@@ -213,7 +209,7 @@ depicted in \cref{fig:cluster-results}.
     \label{fig:cluster-results}
 \end{figure*}% ←
 
-Our Analysis revealed that
+Our analysis revealed that
 certain clusters had significantly different risks compared to others.
 Comorbidity profiles within five clusters (C5, C9, C18, C23, C30) were
 associated with a significantly increased risk of new ischemic events.
@@ -265,7 +261,7 @@ to pinpoint \ac{ICD-10} codes that were disproportionately represented
 in various clusters.  
 The top ten most overrepresented or underrepresented codes for each
 cluster are detailed in supplementary tables 5A and 5B of the manuscript
-(\cref{chap:paper-1}).
+(\cref{chap:study1-paper}).
 
 We conducted a manual review of these findings, assigning a label to each
 cluster based on the associated codes. Given that multiple codes could pertain
@@ -279,8 +275,8 @@ derived from the Cox analyses.
 
 From \cref{fig:cluster-summary}, 
 we see that the five clusters (C5, C9, C18, C23, C30) with a 
-significant increased risk of both new ischemic events and non-\ac{IHD} mortality
-was characterised by the presence of important prognostic comorbidities in \ac{IHD}:
+significantly increased risk of both new ischemic events and non-\ac{IHD} mortality
+were characterised by the presence of important prognostic comorbidities in \ac{IHD}:
 diabetes, peripheral atherosclerosis, heart failure, 
 and chronic kidney disease. 
 
@@ -293,9 +289,9 @@ described as comorbidities that negatively impact prognosis.%
 Heart failure, 
 also known to affect prognosis and included in clinical guidelines,
 is, for example, included as one of eight carefully selected predictors
-in the widely used \acsfont{GRACE} risk and mortality calculator.
-~\autocite{foxShould2014}
-This showcases that our framework is able to identify comorbidites
+in the widely used \acsfont{GRACE} risk and mortality calculator.%
+\sidecite[13em]{foxShould2014}
+This showcases that our framework is able to identify known comorbidites
 that affect the clinical course of cardiovascular disease.
 In addition, it further emphasizes the significance of these 
 comorbidities and the broader concept of considering
@@ -303,7 +299,7 @@ comorbidity in clinical assessment of \ac{IHD}.
 
 We did not identify other clusters with comorbidity profiles
 that significicantly increased the risk of new ischemic events,
-however, both the second and third largest cluster (C2 and C3)
+however, both the second and third largest clusters (C2 and C3)
 were found to have comorbidities associated with a significant decreased risk
 of both new ischemic events and non-\ac{IHD} mortality.
 Cluster C2 is characterised by the presence of codes 
@@ -322,7 +318,7 @@ gallstones and ischemic heart disease,
 \autocite{upalaGallstone2017}
 \autocite{wirthPresence2015}
 however, the underlying reasons for this association remain
-somewhat unclear.
+somewhat unclear and it is uncertain the link is causal.
 It is known that the two diseases shares pathogenicity factors,
 which include hypercholesterolemia, diabetes, and hypertension,
 so parts of the pathological mechanism is likely shared.
@@ -333,17 +329,6 @@ the presence of gallstones appear to positively affect prognosis.
 A possible explanation is that acute symptoms of gallstone disease
 can immitate heart disease symptoms, and thus, the cluster could be 
 enriched for patients that may not have \ac{IHD} to begin with.
-However, since \ac{CAG} and \ac{CCTA} is only indicated 
-in patients with high clinical likelihood of \ac{IHD}, 
-we believe that this explanation has a low likelihood.  
-
-We found the patients in cluster C2 to have the fifth lowest average age.
-This observation leads to an alternative hypothesis: patients with gallstones 
-might be diagnosed with \ac{IHD} earlier due to pronounced symptoms 
-likely mediated by an increased tendency of cholesterol crystal formation.
-An early diagnosis could result in more timely and effective interventions,
-including statin therapy, which is perhaps especially beneficial 
-in this specific patient group.
 This area warrants further investigation to better understand these connections
 and their implications for clinical practice.
 
@@ -351,7 +336,7 @@ Two clusters were characterised by the co-occurence of cancer comorbidities.
 Clusters C24 and C28 were enriched for breast and prostate cancer, 
 respectively.
 Our current methodology does not distinguish between active cancer
-or if the patient have been cured, which represents a key limitation
+or if the patient has been cured, which represents a key limitation
 of the approach.
 However, both clusters were found to have an increased risk of 
 non-\ac{IHD} mortality.
@@ -367,7 +352,7 @@ as discussed in a 2016 \ac{ESC} position paper on the
 cardivascular toxicity of cancer treatment.
 ~\autocite{zamorano20162016}
 Moreover,
-studies indicatethat radiotherapy breast cancer
+studies indicate that radiotherapy breast cancer
 is associated with an increased risk of developing \ac{IHD}, 
 in a dose-dependent manner.
 ~\autocite{darbyRisk2013}
@@ -377,30 +362,23 @@ the other.
 
 \section{Conclusion}
 
-These selected examples effectively demonstrate how our study's methodology 
-enable a nuanced characterisation of the multimorbidity landscape in \ac{IHD},
-revealing distinct comorbidity clusters with varying risk profiles
-and generating hypotheses for future studies further elucidating 
-the described disease--disease associations.
+In this study, we presented a large-scale data-driven approach
+for analysis of comorbidity patterns in more than \num{70000} adult 
+patients with incident \ac{IHD}.
+We took a hypothesis-free approach and used a broad definition of 
+multimorbidity, including more than \num{3000} different \ac{ICD-10} codes in
+the decription of prior and coexisting comorbidities in \ac{IHD}.
+Using unsupervised clustering, we identified disctinct groups of patients 
+each characterised by specific patterns of multimorbidity and associated
+risks of both disease progression and mortality from unrelated causes.
 
-As advocated by \textcite{whittyMap2020}, Mapping out the landscape of multimorbidities in a real-world cohort of 
-patients with \ac{IHD}, could serve as an important tool for identification
-of specific patterns of comorbidities for further investigation.
-For example, one could on the basis of the findings of this study,
-recruit patients with select combinations of multimorbidity in
-new \acp{RCT}.
-
+Mapping out the landscape of multimorbidities in a real-world cohort of 
+patients with \ac{IHD}, could inform clinical managment and could serve
+as a tool for identification of comorbidity combinations for which
+current clinical knowledge is currently limited.
 Strict inclusion and exclusion criteria in many \acp{RCT} 
 potentially limit the applicability of existing \ac{IHD} 
 management guidelines on patients with pronounced multimorbidity.
 ~\autocite{richKnowledge2016}
-
-This study stands out for its large-scale, data-driven approach, analyzing over
-70,000 patients with more than 3,000 input features without prior feature
-selection bias.
-It highlights the complexity of multimorbid patients with IHD
-and the clinical relevance of detailed patient subgrouping. 
-This methodology
-offers potential applications in other diseases and clinical data types,
-ultimately aiming to guide more precise and effective treatment strategies in
-IHD and beyond.
+To adress such limitations, an important first step is to obtain an overview
+of the specific patterns of multimorbidity associated with \ac{IHD}.

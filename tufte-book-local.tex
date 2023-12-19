@@ -15,7 +15,7 @@
 \titlecontents{part}%
 	[0em]%
 	{%%   
-		\vspace{1.0\baselineskip}%
+		\vspace{0.95\baselineskip}%
 		\begin{fullwidth}%
 		\LARGE\rmfamily\itshape%
 	}%
@@ -31,7 +31,7 @@
 \titlecontents{chapter}%
 	[0em]%
 	{%%   
-		\vspace{0.5\baselineskip}%
+		\vspace{0.45\baselineskip}%
 		\begin{fullwidth}%
 		\LARGE\rmfamily\itshape%
 	}%
@@ -96,4 +96,83 @@
 % \renewcommand{\appendixpagename}{List of Manuscripts}
 % \renewcommand{\appendixtocname}{List of Manuscripts}
 
+%% maketitlepage
 
+\renewcommand{\maketitlepage}[0]{%
+  \cleardoublepage%
+  {%
+  \sffamily%
+  \begin{fullwidth}%
+  \fontsize{18}{20}\selectfont\par\noindent\textcolor{darkgray}{\allcaps{\thanklessauthor}}%
+  \vspace{11.5pc}%
+  {%
+  \rmfamily%
+  \itshape%
+  \raggedright%
+  \fontsize{32}{40}\selectfont\par\noindent\textcolor{darkgray}{{\thanklesstitle}}%
+  \vfill%
+  }%
+  \fontsize{14}{16}\selectfont\par\noindent\allcaps{\thanklesspublisher}%
+  \end{fullwidth}%
+  }
+  \thispagestyle{empty}%
+  \clearpage%
+}
+
+\newcommand{\kutitlepage}[0]{{%
+    \cleardoublepage
+    \newgeometry{left=1.75cm, top=7.5cm, bottom=2.5cm}
+    %% background
+    \AddToShipoutPictureBG*{%
+        \includegraphics[width=\paperwidth, height=\paperheight]%
+        {assets/ku-logo.pdf}
+    }
+    \AddToShipoutPictureFG*{%
+        \includegraphics[width=\paperwidth, height=\paperheight]%
+        {assets/ku-english.pdf}
+    }
+
+    % \begin{tikzpicture}[remember picture, overlay,inner sep=0pt,outer sep=0pt]
+    % \node[anchor=south east] at ([xshift=3cm,yshift=-3cm]current page.south east) {
+    %   \includegraphics{assets/ai-cover.png}
+    % };
+    % \end{tikzpicture}
+
+    \fontsize{18}{0}\selectfont\par\noindent%
+    \textbf{PhD thesis}
+
+    \fontsize{18}{24}\selectfont\par\noindent%
+    {\thanklessauthor}
+    \vspace{.4em}
+
+    \raggedright%
+    \fontsize{29}{40}\selectfont\par\noindent%
+    \textsf{\bfseries\thanklesstitle}%
+
+    \vspace{1.6em}
+    \includegraphics[trim=5mm 6.6mm 5mm 6.6mm, clip]{assets/cover-illustration.png}
+
+    \vfill%
+    {%
+    \fontsize{14}{25}\selectfont\par\noindent%
+    Primary Supervisor: Søren Brunak\\
+    Co-Supervisors: Henning Bundgaard and Karina Banasik\\
+    \vspace{1.5em}
+
+    \fontsize{14}{20}\selectfont\par\noindent%
+    \itshape
+        This thesis has been submitted to the\\
+        Graduate School of Health and Medical Sciences,\\
+        University of Copenhagen January 3, 2024 \\
+    }
+
+
+
+    %\thanklessauthor%
+
+    %\includepdf[noautoscale]{assets/ku-logo.pdf}
+    %\includepdf[noautoscale]{assets/ku-english.pdf}
+    \thispagestyle{empty}%
+    \clearpage%
+    \restoregeometry
+}}

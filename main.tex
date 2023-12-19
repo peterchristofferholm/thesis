@@ -7,7 +7,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % metadata
 
-\title{ML-based precision medicine in ischemic heart disease}
+\title[ML-based precision medicine in ischemic heart disease]{%
+    Machine Learning-Based Precision Medicine in Ischemic Heart Disease}
 \author[Peter Christoffer Holm]{Peter Christoffer Holm}
 \publisher{%
     Graduate School of Health and Medical Sciences
@@ -30,7 +31,8 @@
     autocite=footnote,  % put citation in sidenotes 
     citereset=chapter,  % reset citation tracker at each chapter
     citetracker=strict,
-    trackfloats=true
+    trackfloats=true,
+    autopunct=true
 ]{biblatex}
 
 \DeclareCiteCommand{\cite}
@@ -75,6 +77,11 @@
         \map{
             \pertype{inproceedings}
             \step[fieldset=publisher, null=true]
+            \step[fieldset=url, null=true]
+            \step[fieldset=urldate, null=true]
+        }
+        \map{
+            \pertype{manual}
             \step[fieldset=url, null=true]
             \step[fieldset=urldate, null=true]
         }
@@ -130,6 +137,8 @@
 \usepackage{pdfpages}
 \usepackage[mode=match]{siunitx}
 \usepackage{bookmark}
+\usepackage[export]{adjustbox}
+\usepackage{datetime}
 
 \usepackage{subcaption}
 \captionsetup{font=footnotesize}    
@@ -163,6 +172,19 @@
 \pretocmd{\@makechapterhead}{\acresetall}{}{}
 \makeatother
 
+%% https://tex.stackexchange.com/a/71368/128811
+\makeatletter
+\newcommand*{\org@overidelabel}{}
+\let\org@overridelabel\@verridelabel
+\renewcommand*{\@verridelabel}[1]{%
+\@bsphack
+\protected@write\@auxout{}{\string\AC@undonewlabel{#1@cref}}%
+\org@overridelabel{#1}%
+\@esphack
+}%
+\makeatother
+
+
 % tikz 
 \usepackage{tikz}
 \usepackage{pgfplots}
@@ -181,7 +203,7 @@
 \usetikzlibrary{decorations.text}
 \usetikzlibrary{decorations.markings}
 \usetikzlibrary{fit}
-
+\usetikzlibrary{babel}
 
 \definecolor{color0}{HTML}{001118}
 \definecolor{color1}{HTML}{005e72}
@@ -193,6 +215,12 @@
 \definecolor{color7}{HTML}{ba3d02}
 \definecolor{color8}{HTML}{ae1f11}
 \definecolor{color9}{HTML}{9a2126}
+
+\definecolor{bioc}{HTML}{ebb390}
+\definecolor{cln1}{HTML}{e8d19c}
+\definecolor{cln2}{HTML}{bfd3e4}
+\definecolor{diag}{HTML}{7ba79c}
+\definecolor{proc}{HTML}{cadbd8}
 
 % for graphics / images
 \usepackage{graphicx}
@@ -252,9 +280,10 @@
 
 \newcommand{\pmhnet}[1]{\texttt{PMHnetV#1}}
 
-\newcommand{\studyi  }{\hyperref[outline-study-1]{Study I}}
-\newcommand{\studyii }{\hyperref[outline-study-2]{Study II}}
-\newcommand{\studyiii}{\hyperref[outline-study-3]{Study III}}
+\newcommand{\studyi  }{\hyperref[chap:study1-outline]{Study I}}
+\newcommand{\studyii }{\hyperref[chap:study2-outline]{Study II}}
+\newcommand{\studyiii}{\hyperref[chap:study3-outline]{Study III}}
+
 
 \newcommand{\cbox}[2]{%
     \tcbox[on line, colback=#1, boxsep=1.5pt, colframe=black,
@@ -296,6 +325,7 @@
 % ←
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% \iffalse
 \includeonly{%
     content/00-copyright.tex,
     content/00-preface.tex,
@@ -303,20 +333,22 @@
     content/00-summary.tex,
     content/00-manuscripts.tex,
     content/00-overview.tex,
-    content/introduction.tex,
-    content/machine-learning.tex,
-    content/survival-analysis.tex,
-    content/data-foundation.tex,
-    content/study1-outline.tex,
-    content/study2-outline.tex,
-    content/study3-outline.tex,
+%     content/introduction.tex,
+%     content/machine-learning.tex,
+%     content/survival-analysis.tex,
+%     content/data-foundation.tex,
+%     content/study1-outline.tex,
+%     content/study2-outline.tex,
+%     content/study3-outline.tex
 }
+% \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \frontmatter
-\maketitle
+\kutitlepage
+\maketitlepage
 
 \include{content/00-copyright.tex}  
 \include{content/00-preface.tex}
@@ -337,18 +369,18 @@
 \mainmatter %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \part{Background and Methods}
-\include{content/introduction}       % [X]
-\include{content/machine-learning}   % [X]
-\include{content/survival-analysis}  % [X]
-\include{content/data-foundation}    % [X]
+\include{content/introduction}       
+\include{content/machine-learning}   
+\include{content/survival-analysis}  
+\include{content/data-foundation}    
 
 \part{Outline of Studies}
 \include{content/study1-outline.tex} 
 \include{content/study2-outline.tex} 
 \include{content/study3-outline.tex} 
 
-\part{Conclusions and Perspectives}
-\include{content/conclusions}        % [ ]
+\part{Discussion}
+\include{content/conclusions}      
 \include{content/miscellaneous.tex}
 
 \backmatter %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -54,7 +54,7 @@ to integrate large amounts of data from huge data sets
 and register and highlight patterns with clinical importance.
 In his review on artificial intelligence in medicine%
 \autocite{topolHighperformance2019}, 
-Eric Topol expresses his view, that in the not so distant future
+Eric Topol expressed his view that in the not so distant future
 \blockquote{%
 almost every type of clinician, ranging from specialty doctor to paramedic,
 will be using AI technology, and in particular deep learning}.
@@ -123,7 +123,7 @@ Two other examples of supervised learning tasks is presented in
 \studyii{} and \studyiii{} within this thesis.
 However, these tasks differ from classical supervised learning
 in that they involve time-to-event predictions and censored labels.
-This subject matter will be elaborated upon in \cref{survival-analysis}.
+This subject matter will be elaborated upon in \cref{chap:survival-analysis}.
 
 \section{Unsupervised Learning}
 
@@ -229,7 +229,7 @@ we present an example of clustering analysis of patients with
 ischemic heart disease by considering the patterns of comorbidity 
 common in subgroups of patients.
 The specific methods used in this work is outlined 
-in \cref{outline-study-1}.
+in \cref{chap:study1-outline}.
 
 \section{Generalization and Overfitting}
 \label{overfitting}
@@ -342,7 +342,7 @@ of neural network models.
 	\includegraphics[width=\linewidth]{graphics/neuron}
     \caption[Schematic diagram of a neuron]{%
         Schematic diagram of a neuron.
-        A typical neuron has a dendrites, a cell body, and a single axon; 
+        A typical neuron has dendrites, a cell body, and a single axon; 
         the dendrites receive input signals from other neurons,
         and propagates output signals along the axon.
     }
@@ -352,7 +352,7 @@ of neural network models.
 In \studyii{} and \studyiii{}, 
 neural network models are utilized to 
 develop risk prediction models for ischemic heart disease.
-Neural networks is a versatile class of machine learning models
+Neural networks are a versatile class of machine learning models
 well-suited for handling large and heterogeneous datasets, 
 and they currently represent the state-of-the-art in \ac{ML}.
 The rest of this chapter will concentrate mainly on neural networks, 
@@ -378,7 +378,7 @@ and if the cumulative signal is great enough%
 }, 
 then the neuron will propagate an action potential down the axon%
 \autocite{seifterConcepts2005}.
-In similar fashion, a perceptron receives may receive many different inputs
+In similar fashion, a perceptron  may receive many different inputs
 and produces a single output (\cref{fig:perceptron}).
 In the case of a neuron, the \enquote{all-or-none} principle means
 that nerve cells either signals at full strength or not all.
@@ -542,7 +542,7 @@ with the sigmoid, \ac{tanh}, and \ac{ReLU} being popular choices
 \subsection{Neural Network Architectures}
 
 In addition to feed forward neural networks, 
-ongoing research have developed other neural network architectures 
+ongoing research has developed other neural network architectures 
 tailored to particular types of data. 
 For example, convolutional neural networks were designed 
 for processing image data
@@ -551,7 +551,7 @@ and have revolutionized the field of
 computer vision.
 ~\autocite{prince2023understanding}
 Similarly, recurrent neural networks,
-such as the long short-term memory nework,
+such as the long short-term memory network,
 can model sequential data
 and have had great impact for both time series analysis 
 and natural language processing.
@@ -692,7 +692,7 @@ While presented as sequential steps,
 the items in the list are almost all interrelated 
 and can and should affect one another. 
 As an example, 
-it especially evident that
+it is especially evident that
 \cref{itm:data-collection} 
 drastically influences the range of possibilities in 
 \cref{itm:problem}.
@@ -760,11 +760,11 @@ otherwise known as the squared L2 norm.
 %
 \begin{alignat}{3}
     &L1: \quad \omega (\vec{\phi}) 
-        &&= \lambda||\vec{\phi}||_1 
-        &&= \lambda\sum_{i}|\phi_i|  \\
+        &&= \lambda_{1}||\vec{\phi}||_1 
+        &&= \lambda_{1}\sum_{i}|\phi_i|  \\
     &L2: \quad \omega (\vec{\phi}) 
-        &&= \lambda||\vec{\phi}||_2^2 
-        &&= \lambda\sum_{i} \phi_i^2
+        &&= \lambda_{1}||\vec{\phi}||_2^2 
+        &&= \lambda_{1}\sum_{i} \phi_i^2
 \end{alignat}
 
 The regularization strength is controlled by a hyperparameter, \(\lambda\);
@@ -869,6 +869,7 @@ model explainability techniques are generally
 the only available option.
 
 \subsection{What is SHAP Analysis?} 
+\label{sub:what-is-shap}
 
 A popular method for explainability analysis of neural network models
 is \ac{SHAP}, first published by

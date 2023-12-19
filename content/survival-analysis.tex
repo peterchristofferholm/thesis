@@ -1,8 +1,7 @@
 \chapter{Time-to-Event Prediction with Neural Networks}
 \label{chap:survival-analysis}
 
-% marginnote {{{
-\marginnote{%
+\marginnote{%→
     \setlength{\parindent}{0pt}
     \vskip 1em
     What is survival analysis?
@@ -16,34 +15,32 @@
     \begin{tikzpicture}
         \noindent
         \node (a) at (2.5, 0) {event};
-        \node (b) at (0, 0) {start (\(t_0\))} edge ["time", ->] (a);
+        \node (b) at (0, 0) {start (\(t_0\))}; 
+        \draw[->] (b) -- (a) node[midway, below] {time};
     \end{tikzpicture}
     \end{center}
-}
-% }}}
+}% ←
 
-In the previous chapter, 
-I gave an overview of machine learning and neural networks,
-highlighting key ideas and concepts related to the studies in this thesis.
-Neural networks specifically, 
+In the prior chapter, 
+I provided and  overview of machine learning and neural networks,
+highlighting central ideas and concepts releveant to the research presented
+in this thesis.
+Specifically, neural networks were employed in
 were used in \studyii{} and \studyiii{} to develop
 prediction models for ischemic heart disease.
-These models, however, diverge from classical neural network methods.
-Instead, they include modifications that make them applicable
-in modelling and analysis of time-to-event data.
-This chapter will provide an introduction to the fundamentals
-of survival analysis and will cover the
-theory that enables the implementation of such analyses with
-neural network models.
-% The chapter concludes with a discussion on different 
-% validation methods for time-to-event prediction models.
+These models, however, diverge from classical neural network methods
+in that they include adaptions that that render them suitable for
+modelling and prediction of time-to-event data.
+This chapter delves into the fundamentals of survival analysis,
+subsequently detailing the theoretical approaches used for implementing
+survival analysis in neural network models.
 
-\section{What is Survival Analysis?}
+\section{Introduction to Survival Analysis}
 
 Generally, 
 survival analysis is the collection of statistical methods
 for the modelling and analysis of time-to-event data,
-which is data where the outcome variable of interest 
+which is a type of data where the outcome variable of interest 
 is the time until \enquote{something} happens.~%
 ~\autocite{kleinbaumSurvival2011}
 This \enquote{something} is a particular event of interest,
@@ -51,27 +48,28 @@ which, depending on the type of analytical problem,
 could be cancer relapse, 
 diabetes remission,
 or death.
+
 In cardiovascular research, 
 common examples of time-to-event outcomes include
 \begin{enumerate*}
-    \item time to death due to any cause (all-cause mortality)
-    \item time to death due to a specific cause,
-        e.g. sudden cardiac arrest
+    \item time to death attributed to any cause (all-cause mortality)
+    \item time to death due to a specific cause (e.g. sudden cardiac arrest)
     \item time to first occurence of a \ac{MACE}
 \end{enumerate*}.
+
 To figure out what processes and characteristics 
-that are associated with such events, 
+that are associated with these events, 
 in survival analysis, we try to model the relationship between
 explanatory variables and the number of weeks, months, or years 
 until that particular event is likely to occur. 
 
-% marginnote{{{
+% marginnote→
 \marginnote{%
     Survival analysis have applications outside biomedical research.
     In engineering, it is called \textit{reliability analysis} and
     is used to model the time-to-failure of system-critical components 
     such as e.g. bearings or valves.
-}% }}}
+}% ←
 
 Although this task can be daunting in its own right, 
 an additional complication to survival analysis 
@@ -206,7 +204,7 @@ window, given that the individual is still alive at time \(t\).
 ~\autocite{kleinSurvival2003}
 
 Analogous to the relation between \(f(t)\) and \(F(t)\), 
-integrating \(\lambda(t)\) with resport to \(t\),
+integrating \(\lambda(t)\) with respect to \(t\),
 we obtain cumulative hazard function, defined as
 %
 \begin{equation}
@@ -215,29 +213,39 @@ we obtain cumulative hazard function, defined as
 
 \subsection{The Kaplan-Meier Estimator}
 
-The survival function of a population,
+The survival function of a population
 can be estimated using the Kaplan-Meier method,
 which is the standard estimator of the survival function.
 ~\autocite{kaplan1958nonparametric}
 ~\autocite{kleinSurvival2003}
-In this approach, 
-the distinct failure times are ordered such that%
-\footnotemark
+In order to estimate the survival function, 
+in the Kaplan-Meier method we first order
+the distinct failure times such that%
+\sidenote{%
+    Following the example of [\cite{kleinbaumSurvival2011}], 
+    the \(t\)'s denoted with subscripts within parentheses \(t_{(j)}\)
+    refers to the \(j\)th element of the ordered distinct failure times and
+    are thus different from \(t_1, t_2, \ldots, t_i\) that refers to the 
+    observed failure time of subject \(1\), \(2\), and \(i\)
+}
 \begin{equation*}
     t_{(1)} < t_{(2)} < \ldots < t_{(j)},
 \end{equation*}
 %
 and we introduce two quantities to keep track of
-the number of failures \(\widebar{D}(j)\), 
-as well as the number of subjects still at risk \(\widebar{A}(j)\).
+the number of failures/events at each timepoint \(\widebar{D}(j)\), 
+as well as the number of subjects still at risk at each timepoint \(\widebar{A}(j)\).
 They are defined as
 \begin{equation}
 \begin{aligned}
     \bar{D}(j) &= \card \{i \in \{1, \dots, n\} \mid t_i = t_{(j)}, \sigma_i = 1\} \\
-    \bar{A}(j) &= \card \{i \in \{1, \dots, n\} \mid t_i > t_{(j)}\},
+    \bar{A}(j) &= \card \{i \in \{1, \dots, n\} \mid t_i > t_{(j)}\}.
 \end{aligned}
 \end{equation}
-and the Kaplan-Meier estimator can then be formulated as 
+
+With these two quantities in place, 
+the Kaplan-Meier estimator can then be formulated as 
+%
 \begin{equation}
     \widehat{S}(t)
     =   \prod_{j \mid t_{(j)} \leq t} 
@@ -255,18 +263,8 @@ and the Kaplan-Meier estimator can then be formulated as
         }.
 \end{equation}
 
-\footnotetext{%
-    Following the example of [\cite{kleinbaumSurvival2011}], 
-    the \(t\)'s denoted with subscripts within parentheses \(t_{(j)}\)
-    refers to the \(j\)th element of the ordered distinct failure times and
-    are thus different from \(t_1, t_2, \ldots, t_i\) that refers to the 
-    observed failure time of subject \(1\), \(2\), and \(i\)
-}
-
-The Kaplan-Meier estimator is thus as step-function that decreases
-after each observed event.
-While the Kaplan-Meier estimator is useful 
-for summarising the survival of a population, 
+While the Kaplan-Meier estimator is very useful 
+for estimating the average survival of a population, 
 it does not account for the effect of covariates.
 Instead, another approach is needed for regression analyses.
 
@@ -336,7 +334,7 @@ respective Cox-estimated hazards is
 
 Since the right-hand side of the equation does not include a term for \(t\),
 the hazard ratio between the two samples are constant and 
-they are thus proportional to one another., 
+they are thus proportional to one another.
 This shows that by assuming the hazard takes the form of \cref{eq:cox},
 then it is also assumed that the hazards between two subjects are proportional.
 Although this assumption is a strong one, 
@@ -365,166 +363,19 @@ This example is a slightly modified version of the
 one given in \cite[pp. 50]{tutzModeling2016}}
 
 
-\section{Analysis of Competing Risks}
-
-\begin{marginfigure}[3em]% {{{
-    \tikzstyle{outcome}=[%
-        rectangle, rounded corners, minimum height=5mm, fill=color3
-    ]
-    \centering
-    \begin{tikzpicture}[x=0.60\linewidth, y=1cm]
-    \graph [edge quotes={font=\scriptsize, fill=white}, 
-            nodes      ={draw, outcome, sloped, minimum width=1cm}]{
-        alive [fill=color4] -> dead [> "\(\lambda(t)\)" ];
-    };
-    \end{tikzpicture}
-    \caption[A Single State Model]{
-        A simple survival analysis setup 
-        involves modelling a single transition between states 
-        \enquote{alive} and \enquote{dead}.
-    }
-    \label{fig:ssm}
-\end{marginfigure}% }}}
-
-Up to this point, the description of concepts in survival analysis has
-assumed the presence of only a single event type, such as all-cause mortality
-(\cref{fig:ssm}).
-In practice, particularly in clinical settings, 
-this single-event model can be too restrictive,
-and instead one needs to consider competing risks
-(\cref{fig:msm}).
-By definition, a competing risk is a secondary event whose occurence 
-prevents the primary event from occuring.
-For example,
-in a study where the primary outcome is cardiovascular mortality,
-deaths from non-cardiovascular causes are a competing risk.
-
-In the following, 
-we let \(R \in \{1, \dots, \kappa\}\) denote the \(\kappa\) different competing risks,
-and then slightly update the definition of the event indicator \(\sigma_i\)
-(\cref{eq:sigma-def}), such that
-\begin{equation}
-    \label{eq:sigma-def-2}
-    \sigma_i =
-        \begin{cases}
-            0 & \text{if subject is censored} \; (T_i >    C_i) \\
-            r & \text{if cause r is observed} \; (T_i \leq C_i, R = r).
-        \end{cases}
-\end{equation}
-
-\begin{marginfigure}% {{{
-    \tikzstyle{outcome}=[%
-        rectangle, rounded corners, minimum height=5mm, fill=color3
-    ]
-    \centering
-    \begin{tikzpicture}[x=0.60\linewidth, y=0.85cm]
-    \graph [edge quotes={font=\scriptsize, fill=white}, 
-            nodes      ={draw, outcome, sloped, minimum width=1cm}]{
-        alive [fill=color4] -> {
-            cause 1 [> "\(\lambda_1(t)\)" ],
-            cause 2 [> "\(\lambda_2(t)\)" ],
-            cause k [> "\(\lambda_\kappa(t)\)" ],
-        };
-    };
-    \end{tikzpicture}
-    \caption[A Multi-State Model]{
-        A survival analysis setup with competing risks
-        involves modelling transitions between states 
-        \enquote{alive} and \(k\) different absorbing
-        states, \enquote{cause 1} to \enquote{cause \(\kappa\)}
-    }
-    \label{fig:msm}
-\end{marginfigure}
-% }}}
-
-\subsection{Cause-Specific Survival Quantities}
-
-To describe time-to-event phenomena with competing risks, 
-we introduce the cause-specific hazard function and 
-cumulative-incidence function.
-With \(R \in \{1, \dots, \kappa\}\) denoting the \(\kappa\) different competing risks, 
-the cause-specific hazard function is defined as
-\begin{equation}
-    \lambda_r(t) = \lim_{\Delta t \to 0} 
-        \frac{\PR (t \leq T < t + \Delta t, R=r \mid T \geq t)}{\Delta t}
-\end{equation}
-where \(r\) refers to a specific value of \(R\).
-The cause-specific cumulative incidence function is defined as
-~\autocite{kalbfleischStatistical2002}
-\begin{equation}
-    F_r(t) = \PR(T \leq t, R = r).
-\end{equation}
-
-The overall hazard and cumulative incidence, 
-which combines failures of any of the \(\kappa\) causes,
-correspond to the hazard function 
-and the cumulative distribution function 
-in the single-event setting, that is
-\begin{equation}
-    \lambda(t) = \sum_{r=1}^{\kappa} \lambda_r(t)
-    \quad \text{and} \quad
-    F(t) = \sum_{r=1}^{\kappa} F_r(t).
-\end{equation}
-
-\subsection{The Aalen-Johansen Estimator}
-
-In the competing risk setting, 
-some of the methodology previously presented
-have to be slightly adjusted.
-For example, 
-simply treating competing events as censored 
-and applying the standard Kaplan-Meier estimator, 
-would lead to a biased estimate of \(F(t)\).
-~\autocite{pepeKaplan1993}
-Instead, an alternative approach is the Aalen-Johansen estimator
-that allows estimation of the cause-specific cumulative incidence.
-~\autocite{aalenEmpirical1978}
-Of note, the Aalen-Johansen is a general method for estimating
-transition probabilities in state-transition models,
-and can be used to describe complex multi-state models,
-including those with repeated events and with non-terminal states.
-~\autocite{survival-package}
-However, we will be assuming a standard competing-risk setting
-with \(\kappa\) different terminal states, 
-as depicted in \cref{fig:msm}.
- 
-If we again order the distinct failure times, 
-corresponding to any cause, 
-such that
-\(t_{(1)} < t_{(2)} < \ldots < t_{(j)}\),
-and update the definition of \(\bar{D}(j)\) to keep track of cause-specific
-events, such that we have
-\begin{equation}
-\begin{aligned}
-    \bar{D}(j, r) &= \card \{i \in \{1, \dots, n\} \mid t_i = t_{(j)}, r_i = r\} \\
-    \bar{A}(j)    &= \card \{i \in \{1, \dots, n\} \mid t_i > t_{(j)}\}.
-\end{aligned}
-\end{equation}
-Now, the Aalen-Johansen estimator of the cumulative incidence function
-can be defined as 
-
-\begin{equation}
-    \widehat{F}_r(t)
-    =   \sum_{j \mid t_{(j)} \leq t}{
-        \!\!
-        \widehat{S}(t_{(j-1)})
-        \frac{\bar{D}(j, r)}{\bar{A}(j)}
-    }
-\end{equation}
-
 \section{Time-to-Event Prediction}
 
 Up until now, 
 I have outlined various concepts foundational to survival analysis,
 focusing primarily on quantities and statistics of time-to-event outcomes
-at a popoulation level.
+at a population level.
 These measures play an important role in understanding 
 and interpretation of survival data.
 
 In the context of precision medicine, however,
 the emphasis shifts towards making individualized predictions
 taking distinct patient-level characteristics into account.
-Consequently, as described in \cref{chap:ml-and-nn}, 
+Consequently, as described in \cref{chap:machine-learning}, 
 the primary concern lies in 
 making accurate predictions on unseen data,
 rather than in the exploration of disease etiology and underlying mechanisms.
@@ -610,6 +461,7 @@ this discrete-time formulation of time-to-event analysis and
 elaborate on the Logistic-Hazard model in more detail.
 
 \section{Discrete-Time Survival Analysis}
+\label{sec:disctime-survival}
 
 Most textbooks on survival analysis treats survival time as continuous, 
 and that is also usually the case across the biomedical litterature.
@@ -912,3 +764,167 @@ from which the log-likelihood, \cref{eq:lh-loglikelihood}, is then
     &+{} \log (\yy{5}{1}) + \log(\yy{5}{2}) + \log(\y{5}{3} )
 \end{split}
 \end{equation*}
+
+\section{Survival Analysis with Competing Risks}
+
+Up to this point, the description of concepts in survival analysis has
+assumed the presence of only a single event type, such as all-cause mortality
+(\cref{fig:ssm}).
+In practice, particularly in clinical settings, 
+this single-event model can be too restrictive,
+and instead one needs to consider competing risks
+(\cref{fig:msm}).
+By definition, a competing risk is a secondary event whose occurence 
+prevents the primary event from occuring.
+For example,
+in a study where the primary outcome is cardiovascular mortality,
+deaths from non-cardiovascular causes are a competing risk.
+
+\begin{marginfigure}[-10em]% →
+    \tikzstyle{outcome}=[%
+        rectangle, rounded corners, minimum height=5mm, fill=color3
+    ]
+    \centering
+    \begin{tikzpicture}[x=0.60\linewidth, y=1cm]
+    \graph [edge quotes={font=\scriptsize, fill=white}, 
+            nodes      ={draw, outcome, sloped, minimum width=1cm}]{
+        alive [fill=color4] -> dead [> "\(\lambda(t)\)" ];
+    };
+    \end{tikzpicture}
+    \caption[A Single State Survival Model]{
+        A simple survival analysis setup 
+        involves modelling a single transition between states 
+        \enquote{alive} and \enquote{dead}.
+    }
+    \label{fig:ssm}
+\end{marginfigure}% ←
+
+\begin{marginfigure}[0em]% →
+    \tikzstyle{outcome}=[%
+        rectangle, rounded corners, minimum height=5mm, fill=color3
+    ]
+    \centering
+    \begin{tikzpicture}[x=0.60\linewidth, y=0.85cm]
+    \graph [edge quotes={font=\scriptsize, fill=white}, 
+            nodes      ={draw, outcome, sloped, minimum width=1cm}]{
+        alive [fill=color4] -> {
+            cause 1 [> "\(\lambda_1(t)\)" ],
+            cause 2 [> "\(\lambda_2(t)\)" ],
+            cause k [> "\(\lambda_\kappa(t)\)" ],
+        };
+    };
+    \end{tikzpicture}
+    \caption[A Multi-State Model]{
+        A survival analysis setup with competing risks
+        involves modelling transitions between states 
+        \enquote{alive} and \(k\) different absorbing
+        states, \enquote{cause 1} to \enquote{cause \(\kappa\)}
+    }
+    \label{fig:msm}
+\end{marginfigure}% ←
+
+\subsection{Cause-Specific Survival Quantities}
+
+To describe time-to-event phenomena with competing risks, 
+we introduce the cause-specific hazard function and 
+cumulative-incidence function.
+With \(R \in \{1, \dots, \kappa\}\) denoting the \(\kappa\) different competing risks, 
+the continuous cause-specific hazard function is defined as
+\begin{equation}
+    \lambda_r(t) = \lim_{\Delta t \to 0} 
+        \frac{\PR (t \leq T < t + \Delta t, R=r \mid T \geq t)}{\Delta t}
+\end{equation}
+where \(r\) refers to a specific value of \(R\).
+The cause-specific cumulative incidence function is defined as
+~\autocite{kalbfleischStatistical2002}
+\begin{equation}
+    F_r(t) = \PR(T \leq t, R = r).
+\end{equation}
+
+The overall hazard and cumulative incidence, 
+which combines failures of any of the \(\kappa\) causes,
+correspond to the hazard function 
+and the cumulative distribution function 
+in the single-event setting, that is
+\begin{equation}
+    \lambda(t) = \sum_{r=1}^{\kappa} \lambda_r(t)
+    \quad \text{and} \quad
+    F(t) = \sum_{r=1}^{\kappa} F_r(t).
+\end{equation}
+
+\subsection{Modelling the Cause-Specific Hazard}
+
+In the competing risks setting, 
+the typical approach is to treat competing risks as censored events
+and use Cox regression to estimate the cause-specific hazards.
+In this approach, the cause-specific hazard takes the form of
+\begin{equation}
+    \hat{\lambda}_{r}(t \giv \vec{x}) 
+        = \lambda_{0r} \exp(\bm{\beta}_r \cdot \bm{x})
+\end{equation}
+from which one can obtain the cause-specific regression coefficients 
+\(\bm{\beta}_r\).
+In \studyi{}, we use this to estimate the cause-specific hazards
+of \ac{IHD} progression and non-\ac{IHD} mortality associated with 
+different clusters of \ac{IHD} patients, 
+as defined by their respective comorbidity profiles.
+
+However, an important assumption required by all survival methods
+outlined so far, including the Cox proportional hazards model,
+is that of noninformative censoring.
+~\autocite{kleinbaumSurvival2011}
+This assumption states that the
+\textquote[kleinbaumSurvival2011]{%
+    probability of being censored at time \(t\) does not depend on
+    prognosis for failure at time \(t\)%
+}, which in the context of competing risks can be especially problematic,
+since it also implies that competing failure types should be independent.
+It is difficult to ascertain if this is the case from observed data, 
+however if we include risk-factors that are shared by competing events,
+it is possible to alleviate the bias related to this possibly erroneous
+assumption.
+~\autocite{kleinbaumSurvival2011}
+
+\subsection{The Aalen-Johansen Estimator}
+
+In estimation of the population-level cause-specific incidence,
+the approach of simply treating competing events as censored 
+and applying the standard Kaplan-Meier estimator, 
+is generally a bad idea, since it often leads to a very biased estimate of 
+\(F(t)\).
+~\autocite{pepeKaplan1993}
+Instead, an alternative approach is the Aalen-Johansen estimator
+that allows estimation of the cause-specific cumulative incidence.
+~\autocite{aalenEmpirical1978}
+Of note, the Aalen-Johansen is a general method for estimating
+transition probabilities in state-transition models,
+and can be used to describe complex multi-state models,
+including those with repeated events and with non-terminal states.
+~\autocite{survival-package}
+However, we will be assuming a standard competing-risk setting
+with \(\kappa\) different terminal states, 
+as depicted in \cref{fig:msm}.
+ 
+If we again order the distinct failure times, 
+corresponding to any cause, 
+such that
+\(t_{(1)} < t_{(2)} < \ldots < t_{(j)}\),
+and update the definition of \(\bar{D}(j)\) to keep track of cause-specific
+events, such that we have
+\begin{equation}
+\begin{aligned}
+    \bar{D}(j, r) &= \card \{i \in \{1, \dots, n\} \mid t_i = t_{(j)}, r_i = r\} \\
+    \bar{A}(j)    &= \card \{i \in \{1, \dots, n\} \mid t_i > t_{(j)}\}.
+\end{aligned}
+\end{equation}
+Now, the Aalen-Johansen estimator of the cumulative incidence function
+can be defined as 
+
+\begin{equation}
+    \widehat{F}_r(t)
+    =   \sum_{j \mid t_{(j)} \leq t}{
+        \!\!
+        \widehat{S}(t_{(j-1)})
+        \frac{\bar{D}(j, r)}{\bar{A}(j)}
+    }
+\end{equation}

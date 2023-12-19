@@ -1,207 +1,299 @@
 \chapter{Study III: Time-to-Event Prediction with Competing Risks}
 \label{chap:study3-outline}
 
-\section{Model formulation}
+In this chapter, I provide an outline of our research in \studyiii{}.
+The manuscript, titled \enquote{%
+    Development of a neural network-based competing risk model for long-term
+    prognostication in ischemic heart disease from a large database of
+    electronic health records and clinical registries},
+is currently work in progress, 
+and thus the version included in \cref{chap:study3-paper} is 
+a draft manuscript.
 
-The proposed model parametrizes the cause-specific conditional hazards,
-and the output \(\Lambda\) is then a 
-\(n \times q \times (m + 1)\) matrix of probabilities
-where values across the last dimension all sum up to 1.
+\section{Background and Aims}
 
+In our previous study, \studyii{}, we demonstrated that a \ac{ML}-based 
+time-to-event prediction algorithm can improve the prediction of all-cause
+mortality in patients with \ac{IHD}. 
+While all-cause mortality is an important clinical outcome, 
+a limitation of our previous work was the absence of more
+disease-specific outcomes such as cardiovascular mortality
+and disease progression events.
+The neural network-based Logistic-Hazard model employed in \pmhnet{1}
+is not able to model competing risks, which precluded the inclusion
+of such outcomes.
 
-In the case of several competing target events,
-it is necessary to define several hazard functions,
-one for each distinct outcome type.
-Let \(R \in \{1, ..., m\}\) denote the competing risks.
-Then, for disrete time \(T \in \{1, ..., q\}\), 
-the cause-specific hazard function from cause $r$ is defined by
+To address this shortcoming, and further expand on our prior work,
+the primary goals of this study are to develop and implement an extension 
+to the discrete time Logistic-Hazard model from \textcite{gensheimerScalable2019} 
+to enable joint-modelling of competing risks,
+and then use our novel framework in the creation of \pmhnet{2}, 
+such that it is possible differentiate between deaths related to 
+\ac{IHD} and those arising from completely unrelated causes,
+in addition to predicting specific measures of disease progression.
+
+\section{The Logistic-Hazard Approach for Competing Risks}
+
+In the following, I will outline how the discrete-time framework can 
+be extended to allow for jointly modelling time-to-event data with competing
+risks. The theory underlying this approach is well-established in
+classical statistical literature, as exemplified by \textcite{tutzModeling2016}, 
+but have to the best of our knowledge not yet been adapted to 
+neural network models. 
+
+As delineated in \cref{sec:disctime-survival}, 
+in the discrete-time framework, 
+continuous follow-up time \(\Tic\) is divided into \(q\) contiguous intervals
 %
 \begin{equation*}
-    \lambda_{r}(t | \mathbf{x}) = \Pr (T = t, R = r | T \geq t, \mathbf{x})
+	(0, a_1], (a_1, a_2], \dots, (a_{q-1}, a_q]
 \end{equation*}
 %
-where \(\mathbf{x}\) is a vector of time-independent predictor variables. 
-The different hazard functions, 
-\(\lambda_{1}(t|\mathbf{x}), ..., \lambda_{m}(t|\mathbf{x})\) 
-can be combined into the overall hazard function defined as
-%
+and \(\Tid \in \{1, \dots, q\}\) is then a discrete random variable 
+specifying the event time that refers to each interval 
+\((a_{\tid-1}, a_{\tid}]\), and similarly, \(\Cid \in \{1, \dots, q\}\)
+specifies the time of censoring.
+
+In this framework, a right-censored survival dataset 
+\(\mathfrak{D}_{\mathrm{d}}\) with \(\kappa\) different competing 
+risks is defined as
 \begin{equation}
-    \lambda(t|\mathbf{x}) 
-    = \sum_{r=1}^{m}(\lambda_{r}(t|\mathbf{x}))
-    = \Pr(T = t | t \leq T, \mathbf{x})
+    \mathfrak{D}_{\mathrm{d}} = 
+        \{(\tid_i, \sigma_i, \vec{x}_i) \mid i = 1, \ldots, N\} 
 \end{equation}
-%
-From this it follows that the survival function is
-%
+where \(t_i = \min(T_{i}, C_i)\) is the observed follow-up time,
+\(\sigma_i \in \{\varnothing, 1, \dots, \kappa\}\) is the event indicator 
+(with \(\varnothing\) specifying censored observations),
+and \(\vec{x}_i \in \mathbb{R}^{p}\) is a feature vector of size \(p\).
+
+\subsection{Model Formulation}
+
+For modelling this data, we use the discrete 
+cause-specific hazard, which for cause \(r\) is defined as
+~\autocite{tutzModeling2016}
 \begin{equation}
-    S(t|\mathbf{x})
-    = \Pr(T >= t|\mathbf{x})
-    = \prod_{i=1}^{t}(1 - \lambda(i|\mathbf{x}))
+    \label{eq:cause-specific-hazard}
+    \lambda_r(t \giv \vec{x}) = 
+    \Pr(\Tid = \tid, R = r \mid \Tid \geq \tid, \vec{x}).
 \end{equation}
+This hazard describes the conditional probability of experiencing event \(r\) 
+in the interval \((a_{\tid-1}, a_{\tid}]\) given that the individual
+is still at risk at the beginning of the interval.
 
-The model uses $m + 1$ categorical responses.
-The responses are either any of the $m$ competings risks, 
-or conditional survival.
-%
+For \(\kappa\) competing risks, the survival data can be described with
+\(\kappa\) different hazard functions, 
+\(\lambda_{1}(\tid \giv \vec{x}), \dots, \lambda_{\kappa}(\tid \giv \vec{x})\).
+To describe the overall hazard \(\lambda(\tid \giv \vec{x})\), 
+these functions can be combined as
+~\autocite{tutzModeling2016}
 \begin{equation}
-    \Pr(T > t | T \geq t, \mathbf{x})
-    = 1 - \sum_{r = 1}^{m} \lambda_r (t | \mathbf{x})
-    = 1 - \lambda (t | \mathbf{x})
+    \label{eq:overall-hazard}
+    \lambda(\tid \giv \vec{x}) 
+    = \sum_{r=1}^{\kappa} \lambda_{r}(\tid \giv \vec{x})
+    = \Pr(\Tid = \tid \mid \Tid \geq \tid, \vec{x}),
 \end{equation}
+which describes the risk of experiencing any of the competing risks.
 
-\section{Model formulation}
-
-Continuous follow-up time is divided into into $q$ intervals
-%
-\begin{equation*}
-	[0, a_1), [a_1, a_2), ..., [a_{q-1}, a_q), [a_{q}, \infty)
-\end{equation*}
-%
-and the time to event variable \(T\) is denoted 
-with a positive integer \(t = 1, 2, ...\),
-which points to the interval \([a_{t-1}, a_{t})\).
-With this discrete time scale,
-the cause specific hazard function \(\lambda_{r}(t)\) is a conditional probability defined as
-%
-\begin{equation*}
-    \lambda_{r}(t | \mathbf{x}) = \Pr (T = t, R = r | T \geq t, \mathbf{x})
-\end{equation*}
-%
-given a vector \(\mathbf{x}\) of predictor variables.
-
-The discrete hazard function is defined as
-the probability of failure in the interval \(t\),
-given that the individual is still alive at the end of the preceding interval
-\(t - 1\).
-
-In a time-to-event model with several competing target events,
-we describe the process with multiple hazard functions, 
-that each describe a specific target outcome or risk.
-Typically, 
-we refer to the individual hazard functions as cause-specific hazards.
-
-For discrete time \(T \in \{1, ..., s+1\}\), and with a given vector \(\mathbf{x}\) of time-independent covariates,
-the cause-specific hazard from cause \(r\) is defined as
+From \cref{eq:overall-hazard}, we can obtain the survival function,
+which describes the probability of not experiencing any of the competing
+risks.
 
 \begin{equation}
-    \lambda_{r}(t|\mathbf{x}) 
-    = P(T = t, R = r | t \leq T, \mathbf{x})
+    S(\tid \mid \vec{x}) = \Pr(\Tid > \tid \mid \vec{x}) 
+    = \prod_{s=1}^{\tid} (1 - \lambda(s \giv \vec{x}))
 \end{equation}
 
-Which represents the probability of 
 
-The overall hazard function is
-
+At each interval \((a_{\tid-1}, a_{\tid}]\), 
+there are \(\kappa + 1\) different possible outcomes,
+either one of the \(\kappa\) risks occurs
+or the individual survives and continues to the next interval,
+which means that the sum of these probabilities is 1.
 \begin{equation}
-    \lambda(t|\mathbf{x}) 
-    = \sum_{r=1}^{m}(\lambda_{r}(t|\mathbf{x}))
-    = P(T = t | t \leq T, \mathbf{x})
+    \lambda_{1}(\tid \giv \vec{x}) 
+    + \dots
+    + \lambda_{\kappa}(\tid \giv \vec{x})
+    + (1 - \lambda(\tid \giv \vec{x}))
+    = 1
 \end{equation}
 
-The survival function is the unconditional probability of an event in period \(t\) given the specific covariates is 
+To model these \(\kappa + 1\) events,
+we construct a neural network where the output is
+a \(N \times q \times (\kappa + 1)\) matrix of \enquote{logits}%
+\sidenote{In the context of machine learning,% →
+the term \enquote{logits} typically refers to 
+the raw unnormalized output that can range from \(-\infty\) to \(\infty\).
+To obtain probabilities from logits, they are passed through an 
+activation function such as the logistic or \(\mathrm{Softmax}\) function}
+% ←
+as illustrated in \cref{fig:ext-loghaz}.
+To obtain outputs on the probability scale,
+the logits are passed through a Softmax activation function,
+such that the numbers across the dimension of the probability matrix 
+sum to 1.
 
-\begin{equation}
-    S(t|\mathbf{x})
-    = P(T >= t|\mathbf{x})
-    = \prod_{i=1}^{t}(1 - \lambda(i|\mathbf{x}))
-\end{equation}
+The \(1 - \lambda(\tid \giv \vec{x})\) term is not strictly necessary 
+to include, since it can be obtained from the others, 
+however in the machine learning literature it is common practice to include all 
+output classes in multinomial predictions. In the following, 
+I will refer to this term as \(\lambda_\varnothing(\tid \giv \vec{x})\).
 
-From the hazard we can obtain the survival function 
-%
-\begin{equation*}
-    S(t | \mathbf{x}) 
-    = \Pr (T \geq t | \mathbf{x}) 
-    = \prod_{s = 1}^{t-1} (1 - \lambda(s | \mathbf{x}))
-\end{equation*}
-%
-which represents the unconditional probability of surviving interval \(t\) given the specific covariates cf. \autocite{tutzModeling2016}.
+\begin{marginfigure}% →
+\begin{tikzpicture}% →
+    \useasboundingbox (-.5,-0.5) rectangle (6.8, 5.6);
+    \begin{scope}[transform canvas={scale=.65}]
 
-Of note, this interpretation is considerably more accessible than the usual
-continuous hazard one.
+    \draw[->] (5.3,    0) -- ( 7.1,  1.6) node[below, midway, sloped, font=\large] {events};
+    \draw[->] (0,   -0.3) -- ( 5.0, -0.3) node[below, midway, sloped, font=\large] {time};
+    \draw[->] (-0.3, 4.0) -- (-0.3,  0.0) node[below, midway, sloped, font=\large] {batch};
 
-
-\begin{equation}
-    S(\tau) = P(T > \tau) = \sum_{i = 1}^{\tau - 1} (P(T = \tau - i))    
-\end{equation}
-
-The cause specific cumulative incidence function is
-
-\begin{equation}
-	CIF_r(t|\mathbf{x})
-	= \sum_{i=1}^{t}\lambda_{r}(t|\mathbf{x}) S(t-1|\mathbf{x})
-\end{equation}
-
-Let the data be given by \(t_{i}, r_{i}, \delta_{i}, \mathbf{x}_{i}\),
-where \(r_{i} \in \{1, ..., m\}\) indicates the target event. 
-Assuming random censoring at the end of the interval
-with \(t_i = \min\{T_i, C_i\}\), 
-where events are defined by the indicator function
-
-\begin{equation}
-\delta_i = 
-	\begin{cases}
-		1, & T_i \leq C_i \\
-		0, & T_i > C_i
-	\end{cases}
-\end{equation}
-
-\begin{subequations}
-\begin{equation}
-	nll =
-	- \sum_{i=1}^{n}
-	\sum_{t=1}^{ti}
-	\left(
-		\sum_{r \in C} \delta_{itr} \log(\lambda_{r} (t | \mathbf{x}))
-		+ \delta_{it0} \log\left(
-			1 - \sum_{r \in C} \lambda_{r} (t | \mathbf{x})
-		\right)
-	\right)
-\end{equation}
-
-Or alternatively 
-
-\begin{equation}
-	nll =
-	- \sum_{t=1}^{q}
-	\sum_{i \in R_s}
-	\delta_{is} \log(s|\mathbf{x}_i) 
-	+ (1 - \delta_{is}) (1 - \log(s|\mathbf{x}_i)))
-\end{equation}
-\end{subequations}
-
-In our approach, the neural network parametrises the logistic hazards.
-The goal is to learn \( \hat{h}(t | \mathbf{x}) \)
-for each of the competing events.
-
-
-
-
-The discrete probability function
-
-\begin{equation}
-    f_l = \Pr (T \in A_l) = S(t_{l-1}) - S(t|l)
-\end{equation}
-
-the discrete hazard rate
-
-\begin{equation}
-    h_l = \Pr (T \in A_l | T > t_{l-1}) = \frac{f_l}{S(t_{l-1})}
-\end{equation}
-
+    \begin{scope}[xshift=1.8cm, yshift=1.6cm]
+         \renewcommand{\y}[1]{\lambda_{#12}}
+         \fill[white,fill opacity=.9] (0,0) rectangle (5, 4);
+         \draw[step=1cm, black, very thin] (0,0) grid (5, 4);
+         \matrix[matrix of nodes, 
+             inner sep = 0pt, outer sep = 0pt,
+             matrix anchor=south west,
+             nodes={minimum width=1cm, anchor=center, minimum height=1cm, 
+                    outer sep=0pt, inner sep=0, align=center, font=\large},
+             column sep=0em, row sep=0em
+        ]  at (0, 0)
+         {
+             $\y{11}$  & $\y{12}$ & $\y{13}$ & $\dots$  & $\y{1j}$  \\
+             $\y{21}$  & $\y{22}$ & $\y{23}$ & $\dots$  & $\y{2j}$  \\
+             $\vdots$  & $\vdots$ & $\vdots$ & $\ddots$ & $\vdots$  \\
+             $\y{i1}$  & $\y{i2}$ & $\y{i3}$ & $\dots$  & $\y{ij}$  \\
+         };
+    \end{scope}
     
-The contribution to the likelihood function of the \textit{i}th subject
+    \begin{scope}[xshift=.9cm, yshift=.8cm]
+         \renewcommand{\y}[1]{\lambda_{#11}}
+         \fill[white,fill opacity=.9] (0,0) rectangle (5, 4);
+         \draw[step=1cm, black, very thin] (0,0) grid (5, 4);
+         \matrix[matrix of nodes, 
+             inner sep = 0pt, outer sep = 0pt,
+             matrix anchor=south west,
+             nodes={minimum width=1cm, anchor=center, minimum height=1cm, 
+                    outer sep=0pt, inner sep=0, align=center, font=\large},
+             column sep=0em, row sep=0em
+        ]  at (0, 0)
+         {
+             $\y{11}$  & $\y{12}$ & $\y{13}$ & $\dots$  & $\y{1j}$  \\
+             $\y{21}$  & $\y{22}$ & $\y{23}$ & $\dots$  & $\y{2j}$  \\
+             $\vdots$  & $\vdots$ & $\vdots$ & $\ddots$ & $\vdots$  \\
+             $\y{i1}$  & $\y{i2}$ & $\y{i3}$ & $\dots$  & $\y{ij}$  \\
+         };
+    \end{scope}
 
-For uncensored subjects, the contribution is
+    \begin{scope}
+         \renewcommand{\y}[1]{\lambda_{#10}}
+         \fill[white,fill opacity=.9] (0,0) rectangle (5, 4);
+         \draw[step=1cm, black, very thin] (0,0) grid (5, 4);
+         \matrix[matrix of nodes, 
+             inner sep = 0pt, outer sep = 0pt,
+             matrix anchor=south west,
+             nodes={minimum width=1cm, anchor=center, minimum height=1cm, 
+                    outer sep=0pt, inner sep=0, align=center, font=\large},
+             column sep=0em, row sep=0em
+        ]  at (0, 0)
+         {
+             $\y{11}$  & $\y{12}$ & $\y{13}$ & $\dots$  & $\y{1j}$  \\
+             $\y{21}$  & $\y{22}$ & $\y{23}$ & $\dots$  & $\y{2j}$  \\
+             $\vdots$  & $\vdots$ & $\vdots$ & $\ddots$ & $\vdots$  \\
+             $\y{i1}$  & $\y{i2}$ & $\y{i3}$ & $\dots$  & $\y{ij}$  \\
+         };
+    \end{scope}
+    \end{scope}
+\end{tikzpicture}
+% ←
+\caption[Illustration of the Extended Logistic-Hazard model]{
+    The output of the extended Logistic-Hazard model is a
+    \(N \times q \times (\kappa + 1)\) matrix of logits, which 
+    represents the cause-specific hazards.}
+\label{fig:ext-loghaz}
+\end{marginfigure}% ←
+
+\subsection{Derivation of Loss Function}
+\newcommand{\lambdanull}[1]{\lambda_\varnothing(#1 \giv \vec{x}_i)}
+
+As detailed in \textcite{tutzModeling2016}, 
+the contribution of 
+the \(i\)th individual on the likelihood is
 %
 \begin{equation}
-    \Pr (T_i \in A_{l_i}) = f_{l_i} = h_{l_i} \prod_{l=1}^{l_i-1}(1-h_{l_i})
-\end{equation}
-%
-while for censored subject, the contribution is
-%
-\begin{equation}
-    \Pr (T_i > t_{l_i}) = S(t_{l_i}) = \prod_{l=1}^{l}(1-h_{l_i})
+    \Lik_{i} =
+    \begin{cases}
+        \Pr(\Tid = \tid_{i}, R = \sigma_i \mid \vec{x}_i) 
+        \Pr(\Cid \geq \tid \mid \vec{x}_i) 
+        & \text{if non-censored} \\
+        \Pr(\Tid > \tid_{i} \mid \vec{x}_i) 
+        \Pr(\Cid = \tid \mid \vec{x}_i)                  
+        & \text{if censored.}
+    \end{cases}
 \end{equation}
 
-A similar approach have previously been described \autocite{biganzoliFeed1998}.
+Assuming that censoring is non-informative, 
+the probabilities involving the censoring time \(\Cid\) can be omitted.
+~\autocite{tutzModeling2016}
+Further, we can rewrite the terms 
+\(\Pr(\Tid = \tid_{i}, R = \sigma_i \giv \vec{x}_i)\) and 
+\(\Pr(\Tid > \tid_{i} \giv \vec{x}_i) \) 
+as a product of the conditional hazards
+\begin{align}
+\begin{split}
+    \Pr(\Tid = \tid_{i}, R = \sigma_i \mid \vec{x}_i) 
+    &= 
+    \PR (\Tid = \tid_{i}, R = \sigma_{i} \mid \Tid \geq \tid_{i}, \vec{x}_i) 
+    \PR (\Tid  \geq \tid_i \mid \vec{x}_i) \\
+    &= \lambda_{\sigma_i}(\tid_i \giv \vec{x}_i) \PR (\Tid  > \tid - 1 \mid \vec{x}_i) \\
+    &= \lambda_{\sigma_i}(\tid_i \giv \vec{x}_i) \, 
+    \textstyle \prod_{s=1}^{\tid_i - 1} (1 - \lambda(s \giv \vec{x}_i)) \\
+    &= \lambda_{\sigma_i}(\tid_i \giv \vec{x}_i) \, 
+    \textstyle \prod_{s=1}^{\tid_i - 1} \lambda_\varnothing(s \giv \vec{x}_i)
+    \raisetag{2em}
+\end{split} \\
+\begin{split}
+    \Pr(\Tid > \tid_{i} \giv \vec{x}_i) 
+    &= 
+    \PR (\Tid > \tid_{i} \mid \Tid \geq \tid_{i}, \vec{x}_i) 
+    \PR (\Tid  \geq \tid_i \mid \vec{x}_i) \\
+    &= 
+    (1 - \PR (\Tid = \tid_{i}  \mid \Tid \geq \tid_{i}, \vec{x}_i)) 
+    \PR (\Tid  > \tid_i - 1 \mid \vec{x}_i) \\
+    &= (1 - \lambda(\tid_i \giv \vec{x}_i)) \, 
+    \textstyle \prod_{s=1}^{\tid_i - 1} (1 - \lambda(s \giv \vec{x}_i)) \\
+    &= \textstyle \prod_{s=1}^{\tid_i} \lambda_\varnothing(s \giv \vec{x}_i)
+    \raisetag{2em},
+\end{split} 
+\end{align}
+and the likelihood contribution is then
+
+\begin{equation}
+    \Lik_{i} =
+        \lambda_{\sigma_i}(\tid_i \giv \vec{x}_i) \, 
+        \prod_{s=1}^{\tid_i - 1} \lambda_\varnothing(s \giv \vec{x}_i)
+\end{equation}
+
+To avoid computational issues with floating point precision, 
+we use the log-likelihood instead, which becomes
+\begin{equation}
+    \lik_{i} =
+        \log [\lambda_{\sigma_i}(\tid_i \giv \vec{x}_i)] +
+        \sum_{s=1}^{\tid_i - 1} \log [\lambdanull{s}]
+\end{equation}
+
+The total log-likelihood of all datapoints gives the loss-function
+used in the extended Logistic-Hazard model for competing risks,
+which is
+\begin{equation}
+    \label{eq:lhx-loglikelihood}
+    \lik(\mathfrak{D}_{\mathrm{d}}) = 
+        \sum_{i = 1}^{N} \left(
+        \log [\lambda_{\sigma_i}(\tid_i \giv \vec{x}_i)] +
+        \sum_{s=1}^{\tid_i - 1} \log [\lambdanull{s}]
+        \right)
+\end{equation}
+
+\section{Study Design}
+
 
