@@ -1,25 +1,37 @@
 \chapter{Thesis Objectives and Structure} 
 \label{chap:overview}
 
-With the overall aim of furthering our knowledge on 
-\ac{IHD}, the scope of this thesis is in
-developing and establishing methods and approaches for 
-precision diagnostics and risk-stratification 
-for patients with \ac{IHD}. 
-
-Investigate the potential of \ac{ML} techniques in
-extracting clinically relevant insights from large-scale, 
-heterogeneous health data, with a focus on ischemic heart disease.
-
-By leveraging large-scale heterogeneous healthcare data,
-the overall goal of our research is to contribute to the advancement of 
-precision medicine for secondary prevention in \ac{IHD}.
+With the overall aim of furthering our knowledge on \ac{IHD},
+a leading global cause of morbidity and mortality,
+this thesis explores the potential of \ac{ML} in deriving
+clinically relevant insights from extensive electronic health data. 
+The research primarily focuses on the development of \ac{ML}-based
+methods for data-driven phenotyping and risk prediction,
+contributing to the advancement of 
+precision medicine in secondary prevention of \ac{IHD}. 
+The primary objectives of the thesis are:
 
 \begin{enumerate}
-    \item Conduct a detailed analysis of the comorbidity landscape in 
-        a large retrospective cohort of patients with \ac{IHD} using
-        unsupervised clustering, identifying distinct
-        patterns of multimorbidity and their specific risks.
+    \item From a comprehensive database including hospital data on
+        over \num{2.6} million individuals with data 
+        originating from electronic health records and
+        national and clinical registries, extract and curate 
+        high-quality data and setup \ac{ML} experiments and analyses.
+        This includes:
+    \begin{enumerate}
+        \item Writing data-processing code to 
+            consolidate, clean, and organize heterogeneous
+            data from various sources.
+        \item Ensuring the maintenance of robust scientific software 
+            engineering practices, including version control, workflow
+            managers, and containerization for reproducibility.
+        \item Creating definition algorithms for the precise identification of 
+            patient populations, disease onset, and clinical outcomes.
+    \end{enumerate}
+    \item Using unsupervised clustering, explore and characterise the 
+        comorbidity landscape in \ac{IHD}, identifying distinct patternts
+        of multimorbidity and their associated risk of disease progression
+        and mortality.
     \item Develop and validate clinically relevant 
         risk-prediction algorithms for \ac{IHD} using using real-world 
         heterogenous healthcare data and right-censored time-to-event 
@@ -32,7 +44,6 @@ precision medicine for secondary prevention in \ac{IHD}.
             mortality and specific markers of disease progression, 
             which requires accounting for competing risks.
     \end{enumerate}
-
     \item Use \ac{XAI} techniques, such as \ac{SHAP}-analysis, to deconvolve 
         the \ac{ML} prediction models such that it is possible to understand 
         the decision-making process of these models and to identify the key 
@@ -40,14 +51,6 @@ precision medicine for secondary prevention in \ac{IHD}.
         transparency and trustworthiness of the models for potential clinical 
         application.
 \end{enumerate}
-
-These subject areas illustrates 
-the convergence of precision medicine and artificial
-intelligence as a transformative approach in the diagnosis, management,
-and treatment of disease.
-While the research is concentrated on ischemic heart disease and cardiology,
-the methodologies and findings could potentially be extrapolated to other
-medical fields, given their broad applicability.
 
 \section*{Organization}
 

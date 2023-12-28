@@ -12,7 +12,7 @@ a draft manuscript.
 
 \section{Background and Aims}
 
-In our previous study, \studyii{}, we demonstrated that a \ac{ML}-based 
+In our previous study, \studyii{}, we demonstrated that a \ac{ML} based 
 time-to-event prediction algorithm can improve the prediction of all-cause
 mortality in patients with \ac{IHD}. 
 While all-cause mortality is an important clinical outcome, 
@@ -294,6 +294,477 @@ which is
         \right)
 \end{equation}
 
-\section{Study Design}
+\subsection{Implementation}
+
+This loss function, along with several useful classes and functions 
+for discrete time-to-event neural networks, have been implemented in
+the python package \texttt{DiscoTime}.
+~\autocite{holmDiscotime}
+This implementation relies on the \texttt{PyTorch} machine learning framework
+and is built to use the \texttt{PyTorch-Lightning} interface, to make
+protyping and experimentation as easy as possible.
+\texttt{DiscoTime} is available on the \ac{PyPI} and on 
+GitHub at \enquote{peterchristofferholm/discotime}.
+Currently in early development, the documentation is rather limited 
+and the code base is expected to undergo re-factorization, 
+but we still expect that the framework in its current state
+is of general interest to other researchers in the field.
+We used version 0.1.0 of the package for this study.
+
+\section{Study Design and Methodology}
+
+\begin{marginfigure}[0em]% →
+    \includegraphics{graphics/pmhnet-v2-inclusion-flowchart.pdf}
+    \caption[Inclusion diagram for \pmhnet{2}]{%
+        Flow diagram showing the inclusion and exclusion criteria 
+        for derivation of thè \pmhnet{2} cohort. An \acs{IHD} diagnosis
+        was defined as any prior or concurrent hospital admission with 
+        a primary or secondary diagnosis code (\acs{ICD-10}) of I20-25.
+        The inclusion period ranged from 01.01.2006 to 31.12.2016, 
+        both dates inclusive.}
+    \label{fig:pmhnet-v2-inclusion}
+\end{marginfigure}
+% ←
+
+To test the utility of the presented competing risk methodology,
+we set out to develop \pmhnet{2}, a collection of four different 
+neural network-based time-to-event prediction models for cause-specific 
+post-angiography prognostication in \ac{IHD}.
+
+\subsection{Defining the Derivation Cohort}
+
+For development of the neural network models, 
+we linked the \ac{BTH} dataset to 
+the \ac{LPR} and the \ac{EDHR}.
+From these, 
+we identified patients who underwent a \ac{CAG} which led to a diagnosis of
+one-, two-, or three-vessel disease or diffuse atheromatosis between January 1,
+2006, and December 31, 2016.
+Patients were excluded if they lacked an
+\acsu{ICD-10} code for \ac{IHD} (I20-25),
+were under 18 years at the time of the \ac{CAG},
+or did not survive at least two days after the index procedure
+(\cref{fig:pmhnet-v2-inclusion}).
+
+\begin{marginfigure}[0em]% →
+    \includegraphics[trim=5mm 0 0 0]{graphics/pmhnet-v2-inclusion-histogram.pdf}
+    \caption[Distribution of \pmhnet{2} inclusion times]{%
+    Histogram showing the temporal distribution of the \pmhnet{2} index
+    coronary angiography procedures. 
+    The bars represent the number of patients with an index event in each
+    four-month period from 2006 to 2017,
+    further segmented to display the proportions of train and test patients.}
+    \label{fig:pmhnet-v2-histo}
+\end{marginfigure}
+% ←
+
+This cohort consists of \num{52809} adults with \ac{IHD}, 
+closely resembling and considerably overlapping  
+the one used in the \pmhnet{1} study (\studyii{}).
+However, unlike \pmhnet{1}, 
+which only included 
+patients undergoing their first \ac{CAG} 
+during the inclusion period,
+this study expanded the criteria to 
+also include patients with a history of one or more \acp{CAG}.
+This approach likely provides 
+a more comprehensive representation 
+of the diverse manifestations of chronic coronary syndromes.
+
+Prior to statistical analysis and  model training, 
+each patient in the development cohort was randomly allocated to the 
+training or test split with probabilities of 
+\qty{80}{\percent} and \qty{20}{\percent}, 
+respectively.
+This process resulted in 
+a training set of \num{42048} patients 
+and a test set of \num{10761} patients
+(\cref{fig:pmhnet-v2-histo}).
+
+Serving as model predictors,, 
+we identified and created more than 2200 different
+features belonging to five different overall categories.
+We included 80 clinical features, 418 procedure and examination codes,
+785 distinct medical prescriptions, 504 different diagnoses, 
+and 475 unique laboratory test features.
+Further details on features and the pre-processing 
+is included in the manuscript in \cref{chap:study3-paper}.
+
+\subsection{Included Time-to-Event Endpoints}
+
+As the index date, we used the date of the inclusion \ac{CAG}.
+For the \pmhnet{2} time-to-event prediction models, 
+follow-up was defined as the number of days 
+between the index date and the onset of endpoints or censoring,
+whichever came first, 
+with a maximum follow-up duration of five years.
+We defined four different primary outcomes, 
+three of which included competing risks:
+
+\begin{marginfigure}[2em]% →
+    \includegraphics[trim=5mm 0 0 0]{graphics/pmhnet-v2-cvmo-cic.pdf}
+    \caption[Cumulative incidence of the \acsfont{CVMO} outcome]{%
+        Cause-specific cumulative incidence functions for the 
+        \acsfont{CVMO} outcome (cvmo) and the competing endpoint 
+        \enquote{non-cardiovascular} mortality. (non-cv. mo). 
+        The bottom panels shows the proportion of train/test patients
+        still at risk (i.e. non-censored and still alive) 
+        at each two-month period following the index \acs{CAG}.}
+    \label{fig:pmhnet-v2-cic}
+\end{marginfigure}
+% ←
+
+\begin{description}
+    \item[\acsfont{ACMO}---all-cause mortality,]
+        was obtained from the \ac{CPR}
+        using the same definition as in \studyii{}.
+        \acsfont{ACMO} did not have competing risks.
+
+    \item[\acsfont{CVMO}---cardiovascular mortality,]
+        was defined from the \ac{DAR} as deaths where the underlying
+        cause of death was assigned an \ac{ICD-10} code from the 
+        cardiovascular chapter (I00--99).
+        Deaths attributed to different causes  were 
+        treated as competing risks, as depicted in \cref{fig:pmhnet-v2-cic}
+
+    \item[\acsfont{CVCO}---cardiovascular complications,] 
+        was defined from the \ac{LPR} as a composite outcome 
+        covering hospital admissions with a primary diagnosis of
+        \enquote{heart failure} (\acs{ICD-10}: I50),
+        \enquote{atrial fibrillation or flutter} (I48),
+        \enquote{cardiac arrest} (I46),
+        and 
+        \enquote{cerebrovascular accident} (I61, I63--64)
+        and in-hospital procedures for 
+        \enquote{implanation of pacemaker} (\acs{SKS}: \texttt{"BFCA0*"})
+        and
+        \enquote{implanation of cardioverter-defibrillator} (\texttt{"BFCB0*"}).
+        Events within four weeks after the index angiography was assumed
+        to be unrelated to disease progression and was ignored.
+        \acsfont{ACMO} was treated as a competing risk.
+
+    \item[\acsfont{MIEV}---new myocardial ischemia,] 
+        was defined from the \ac{LPR} as 
+        unplanned \acp{PCI}, \acp{CABG}, or 
+        in-hospital admissions longer than \qty{24}{\hour}
+        with a primary diagnosis of \ac{IHD} (I20-25).
+        Events within the eight weeks after the index \ac{CAG} 
+        were not considered \enquote{new} events 
+        and were therefore excluded.
+\end{description}
+
+\subsection{Neural Network Architecture}
+
+For the \pmhnet{2} models, 
+we used a \enquote{ResNet}-inspired neural network architecture
+adapted for tabular data, as advocated by \textcite{gorishniyRevisiting2023}.
+This architecture consists of multiple so-called residual blocks,
+or \enquote{ResBlocks}, sequentially connected to one another.
+For \pmhnet{2}, these ResBlocks were defined as
+%
+\begin{equation}
+    \mathrm{ResBlock}_{h}(z) = ( 
+    \mathrm{BN} 
+    \circ \mathrm{FC}_{h,h} 
+    \circ \mathrm{DO} 
+    \circ \mathrm{SiLU} 
+    \circ \mathrm{FC}_{h,h} 
+    \circ \mathrm{DO} 
+    )(z)  + z
+\label{eq:resblock}%
+\end{equation}%
+where \(\mathrm{BN}\) is a batch normalization function,
+\(\mathrm{FC}_{h,h}\) is a fully-connected linear function
+with \(h\) inputs and \(h\) outputs, 
+\(\mathrm{DO}\) is a dropout function for regularization,
+and \(\mathrm{SiLU}\) is the sigmoid-weighted linear unit (\acsfont{SiLU})%
+---a non-linear activation function.
+~\autocite{elfwingSigmoidWeighted2017}
+An important aspect of the ResBlock is the skip-connection,
+\(f(z) + z\), where a learned representation is added on top of 
+the untransformed input, which can enable training of
+very deep neural networks.
+~\autocite{orhanSkip2018}
+For the models tested, we constrained all ResBlocks to have the same
+number of hidden units \(h\) in each of the hidden layers.
+
+By stacking together several of these building blocks,
+we can adjust the depth and complexity of the final architecture
+\begin{equation}
+    \mathrm{ResNet}(z) = 
+    (
+    \mathrm{FC}_{m,h} 
+    \circ 
+    \mathrm{ResBlock}_{h} 
+    \circ \dots 
+    \circ \mathrm{ResBlock}_{h} 
+    \circ \mathrm{FC}_{h,o} 
+    )(z)
+\end{equation}
+which depends on the number of input features \(m\),
+the number of hidden units \(m\), 
+and the number of output logits \(o\).%
+\sidenote{%
+    Which for our discrete-time competing risk setup is 
+    \(q \cdot (\kappa + 1)\), where \(q\) is the number of time bins
+    and \(\kappa\) is the number of competing risks.
+}
+
+\section{Model Training and Hyperparameter Tuning}
+
+For training neural network models, 
+we utilized the \enquote{super-convergence} training protocol
+described by \textcite{smithSuperConvergence2018a},
+a general methodology for fast and efficient training of
+neural network models.
+In this approach, 
+models are trained for a pre-specified number of steps
+using the \enquote{AdamW} stochastic optimization algorithm,
+~\autocite{loshchilovDecoupled2019}
+and the learning-rate is continuously adjusted during training
+following a one-cycle learning rate policy.
+We used the \texttt{OneCycleLR} implementation 
+from the \texttt{PyTorch} library.%
+\sidecite[0em]{paszkePyTorch2019}
+
+Given the multitude of settings that needs to be specfied
+for configuration of both the neural network models and
+the training process itself, 
+we conducted several \ac{HPO} experiments to
+explore various combinations of hyperparameters.
+For this purpose, we further subdivided the training data
+into a training and validation split.
+This validation split was used to assess model performance
+of the models constructed during the hyperparameters sweeps.
+The following gives an overview of the hyperparameters
+included in the \ac{HPO}, and the range of possible values explored.
+
+\begin{fullwidth}
+\begin{multicols}{3}
+\raggedcolumns
+
+We included five parameters to adjust the architecture of the networks
+and the complexity of the discretization grid:
+\begin{enumerate}[label=\alph*)]
+    \item \verb|n_timebins|:
+        number of time bins in the discretization grid.
+        Allowed values are 
+        \numrange{1}{100}.
+    \item \verb|n_hidden|:
+        number of hidden units in each hidden layer.
+        Controls the width of the neural network.
+        Allowed values are 
+        \numrange{10}{100}.
+    \item \verb|n_blocks|:
+        number of residual blocks.
+        Controls the depth of the neural network.
+        Allowed values are 
+        \numrange{1}{20}.
+    \item \verb|enable_skipconn|:
+        should the skip-connection part of the ResBlock
+        (\cref{eq:resblock}) be included? 
+        Toggle between true/false.
+    \item \verb|enable_batchnorm|:
+        should the batch-normalization layer of the ResBlock
+        (\cref{eq:resblock}) be included? 
+        Toggle between true/false.
+\end{enumerate}
+
+Four parameters were used to configure the model training process
+and to regulate the amount and type of regularization.
+\begin{enumerate}[label=\alph*), resume]
+    \item \verb|n_step|:
+        number of training epochs.
+        Range: \numrange{5}{25}.
+    \item \verb|max_lr|:
+        maximum learning rate in the one-cycle scheduler.
+        Range: \numrange{1e-3}{1}.
+    \item \verb|weight_decay|:
+        amount of  weight decay used in the \verb|AdamW| optimizer.
+        Range: \numrange{1e-5}{1}.
+    \item \verb|dropout|:  
+        dropout rate. 
+        Range: \qtyrange{0}{90}{\percent}.
+\end{enumerate}
+
+Finally, four parameters controlled the upper limit on the inclusion of 
+retrospective data for various features categories, namely:
+\begin{enumerate}[label=\alph*), resume]
+    \item \verb|cutoff_bioc|: 
+        inclusion window for
+        laboratory tests results.
+        Range: \numrange{0.5}{5},
+        stepsize: \num{0.5} .
+    \item \verb|cutoff_diag|:
+        inclusion window for
+        diagnosis codes.
+        Range: \numrange{0.5}{10},
+        stepsize:  \num{0.5} .
+    \item \verb|cutoff_proc|:
+        inclusion window for
+        procedure and examination codes.
+        Range: \numrange{0.5}{10},
+        stepsize: \num{0.5} .
+    \item \verb|cutoff_medi|:
+        inclusion window for
+        drug prescription features.
+        Range: \numrange{0.5}{10},
+        stepsize: \num{0.5} .
+\end{enumerate}
+    
+\end{multicols}
+\end{fullwidth}
+
+The \ac{HPO} process was automatized using the \verb|Optuna| framework.
+~\autocite{akibaOptuna2019}
+As the tuning parameter,
+we used the \ac{IPA} of the primary outcome 
+(\acsfont{ACMO}, \acsfont{CVMO}, \acsfont{CVCO}, and \acsfont{MIEV}).
+Since the \ac{IPA} is a time-dependent measure,
+we calculated the \ac{IPA} at 50 evenly spaced timepoints from
+\numrange{0.5}{5} years and numerically integrated the values
+to provide a single performance measure for the \ac{HPO}. 
+
+After \ac{HPO}, 
+we used the best performing configuration for each outcome
+and trained the final models on the entire training data.
+
+\subsection{Model Evaluation}
+
+For evaluation of the \pmhnet{2} time-to-event prediction models,
+we assessed model discrimination and calibration. 
+Similar to \studyii{}, we used \ac{tdAUC} to quantify the models'
+cause-specific ability to discriminate between cases and non-cases.
+For quantification of model calibration,
+we in this study used the \ac{IPA}, 
+which is an \(R^{2}\)-type measure of model accuracy.
+~\autocite{kattanIndex2018}
+The \ac{IPA} is sometimes referred to as the \enquote{scaled Brier score},
+since it is obtained by  scaling the Brier score 
+of the model with that of a covariate-less null model 
+based on the observed incidences.
+~\autocite{kattanIndex2018}
+One advantage of the \ac{IPA} metric is its easy interpretation:
+a perfect model has a score of \qty{100}{\percent},
+models with a positive \ac{IPA} are potentially useful,
+and models with a negative \ac{IPA} are useless or harmful.
+
+For these model evaluation metrics, 
+we use the implementations provided by the R-package \texttt{riskRegression}.
+~\autocite{gerdsMedical2021}
+All performance metrics were exclusively calculated using 
+the test set, or in the case of \ac{HPO}, a validation split of 
+the training data.
+
+\section{Main Findings}
+
+We developed neural network models for
+time and cause-specific probabilistic predictions of 
+experiencing each of the four primary endpoints 
+\acsfont{ACMO}, \acsfont{CVMO}, \acsfont{CVCO}, and \acsfont{MIEV}.
+From the \ac{HPO} experiments performed on each of these models,
+we found that several hyperparameter configurations were associated
+with a negative validation-set \ac{IPA} and therefore resulted in 
+decidedly inaccurate time-to-event models.
+On the other end of the spectrum, 
+the best performing configurations for each of the four outcomes
+were all found to have useful \ac{IPA} scores,
+with 
+\qty{22.2}{\percent} for \acsfont{ACMO},
+\qty{12.6}{\percent} for \acsfont{CVMO},
+\qty{23.5}{\percent} for \acsfont{CVCO},
+and 
+\qty{8.00}{\percent} for \acsfont{MIEV},
+highlighting the importance of the \ac{HPO} process.
+
+From analysis of the \ac{HPO} sweeps,
+we found that \verb|enable_batchnorm| and \verb|enable_skipconn| 
+considerably affected model accuracy. 
+In every case tested, 
+we concluded that both parameters should be set to
+\verb|true| for optimal performance. 
+For trials without skip-connections and batch-normalization,
+the model architecture closely resembles a classical \ac{MLP}
+instead of a ResNet-inspired one, which in this setting 
+were found to negatively affect model performance.
+\textcite{gorishniyRevisiting2023} 
+concluded that the ResNet-like architecture is a strong
+baseline for neural networks based on tabular data
+and found it to consistently outperform \ac{MLP}-based ones.
+From our experiments, 
+we further substantiate this finding and additionally show
+that it also applies to Logistic-Hazard time-to-event models---%
+both with and without competing risks.
+
+\begin{marginfigure}
+    \includegraphics{graphics/pmhnet-v2-visual-calibration.pdf}
+    \caption[Calibration of \pmhnet{2} models at 1 and 5 years]{%
+        Calibration plots comparing 
+        the cause-specific \(t\)-year \pmhnet{2} model predictions 
+        with the estimated incidences at a 1 and 5 year prediction horizon.
+        The included  regression line is obtained by fitting a natural
+        cubic spline (\(d.o.f. = 6\)) with pseudo-values obtained
+        by jackknife resampling of the Kaplan-Meier 
+        (\acsfont{ACMO})
+        or the Aalen-Johansen 
+        (\acsfont{CVMO}, \acsfont{CVCO}, and \acsfont{MIEV})
+        estimates.
+        The dashed 45-degree reference lines represent perfect calibration. 
+        The density curve in the background of each panel shows the 
+        distribution of the model estimates.
+    }
+\end{marginfigure}
+
+
+The best-performing configurations, 
+as determined by the \ac{HPO} process,
+were then used in the setup and training of 
+the final \pmhnet{2} models.
+These models were then evaluated on 
+the previously unseen hold-out test data.
+
+
+
+For the three outcomes including competing risks---%
+\acsfont{CVMO}, \acsfont{CVCO}, and \acsfont{MIEV}---%
+we also included a naïve single-risk model where 
+competing events were treated as censored.%
+
+
+
+\begin{figure}
+    \includegraphics{graphics/pmhnet-v2-metrics.pdf}
+    \caption[Test-set performance of \pmhnet{2}]{%
+        \Acf{tdAUC} and \acf{IPA} for prediction of the primary
+        endpoint for each of the four \pmhnet{2} models.
+        \ac{tdAUC} and \ac{IPA} are computed at 100 evenly spaced
+        timepoints, ranging from 31 days to 5 years.
+        For the three outcomes including competing risks---%
+        \acsfont{CVMO}, \acsfont{CVCO}, and \acsfont{MIEV}---%
+        we also included a naïve single-risk model where 
+        competing events were treated as censored.%
+    }
+    \label{fig:pmhnet-v2-performance}
+\end{figure}
+
+
+\begin{figure}
+    \includegraphics{graphics/pmhnet-v2-visual-discrimination.pdf}
+    \caption[Test-set discrimination of \pmhnet{2}]{%
+        Visual assessment of test set discrimination.  
+        Boxplots display 
+        the predicted \(t\)-year risk quantiles for the primary endpoints, 
+        conditional on the observed \(t\)-year outcomes observed.  
+        The boxplot marked \enquote{overall} show the observed 
+        quantiles of the entire test set. 
+        The quantiles included in the boxplots marked
+        \enquote{primary}, \enquote{competing}, and \enquote{event-free}
+        have been estimated using inverse probability of censoring weighting.
+     }
+    \label{fig:pmhnet-v2-discrimination}
+\end{figure}
+
+
+\section{Discussion}
 
 

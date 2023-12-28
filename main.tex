@@ -135,10 +135,12 @@
 \usepackage{multicol}
 \usepackage{makecell}
 \usepackage{pdfpages}
-\usepackage[mode=match]{siunitx}
 \usepackage{bookmark}
 \usepackage[export]{adjustbox}
 \usepackage{datetime}
+
+\usepackage[mode=match]{siunitx}
+\DeclareSIUnit\year{yr}
 
 \usepackage{subcaption}
 \captionsetup{font=footnotesize}    
@@ -325,7 +327,7 @@
 % ←
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% \iffalse
+%\iffalse
 \includeonly{%
     content/00-copyright.tex,
     content/00-preface.tex,
@@ -335,16 +337,16 @@
     content/00-overview.tex,
 %     content/introduction.tex,
 %     content/machine-learning.tex,
-%     content/survival-analysis.tex,
+    content/survival-analysis.tex,
 %     content/data-foundation.tex,
 %     content/study1-outline.tex,
-%     content/study2-outline.tex,
-%     content/study3-outline.tex
+    content/study2-outline.tex,
+    content/study3-outline.tex
 }
-% \fi
+%\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{document} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
 
 \frontmatter
 \kutitlepage
@@ -402,11 +404,11 @@
     pagecommand=\chapter{Manuscript for Study I}\label{chap:study1-paper}]%
     {assets/paper1-clustering.pdf}
 
-% \includepdf[
-%     clip, trim=1cm 0 1cm 1.5cm, offset=0 0, 
-%     frame=true, scale=0.8, 
-%     pages=2-, pagecommand={}]%
-%     {assets/paper1-clustering.pdf}
+\includepdf[
+    clip, trim=1cm .5cm 1cm 1.6cm, offset=0 0, 
+    frame=true, scale=0.8, 
+    pages=2-5, pagecommand={}]%
+    {assets/paper1-clustering.pdf}
 
 \cleardoublepage
 \includepdf[
@@ -415,17 +417,23 @@
     pagecommand=\chapter{Manuscript for Study II}\label{chap:study2-paper}]%
     {assets/paper2-pmhnet-v1.pdf}
 
-% \includepdf[
-%     clip, trim=1cm 2cm 1cm 3.2cm, offset=0 0, 
-%     frame=true, scale=0.8, pages=2-, 
-%     pagecommand={}]%
-%     {assets/paper2-pmhnet-v1.pdf}
+\includepdf[
+    clip, trim=1cm 2cm 1cm 3.2cm, offset=0 0, 
+    frame=true, scale=0.8, pages=2-5, 
+    pagecommand={}]%
+    {assets/paper2-pmhnet-v1.pdf}
 
 \cleardoublepage
 \includepdf[
-    clip, trim=1cm 6cm 1cm 1.8cm, offset=0 -2.2cm, 
+    clip, trim=1cm 8cm 1cm 2cm, offset=0 -2cm, 
     frame=true, scale=0.8, pages=1, 
     pagecommand=\chapter{Manuscript for Study III}\label{chap:study3-paper}]%
-    {assets/paper1-clustering.pdf}
+    {assets/paper3-pmhnet-v2.pdf}
+
+\includepdf[
+    clip, trim=1cm 1.4cm 1cm 1.8cm, offset=0 0, 
+    frame=true, scale=0.8, pages=2-5, 
+    pagecommand={}]%
+    {assets/paper3-pmhnet-v2.pdf}
 
 \end{document}
