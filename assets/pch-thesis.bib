@@ -785,6 +785,18 @@
   pagetotal = {312}
 }
 
+@software{gerdsRiskRegression2023,
+  title = {{{riskRegression}}: {{Risk Regression Models}} and {{Prediction Scores}} for {{Survival Analysis}} with {{Competing Risks}}},
+  shorttitle = {{{riskRegression}}},
+  author = {Gerds, Thomas Alexander and Ohlendorff, Johan Sebastian and Blanche, Paul and Mortensen, Rikke and Wright, Marvin and Tollenaar, Nikolaj and Muschelli, John and Mogensen, Ulla Brasch and Ozenne, Brice},
+  date = {2023-12-19},
+  url = {https://cran.r-project.org/web/packages/riskRegression/index.html},
+  urldate = {2023-12-29},
+  abstract = {Implementation of the following methods for event history analysis. Risk regression models for survival endpoints also in the presence of competing risks are fitted using binomial regression based on a time sequence of binary event status variables. A formula interface for the Fine-Gray regression model and an interface for the combination of cause-specific Cox regression models. A toolbox for assessing and comparing performance of risk predictions (risk markers and risk prediction models). Prediction performance is measured by the Brier score and the area under the ROC curve for binary possibly time-dependent outcome. Inverse probability of censoring weighting and pseudo values are used to deal with right censored data. Lists of risk markers and lists of risk models are assessed simultaneously. Cross-validation repeatedly splits the data, trains the risk prediction models on one part of each split and then summarizes and compares the performance across splits.},
+  version = {2023.12.21},
+  keywords = {CausalInference,Survival}
+}
+
 @incollection{golubSingular1971,
   title = {Singular {{Value Decomposition}} and {{Least Squares Solutions}}},
   booktitle = {Handbook for {{Automatic Computation}}: {{Volume II}}: {{Linear Algebra}}},
@@ -1970,6 +1982,18 @@
   file = {C:\Users\sdp490\Zotero\storage\HGSMKTB9\Popescu et al. - 2022 - Arrhythmic sudden death survival prediction using .pdf}
 }
 
+@online{pressCleaning,
+  title = {Cleaning {{Big Data}}: {{Most Time-Consuming}}, {{Least Enjoyable Data Science Task}}, {{Survey Says}}},
+  shorttitle = {Cleaning {{Big Data}}},
+  author = {Press, Gil},
+  url = {https://www.forbes.com/sites/gilpress/2016/03/23/data-preparation-most-time-consuming-least-enjoyable-data-science-task-survey-says/},
+  urldate = {2023-12-30},
+  abstract = {A new survey of data scientists found that they spend most of their time massaging rather than mining or modeling data.},
+  langid = {english},
+  organization = {{Forbes}},
+  file = {C:\Users\sdp490\Zotero\storage\C6KHRZBU\data-preparation-most-time-consuming-least-enjoyable-data-science-task-survey-says.html}
+}
+
 @book{prince2023understanding,
   title = {Understanding Deep Learning},
   author = {Prince, Simon J.D.},
@@ -2321,6 +2345,27 @@
   file = {C:\Users\sdp490\Zotero\storage\KU4GBV9A\Stekhoven and Bühlmann - 2012 - MissForest—non-parametric missing value imputation.pdf}
 }
 
+@article{steyerbergPrognosis2013,
+  title = {Prognosis {{Research Strategy}} ({{PROGRESS}}) 3: {{Prognostic Model Research}}},
+  shorttitle = {Prognosis {{Research Strategy}} ({{PROGRESS}}) 3},
+  author = {Steyerberg, Ewout W. and Moons, Karel G. M. and family=Windt, given=Danielle A., prefix=van der, useprefix=false and Hayden, Jill A. and Perel, Pablo and Schroter, Sara and Riley, Richard D. and Hemingway, Harry and Altman, Douglas G. and Group, for the PROGRESS},
+  date = {2013-02-05},
+  journaltitle = {PLOS Medicine},
+  shortjournal = {PLOS Medicine},
+  volume = {10},
+  number = {2},
+  pages = {e1001381},
+  publisher = {{Public Library of Science}},
+  issn = {1549-1676},
+  doi = {10.1371/journal.pmed.1001381},
+  url = {https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1001381},
+  urldate = {2023-12-29},
+  abstract = {In this article, the third in the PROGRESS series on prognostic factor research, Sara Schroter and colleagues review how prognostic models are developed and validated, and then address how prognostic models are assessed for their impact on practice and patient outcomes, illustrating these ideas with examples.},
+  langid = {english},
+  keywords = {Biomarkers,Breast cancer,Cancer risk factors,Cost-effectiveness analysis,Decision making,Medical risk factors,Prognosis,Traumatic injury risk factors},
+  file = {C:\Users\sdp490\Zotero\storage\G4L7MQNJ\Steyerberg et al. - 2013 - Prognosis Research Strategy (PROGRESS) 3 Prognost.pdf}
+}
+
 @manual{survival-package,
   type = {manual},
   title = {A Package for Survival Analysis in {{R}}},
@@ -2535,6 +2580,25 @@
   isbn = {978-3-319-28156-8},
   langid = {english},
   pagetotal = {257}
+}
+
+@article{ullmannValidation2022,
+  title = {Validation of Cluster Analysis Results on Validation Data: {{A}} Systematic Framework},
+  shorttitle = {Validation of Cluster Analysis Results on Validation Data},
+  author = {Ullmann, Theresa and Hennig, Christian and Boulesteix, Anne-Laure},
+  date = {2022},
+  journaltitle = {WIREs Data Mining and Knowledge Discovery},
+  volume = {12},
+  number = {3},
+  pages = {e1444},
+  issn = {1942-4795},
+  doi = {10.1002/widm.1444},
+  url = {https://onlinelibrary.wiley.com/doi/abs/10.1002/widm.1444},
+  urldate = {2023-12-30},
+  abstract = {Cluster analysis refers to a wide range of data analytic techniques for class discovery and is popular in many application fields. To assess the quality of a clustering result, different cluster validation procedures have been proposed in the literature. While there is extensive work on classical validation techniques, such as internal and external validation, less attention has been given to validating and replicating a clustering result using a validation dataset. Such a dataset may be part of the original dataset, which is separated before analysis begins, or it could be an independently collected dataset. We present a systematic, structured review of the existing literature about this topic. For this purpose, we outline a formal framework that covers most existing approaches for validating clustering results on validation data. In particular, we review classical validation techniques such as internal and external validation, stability analysis, and visual validation, and show how they can be interpreted in terms of our framework. We define and formalize different types of validation of clustering results on a validation dataset, and give examples of how clustering studies from the applied literature that used a validation dataset can be seen as instances of our framework. This article is categorized under: Technologies {$>$} Structure Discovery and Clustering Algorithmic Development {$>$} Statistics Technologies {$>$} Machine Learning},
+  langid = {english},
+  keywords = {cluster stability,cluster validation,clustering,independent data,replication},
+  file = {C\:\\Users\\sdp490\\Zotero\\storage\\E9MJBNTU\\Ullmann et al. - 2022 - Validation of cluster analysis results on validati.pdf;C\:\\Users\\sdp490\\Zotero\\storage\\6WE9PFEJ\\widm.html}
 }
 
 @article{upalaGallstone2017,

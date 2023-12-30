@@ -1,0 +1,309 @@
+\chapter{Principal Findings, Limitations, and Future Perspectives}
+\label{chap:findings-and-limitations}
+
+In this thesis, I have explored the use of informatics-based approaches 
+for addressing critical aspects pertinent to the understanding and management 
+of \ac{IHD}. 
+Central to this research was the application of advanced \ac{ML} methods
+on large-scale electronic health data for development of precision medicine
+approaches for secondary prevention in \ac{IHD}.
+This involved identifying and characterizing patterns of multimorbidity 
+in \ac{IHD} and developing feature-rich clinical prediction models for 
+precision prognostication.
+
+In this chapter, I will briefly reiterate the main findings of the 
+included studies, adress some general and study-specific limitations
+of the work undertaken, and discuss perspectives for future research.
+
+\section{Principal Findings}
+
+Throughout the previous chapters, 
+I have described three different scientific manuscripts
+detailing our research in the framework of \ac{ML}-based precision medicine.
+The following provides a brief summary of the principal findings 
+of each of the included studies.
+
+\subsection{Comorbidity Clustering in Ischemic Heart Disease}
+
+In \studyi{}, 
+we used unsupervised clustering analysis to explore the comorbidity landscape
+of \num{72249} patients with \ac{IHD}. 
+We used the broadest possible definition of multimorbidity and 
+defined comorbidity as the historical co-occurence of a broad
+array of diagnosis codes in the individual patient records.
+The accrued patient-specific comorbidity profiles,
+containing more than \num{3000} different diagnosis codes,
+led to the identification of 31 distinct patient subgroups.
+These clusters represent distinct patterns of multimorbidity 
+linked to \ac{IHD}, were found to be associated with 
+specific risk of subsequent outcomes,
+and can be used to better understand the complex
+nature of multimorbidity in \ac{IHD}.
+
+\subsection{Time-to-Event Prediction of All-Cause Mortality}
+
+In \studyii{}, 
+we presented the development and validation of 
+a novel neural network-based prognostication model
+for prediction of all-cause mortality in 
+patients with \ac{IHD}.
+This model, \pmhnet{1}, utilises a discrete-time approach 
+for modelling of time-to-event data with neural networks and
+can provide time-specific probability estimates of survival
+across a five-year prediction horizon.
+The model was developed using a large and diverse dataset 
+\num{39746} \ac{IHD} patients from the \ac{EDHR}
+and incorporates a comprehensive set of 584 features,
+including diagnosis history, procedural codes, laboratory test results,
+and clinical measurements obtained from \ac{EHR} data and registry data.
+Compared to both the \acs{GRACE} 2.0 score, 
+and a neural network-based model limited to the \acs{GRACE} features,
+the feature-rich \pmhnet{1} model provided a significant improvement
+in model performance.
+External validation on an independent Icelandic dataset of \num{8287} patients 
+further showed that the model performance is generalizable.
+Furthermore, by including \acs{SHAP}-analysis we were able to provide
+explanations of the model output and assess feature importance.
+The study established \pmhnet{1} as a valuable tool for post-angiography 
+assessment of all-cause mortality risk in \ac{IHD} patients,
+and can potentially aid clinicians in making informed decisions 
+about treatment and management of \ac{IHD}.
+
+\subsection{Time-to-Event Prediction with Competing Risks}
+
+In \studyiii{}, 
+we introduced an new framework for construction of neural network-based
+competing risk models and presented the development \pmhnet{2}, 
+an advanced iteration of our \ac{IHD} prognostication algorithm.
+The updated \pmhnet{2} model provide cause- and time-specific 
+risk estimates for all-cause mortality, cardiovascular mortality, 
+cardiovascular complications, and new myorcardial ischemia events.
+From internal validation, we found the model estimates to
+be well-calibrated and to accurately predict patient at 
+both high and low risk of the four different outcomes.
+Compared to the standard practice of treating competing events as 
+censored, we showed that models capable of jointly modelling 
+competing risks were associcated with a better model discrimination
+and calibration.
+While still a work in progress, the presented work establishes
+the usefullness of the updated methodology and presents
+\pmhnet{2} as a promising tool for prognostication in 
+\ac{IHD}.
+
+\section{Limitations}
+
+Despite their strengths,
+several limitations and constraints
+exist in the presented studies,
+potentially affecting the overall interpretation of the findings.
+In the following,
+I will address and discuss both study-specific
+and general limitations of our research.
+
+\subsection{Definition of Comorbidities}
+
+In \studyi{},
+a possible limitation relates to its exclusively data-driven definition
+of multimorbidity that included the historical co-occurence of a very broad 
+array of diagnosis codes.
+This approach constrasts with that of similar studies in the domain.
+As an example, 
+\textcite{formanMultimorbidity2018}
+defined multimorbidity as
+\textquote{two or more medical diseases or conditions, 
+each lasting more than one year}. 
+Similarly, another study also limited their definition
+to only cover chronic conditions, specifically the 20 most
+common ones.
+\autocite{roccaPrevalence2014}
+Unlike these studies that focused on chronic conditions,
+our study did not differentiate between chronic and acute diagnoses. 
+As a result, our clustering could, for example, 
+be influenced by a 3-year old pneumonia diagnosis.
+However, since we accrued the number of admissions for each diagnosis
+the chronic nature of certain conditions is likely implicitly accounted
+for.
+
+\subsection{Lack of Temporal Resolution}
+
+Related to the 
+
+
+\subsection{Lack of Primary Care Data}
+
+
+Additionally, concerning our definition of comorbidities, a significant
+limitation of our study stems from the use of hospital data. 
+This reliance may
+lead to an underrepresentation of conditions primarily managed in primary care
+settings, including  non-complex infections, hypertension, and
+soft-tissue disorders.
+~\autocite{finleyWhat2018} 
+
+
+\subsection{Generalisability of Clusterings}
+
+For \studyi{},
+an inherent limitation of clustering applications is 
+the lack of standardized techniques for external \enquote{validation}
+compared to those in supervised learning.
+In supervised learning, 
+evaluating the model generalizability is straightforward:
+apply the model to a test set, 
+which could be an internal hold-out set or an external dataset,
+and then directly measure its performance.
+However, this approach is not feasible in most unsupervised clustering
+applications due to the absence of predefined labels.
+
+Alternative strategies do exists,
+as outlined by \textcite{ullmannValidation2022},
+and includes:
+\begin{itemize}
+    \item Applying the clustering algorithm to a representative external
+        dataset. Subsequently, examine if the cluster structure obtained on
+        this external dataset shares internal and external characteristics with
+        the original clustering. 
+    \item Transferring the original clustering to the external dataset by first
+        using a supervised classifier. This classifier is trained to predict
+        the cluster labels derived from the original dataset and then applied
+        to the external dataset. 
+        If clustering on the external data is consistent with the transferred
+        labels, then it indicates that the cluster algorithm have 
+        captured  patterns that are not just specific to the initial
+        dataset.
+\end{itemize}
+Such approaches, while not direct validations in the traditional sense, 
+could provide insights into the overall generalisability of the clustering 
+outside the context of the original dataset.
+~\autocite{ullmannValidation2022}
+Nonetheless, these approaches have not been implemented in our research.
+Consequently, we do not assert that the clustering presented is definitively
+the \enquote{best} but rather utilize it as a method to condense the extensive
+array of diagnostic codes into interpretable subgroups.
+
+A further potential limitation of \studyi{} 
+is that we did not compare or test other 
+clustering methodologies besides the \ac{MCL} algorithm.
+Although numerous different clustering algorithms exists,
+our choice of using \ac{MCL} was motivated by a number of key aspects.
+Firstly, the \ac{MCL} algorithm is fast and has been explicitly designed 
+to handle very large networks with a substantial number of vertices
+and edges.
+~\autocite{vandongenGraph2008}
+Secondly, in this algorithm,
+the number of clusters neither can nor should be pre-specified.
+Instead the issue of \enquote{how many clusters} is handled
+by a strong internal logic, rather than being dealt with in an
+arbitrary manner as is common in other clustering algorithms.
+~\autocite{vandongenGraph2008}
+
+
+\subsection{Limitations of Explainable AI}
+
+
+
+
+Finally, the application of \ac{XAI} techniques, particularly
+\ac{SHAP}-analysis, has been instrumental in demystifying the decision-making
+processes of the \ac{ML} models. By elucidating the key factors influencing
+predictions, this approach has greatly increased the transparency and
+trustworthiness of the models. This is a crucial step towards their acceptance
+and integration into clinical practice, marking a significant contribution to
+the field of precision medicine in the secondary prevention of \ac{IHD}.
+
+
+How important is XAI? 
+There have been alot of discussion about, and there are many opinions on, 
+the black-box nature of neural networks and 
+how it should or should not affect the clinical use of such models.
+\autocite{gunningXAI2019, vanderveldenExplainable2022}
+
+\textquote[russellArtificial2009]{%
+    Which would you trust: 
+    an experimental aircraft that has never flown before
+    but has a detailed explanation of why it is safe, 
+    or an aircraft that safely completed 100 previous flights 
+    and has been carefully maintained,
+    but comes with no guaranted explanation?
+}
+
+One limitation of XAI models is the accuracy and relevance of explanations.
+Explainability algorithms such as SHAP are only approximations
+of the complete model.
+In other words, the fidelity is not perfect and therefore neither
+is the explanation.
+However, for black-box models such as neural networks,
+it is the next best thing.
+
+
+\section{Future Perspectives}
+
+\subsection{Clinical Implementation}
+
+The overwhelming majority of published medical prediction models 
+are never used in clinical practice.
+~\autocite{steyerbergPrognosis2013}
+
+Evaluate the clinical impact and practical applicability of the developed ML
+models (PMHnetV1 and PMHnetV2) in real-world healthcare settings. This would
+involve assessing how these models influence clinical decision-making, patient
+outcomes, and healthcare resource allocation for patients with ischemic heart
+disease.
+
+For predictive models to be effective,
+they must enable clinicians to guide treatment by:
+%
+\begin{enumerate*}
+    \item providing actionable insights on modifiable risk factors
+    \item being adapted to the individual patient
+    \item being generally applicable in different populations
+\end{enumerate*}
+
+
+\textquote[byrne20232023]{%
+    A number of prognostic models \textelp{}
+    have been formulated into clinical risk scores and, among
+    these, the GRACE risk score offers the best discriminative performance and
+    is therefore recommended for risk assessment.%
+}
+
+The esc guidelines on risk-prevention highlights 
+that one of the currents gaps in evidence,
+is comparing the performance of competing risk-adjusted 
+cardiovascular disease risk models versus the standard models.
+~\autocite{visseren20212021}
+
+\subsection{Other}
+
+
+\begin{itemize}
+    \item Consider doing ablation studies to produce less-complex versions
+        of the predictions models.
+    \item Lack of prospective validation of medical prediction models
+    \item Lack of clinical deployment and adoption 
+    \item Limitations of explainable AI
+\end{itemize}
+
+CAUSALITY
+
+
+
+
+DeepHit parameterizes the probability mass function 
+of the survival distribution.
+They also include a ranking loss to improve model discrimination.
+\citeauthor{kvammeContinuous2021} showed that the DeepHit method
+has excellent discrimination but is poorly calibrated.
+
+
+
+In 2018, DeepSurv 
+In the approach by Faraggi-Simon, they use a neural network to 
+parameterise the log-risk function, using a slightly modified Cox partial 
+likelihood as the optimization target.
+~\autocite{faraggiNeural1995}
+The same approach was used in the \enquote{DeepSurv} paper,
+but instead paired with contemporary deep learning methods.
+~\autocite{katzmanDeepSurv2018a}
+
+

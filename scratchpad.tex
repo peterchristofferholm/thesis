@@ -1,104 +1,187 @@
 
-\newthought{It is required}, that the following items are include
-in the the synopsis part of the thesis:
+\textquote[knuuti20192020]{% class I recommendation
+    Invasive coronary angiography is recommended as an alternative test to
+    diagnose \textsc{CAD} \textins{coronary artery disease} in patients with a
+    high clinical likelihood, severe symptoms refractory to medical therapy or
+    typical angina at a low level of exercise, and clinical evaluation that
+    indicates high event risk.%
+}
 
-\begin{itemize}
-    \item Summaries in Danish and English 
-    \item Objectives
-    \item Methods
-    \item Description of the research project 
-    placed in the context of international state-of-the-art research
-    within the subject area.
-    \item Summary of the results of the papers 
-    and their relation to international state-of-the-art research
-    within the subject area
-    \item Conclusions and perspectives for further research
-    \item References
-    \item Chapters consisting of
-    any papers or manuscripts included in the thesis. 
-    The chapters must appear in the end of the thesis.
-\end{itemize}
+\textquote[knuuti20192020]{% class IIa recommendation
+    Invasive coronary angiography with the availability of invasive functional
+    evaluation should be considered for confirmation of the diagnosis of CAD in
+    patients with an uncertain diagnosis on non-invasive testing%
+}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+AI-driven medical prediction models are able to synthesize large amounts
+of electronic health data into risk scores or estimates that can be used
+to assess the risk and condition of the individual patient.
+~\autocite{handelmanEDoctor2018}
 
-\chapter{Summary of Papers}
-\chapter{Conclusions and future perspectives}
+Complications also occur in otherwise asymptomatic patients, 
+and for that reason risk evaluation should apply to both patients
+with out without symptoms.
+~\autocite{knuuti20192020}
+
+Although revascularization can relieve symptoms for the culprit lesions
+responsible for myocardial ischemia, it may not prevent the progression
+of other neighboring lesions and future acute thrombotic events.
+~\autocite{libbyPathophysiology2005}
+
+Myocardial tissue damage can be detected with high sensitivity by measuring 
+the release troponins and creatinine-kinase from the sarcolemma.
+~\autocite{falkPathogenesis2006}
+
+Subgroup identification seeks to identify groups of individuals with an
+increased treatment response, which
+\citeauthor{kosorokPrecision2019} refers to as 
+\textquote[kosorokPrecision2019]{%
+    finding the right patient for the right treatment%
+}.
 
 
-\section{}
-\section{}
-\section{}
-\section{}
-\chapter{}
-\section{}
-\section{}
-\section{}
+\section{Computational models in cardiology}
 
+Using single-lead lectrocardiogram recordings from \num{53877} patients,
+Hannun et al.\autocite{hannunCardiologistlevel2019}
+constructed a deep neural network
+to identify 12 difference classes of cardiac rythm.
+In the validation of their algorithm on an independent test set,
+the authors were able to show that the computer model
+significantly outperforms the average cardiologist. 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\chapter{Thesis objectives and Overview}
-
-    \item Objectives
-    \item Methods
-    \item Description of the research project 
-    placed in the context of international state-of-the-art research
-    within the subject area.
-    \item Summary of the results of the papers 
-    and their relation to international state-of-the-art research
-    within the subject area
-    \item Conclusions and perspectives for further research
-    \item References
-    \item Chapters consisting of
-    any papers or manuscripts included in the thesis. 
-    The chapters must appear in the end of the thesis.
-
- 
-% how is the thesis structured?
-% what is contained in the different chapters?
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\part{Background}
+\section{Miscellaneous}
 
-\chapter{Scope and Strategy}
-\chapter{Summaries}
-\chapter{Scientific Publications}
+Systematic deugging and continuous monitoring and validation 
+is of utmost importance if we are to release AI algorithms into the wild%
+\autocite{topolHighperformance2019}.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+In computer vision tasks in the medical domain,
+deep-learning models have achieved physician-level performance
+in many different diagnostic tasks
+ranging from
 
-\part{Introduction}
-\chapter{Precision Medicine}
-\chapter{Secondary Usage of Electronic Health Records}
 
-\chapter{Machine Learning}
-\section{Explainability}
+Deep learning is at its core a form of representation learning.
+~\autocite{estevaGuide2019}
+Each layer in a neural network is a different representation,
+and by stacking several of such layers on top of each others,
+the representation in one hidden layer
+feeds into the next layer and
+is thereby being transformed into an even more abstract representation%
+~\autocite{estevaGuide2019}.
+This allow neural network models to identify patterns in sparse, noisy,
+and highly heterogeneous data without the need for expert feature engineering,
+which makes them particularly pertinent to healthcare applications.% 
+~\sidecite[-2em]{norgeotCall2019}
 
-\chapter{Survival Analysis}
-\section{Cox's Proportional Hazard Model}
-\section{Discrete-time Survival Analysis}
 
-\chapter{Medical Risk Prediction Models}
-\section{Model Evaluation}
-\subsection{Discrimination}
+
+\subsection{Scope of Explanations}
+
+The scope of an explanation is the difference between
+explanations for a complete model and
+explanations for a single output.
+Global explanation covers feature importance estimates 
+for the entire dataset.
+Local explanations, on the other hand, seeks to explain
+the impact of the specific example under scrutiny.
+
+A SHAP-waterfall plot is an example of a local explanation.
+A saliency map of a chest radiograph that shows
+which pixels contributed to the label \enquote{liver cancer}
+is another example.
+
+Shapley values measures the marginal contribution
+of each individual feature.
+
+
+\section{Evaluating prediction models}
+
+Visualization of model performance.
+A calibration shows the link between 
+expected outcome proportion 
+and predicted probabilities.
+
 \subsection{Calibration}
-\subsection{Utility?}
 
-\part{Studies at a glance}
-\chapter{Data Foundations}
-\section{The Civil Registration System}
-\section{The Danish National Patient Register}
-\section{The Causes of Death Register}
-\section{Clinical Quality Databases}
+A model is said to be well-calibrated
+if the probabilistic predictions are reliable.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+With a reliable model, 
+in a group of individuals predicted to develop diabetes
+with a \SI{10}{\percent} risk, 
+we would expect to exactly \SI{10}{\percent} to actually develop diabetes.
 
-\section{Unsupervised Learning}
 
-Elements within a cluster should be similar to each other.
+\subsection{Discrimination}
 
-There is usually no principled measure of quality
-for a given clustering.
+Discrimination refers to a models ability to rank individuals according 
+to their actual risk of experiencing a given event.
+The main measure for discrimination is the area under the receiver
+operating characteristic curve (AUC).
+For survival models, Harrel's C-index is typically used,
+although it is actually an improper scoring metric.
+Instead, the time-dependent AUC should be used instead.
 
-Cluster structure can be found a different granularity levels,
-and depends on the resolution of the data.
+
+
+\textcite{mohammadDevelopment2022} developed a neural network model
+for prediction of 1-year all-cause mortality and admission with heart failure 
+after an incident myorcardial infarction.
+The model was trained using data from the Swedish \acsfont{SWEDEHEART}
+registry and externally validated using the Western Denmark
+Heart Registry.
+~\autocite{mohammadDevelopment2022}
+The model showed great discrimination in both internal and external
+validation cohorts.
+
+
+
+
+\textcite{popescuArrhythmic2022}
+used deep learning methods for predicting
+survival in patients at high risk of cardiac death
+from cardiac magnetic resonance imaging.
+
+Cardiovascular diseases are among the most common conditions in 
+patients with multimorbidity.
+~\autocite{dunlayMultimorbidity2016}
+
+
+
+Another tudy found that a comprehensive machine learning model, incorporating
+clinical and CT data, was superior in predicting 10-year cardiovascular and
+coronary heart disease deaths compared to traditional assessments. This model
+showed higher accuracy, with area under the curve values of 0.845 for
+cardiovascular death and 0.860 for coronary heart disease death. It
+outperformed both the coronary artery calcium score and the atherosclerotic
+cardiovascular disease risk score.
+~\autocite{nakanishiMachine2021}
+
+In an international collaboration involving \num{11011} patients, 
+\citeauthor{thanMachine2019} developed a machine learning model 
+designed for objective assessment of myocardial infarction likelihood 
+in patients suspected of having this condition. 
+Their model demonstrated superior discrimination and calibration 
+compared to existing rule-out algorithms.
+~\autocite{thanMachine2019}
+
+In survival analysis of competing risks, 
+different risks can be modelled marginally,
+independently of one another.
+This relies on the latent failure assumption.
+
+However, in real-life, the different competing risks 
+or \enquote{failure modes} can influence one another
+by some shared mechanisms.
+Therefore, marginal independent time-to-event models
+can therefore be to simplistic.
+Instead, it is in such cases
+more reasonable to model the competing risks jointly,
+such that the dependence structure shared between them
+can be leveraged.
+

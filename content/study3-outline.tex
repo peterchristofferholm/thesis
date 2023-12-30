@@ -636,22 +636,40 @@ we assessed model discrimination and calibration.
 Similar to \studyii{}, we used \ac{tdAUC} to quantify the models'
 cause-specific ability to discriminate between cases and non-cases.
 For quantification of model calibration,
-we in this study used the \ac{IPA}, 
-which is an \(R^{2}\)-type measure of model accuracy.
-~\autocite{kattanIndex2018}
-The \ac{IPA} is sometimes referred to as the \enquote{scaled Brier score},
-since it is obtained by  scaling the Brier score 
+we computed the Brier score and the \ac{IPA}. 
+
+The \ac{IPA},
+which is an \(R^{2}\)-type measure of model accuracy,
+is obtained by scaling the Brier score 
 of the model with that of a covariate-less null model 
-based on the observed incidences.
+based on the estimated incidences from the Kaplan-Meier or Aalen-Johansen
+estimator.
 ~\autocite{kattanIndex2018}
+It is sometimes referred to as the \enquote{scaled Brier score}.
 One advantage of the \ac{IPA} metric is its easy interpretation:
 a perfect model has a score of \qty{100}{\percent},
 models with a positive \ac{IPA} are potentially useful,
 and models with a negative \ac{IPA} are useless or harmful.
 
-For these model evaluation metrics, 
+For the three outcomes including competing risks---%
+\acsfont{CVMO}, \acsfont{CVCO}, and \acsfont{MIEV}---%
+we also included a version of the model where 
+competing events were treated as censored.
+To analyse the difference between the models 
+with and without competing risks, 
+we compared the differences in Brier score and \ac{tdAUC}.
+Standard errors for the \(\Delta\mathrm{Brier}\) scores are obtained
+using an approach similar to that of one-sample t-tests, 
+as described in \textcite{gerdsMedical2021}.
+Correspondingly, 
+standard errors for the \(\Delta \mathrm{AUC}\) 
+were obtained using the Delong-Delong method,
+~\autocite{delongComparing1988}
+also following \textcite{gerdsMedical2021}.
+
+For these model evaluation metrics and tests, 
 we use the implementations provided by the R-package \texttt{riskRegression}.
-~\autocite{gerdsMedical2021}
+~\autocite{gerdsRiskRegression2023}
 All performance metrics were exclusively calculated using 
 the test set, or in the case of \ac{HPO}, a validation split of 
 the training data.
@@ -684,19 +702,40 @@ In every case tested,
 we concluded that both parameters should be set to
 \verb|true| for optimal performance. 
 For trials without skip-connections and batch-normalization,
-the model architecture closely resembles a classical \ac{MLP}
-instead of a ResNet-inspired one, which in this setting 
-were found to negatively affect model performance.
+the model architecture resembles an \ac{MLP}
+rather than a ResNet-like one,
+which negatively affected model performance.
 \textcite{gorishniyRevisiting2023} 
-concluded that the ResNet-like architecture is a strong
-baseline for neural networks based on tabular data
-and found it to consistently outperform \ac{MLP}-based ones.
-From our experiments, 
-we further substantiate this finding and additionally show
-that it also applies to Logistic-Hazard time-to-event models---%
+found that a ResNet-like architecture are well-suited for
+tabular data neural networks, 
+consistently outperforming \ac{MLP}-based models.
+Our experiments support this and extend the finding 
+to Logistic-Hazard time-to-event models,
 both with and without competing risks.
 
-\begin{marginfigure}
+
+The best-performing configurations, 
+as determined by the \ac{HPO} process,
+were then used in the setup and training of 
+the final \pmhnet{2} models.
+These models were then evaluated on 
+the previously unseen hold-out test data.
+\Cref{fig:pmhnet-v2-calibration,%
+      fig:pmhnet-v2-performance,%
+      fig:pmhnet-v2-discrimination}
+here summarise the main evaluation results,
+but additional details are included in
+the full-length manuscript in \cref{chap:study3-paper}.
+
+Importantly, models based on our competing risk Logistic-Hazard framework  
+were all found to be well-calibrated,
+as exemplified by the calibration plots 
+in \cref{fig:pmhnet-v2-calibration}.
+These plots compare the 1- and 5-year predictions 
+with the observed incidences obtained from the Kaplan-Meier
+and Aalen-Johansen estimates.
+
+\begin{marginfigure}% →
     \includegraphics{graphics/pmhnet-v2-visual-calibration.pdf}
     \caption[Calibration of \pmhnet{2} models at 1 and 5 years]{%
         Calibration plots comparing 
@@ -713,42 +752,28 @@ both with and without competing risks.
         The density curve in the background of each panel shows the 
         distribution of the model estimates.
     }
-\end{marginfigure}
+    \label{fig:pmhnet-v2-calibration}
+\end{marginfigure}% ←
 
+From visual inspection of the distribution of model predictions 
+conditional on the observed outcomes (\cref{fig:pmhnet-v2-discrimination}),
+we found the predicted cause-specific probabilities to be consistently higher 
+for patients that experience the primary outcome (\enquote{primary})
+compared to those that remained event-free (\enquote{event-free}).
+This effect, however,  was less pronounced for the \acsfont{MIEV} 
+outcome.
+Interestingly, for the three outcomes with competing risks;
+\acsfont{CVMO}, \acsfont{CVCO}, and \acsfont{MIEV};
+the distribution of the primary-cause predictions
+between patients experiencing the primary outcome (\enquote{primary})
+and those experiencing the competing event (\enquote{competing}),
+were overlapping considerably.
+This suggests that it is difficult to distinguish between 
+the competing risks, perhaps due to many shared risk factors,
+indicating that treating competing events as censoring
+would invalidate the assumption of uninformative censoring.
 
-The best-performing configurations, 
-as determined by the \ac{HPO} process,
-were then used in the setup and training of 
-the final \pmhnet{2} models.
-These models were then evaluated on 
-the previously unseen hold-out test data.
-
-
-
-For the three outcomes including competing risks---%
-\acsfont{CVMO}, \acsfont{CVCO}, and \acsfont{MIEV}---%
-we also included a naïve single-risk model where 
-competing events were treated as censored.%
-
-
-
-\begin{figure}
-    \includegraphics{graphics/pmhnet-v2-metrics.pdf}
-    \caption[Test-set performance of \pmhnet{2}]{%
-        \Acf{tdAUC} and \acf{IPA} for prediction of the primary
-        endpoint for each of the four \pmhnet{2} models.
-        \ac{tdAUC} and \ac{IPA} are computed at 100 evenly spaced
-        timepoints, ranging from 31 days to 5 years.
-        For the three outcomes including competing risks---%
-        \acsfont{CVMO}, \acsfont{CVCO}, and \acsfont{MIEV}---%
-        we also included a naïve single-risk model where 
-        competing events were treated as censored.%
-    }
-    \label{fig:pmhnet-v2-performance}
-\end{figure}
-
-
-\begin{figure}
+\begin{figure}[tpb]% →
     \includegraphics{graphics/pmhnet-v2-visual-discrimination.pdf}
     \caption[Test-set discrimination of \pmhnet{2}]{%
         Visual assessment of test set discrimination.  
@@ -762,9 +787,122 @@ competing events were treated as censored.%
         have been estimated using inverse probability of censoring weighting.
      }
     \label{fig:pmhnet-v2-discrimination}
-\end{figure}
+\end{figure}% ←
 
+To further quantify the model discrimination and calibration, 
+we calculacted the \ac{tdAUC} and \ac{IPA} across 100 evenly separated
+prediction horizons, ranging from 31 days to 5 years 
+(\cref{fig:pmhnet-v2-performance}).
+From this, we observed good model performance across
+all tested prediction horizons.
+For the three outcomes including competing risks,
+we also included a naïve reference model where 
+competing events were treated as censored.
+We consistently found the \ac{tdAUC} and \ac{IPA}
+of the naïve models to be worse than the competing-risk version.
 
-\section{Discussion}
+\begin{figure}% →
+    \includegraphics{graphics/pmhnet-v2-metrics.pdf}
+    \caption[Test-set performance of \pmhnet{2}][-2em]{%
+        \Acf{tdAUC} and \acf{IPA} for prediction of the primary
+        endpoint for each of the four \pmhnet{2} models.
+        \ac{tdAUC} and \ac{IPA} are computed at 100 evenly spaced
+        timepoints, ranging from 31 days to 5 years.
+        For the three outcomes including competing risks---%
+        \acsfont{CVMO}, \acsfont{CVCO}, and \acsfont{MIEV}---%
+        we also included a naïve single-risk model where 
+        competing events were treated as censored.%
+    }
+    \label{fig:pmhnet-v2-performance}
+\end{figure}% ←
 
+To test the performance gain of jointly modelling the competing
+risks, we analysed the differences in \ac{tdAUC} and Brier scores
+between the competing-risk and the naïve versions across
+the \acsfont{CVMO}, \acsfont{CVCO}, and \acsfont{MIEV} outcomes.
+The results of these comparisons are summarised in \cref{tab:pmhnet-v2-delta},
+which shows that in all cases, 
+the competing risk models are better or 
+comparable to models disregarding competing events.
+Specifically, model calibration were found to be the most impacted
+performance metric.
 
+\begin{table}% →
+    \small
+\begin{tabularx}{\linewidth}{Xcccccc}\toprule
+     & \multicolumn{3}{c}{ \(\Delta \mathrm{AUC}\)}
+     & \multicolumn{3}{c}{ \(\Delta \mathrm{Brier}\)}\\
+     \cmidrule(lr){2-4} \cmidrule(lr){5-7}
+
+     & \multicolumn{2}{c}{ \(p < 0.05\)} & \(p \geq 0.05\)
+     & \multicolumn{2}{c}{ \(p < 0.05\)} & \(p \geq 0.05\) \\
+     \cmidrule(lr){2-3} \cmidrule(lr){4-4}
+     \cmidrule(lr){5-6} \cmidrule(lr){7-7} 
+
+     & \(\Delta > 0\) & \(\Delta < 0\) & \(\Delta \approx 0\) 
+     & \(\Delta > 0\) & \(\Delta < 0\) & \(\Delta \approx 0\) \\
+     \midrule
+
+    \acsfont{CVMO} vs. naïve & 56 & 0 & 44 & 97 & 0 & 3 \\
+    \acsfont{CVCO} vs. naïve & 91 & 0 & 9  & 97 & 0 & 3 \\
+    \acsfont{MIEV} vs. naïve & 87 & 0 & 13 & 99 & 0 & 1 \\
+    \bottomrule
+\end{tabularx}
+\caption[\pmhnet{2} performance gain by inclusion of competing risks]{%
+    Differences in Brier score and \ac{tdAUC} 
+    between the \pmhnet{2} competing risk models 
+    and naïve reference models were competing events were treated as
+    censoring. 
+    The table shows the number of timepoints for which 
+    the competing risk model had significantly better (\(\Delta > 0\)),
+    significantly worse (\(\Delta < 0\)), 
+    or comparable performance (\(\Delta \approx 0\))
+    to the naïve model. }
+\label{tab:pmhnet-v2-delta}
+\end{table}% ←
+
+\section{Conclusions}
+
+In this study, we presented the development of \pmhnet{2}, 
+an ensemble of four distinct neural network models for time-to-event 
+prediction of important clinical outcomes in patients with \ac{IHD}.
+These models were developed to predict the onset of important clinical
+endpoints following coronary angiography:
+all-cause mortality (\acsfont{ACMO}), 
+cardiovascular mortality (\acsfont{CVMO}), 
+cardiovascular complications (\acsfont{CVCO}), 
+and new myocardial ischemia events (\acsfont{MIEV}). 
+
+To enable the construction of these models, 
+a central contribution of our research, 
+is the development of a novel approach for
+neural network-based modelling of 
+discrete time-to-event data with competing risks.
+This approach can be viewed as an extension to
+Logistic-Hazard model from 
+\textcite{gensheimerScalable2019},
+and is grounded in classical statistical analysis of 
+discrete time-to-event data.
+~\autocite{tutzModeling2016}
+To the best of our knowledge, 
+we are the first to utilize this methodology
+for neural network-based competing risk analysis.
+
+Our approach has been implemented in the python package \texttt{DiscoTime},
+a general-purpose software library that facilitates the application 
+and further exploration of this methodology for 
+time-to-event prediction with neural networks.
+~\autocite{holmDiscotime}
+
+In our experiments, \pmhnet{2} models,
+utilizing this novel approach, 
+provided accurate and well-calibrated time- and cause-specific 
+estimates for secondary prognostication in patients with \ac{IHD}.
+Compared to the common practice of treating competing events as censored,
+our methodology demonstrated an increase in both model
+discrimination and, particularly, in model calibration.
+In the context of clinical research where competing risks are common,
+this finding underscores the importance of using methodologies, 
+like ours, that properly handle competing risks. 
+Our study suggests such approaches should be considered in 
+the development of future neural network-based medical risk prediction models.
