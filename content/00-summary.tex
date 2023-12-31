@@ -84,28 +84,29 @@ of our proposed methodology and refined models.
 
 I moderne medicin genereres og registreres der løbende store mængder data.
 Elektroniske patientjournaler 
-er ikke oprindeligt designet til at understøtte forskning,
+er som sådan ikke designet til at understøtte forskning,
 men udgør ikke desto mindre en unik og særdeles værdifuld kilde til
-realtidsdata der potentiel kan være med til at revolutionere præcisionsmedicin.
+realtidsdata, der potentiel kan være med til at revolutionere præcisionsmedicin.
 I denne PhD-afhandling undersøger jeg hvordan maskinlæring 
 (eng: machine learning) kan anvendes til at 
-udtrække klinisk relevant indsigt og mening
+opnå klinisk relevant indsigt og mening
 fra store databaser indeholdende heterogene sundhedsdata. 
-Med hovedfokus på iskæmisk hjertesygdom (IHD),
+Med hovedfokus på iskæmisk hjertesygdom (\acsfont{IHD}),
 en globalt ledende årsag til morbiditet og mortalitet, 
 præsenterer afhandlingen tre originale studierne
 inden for rammerne af maskinlæringsbaseret præcisionsmedicin.
 
-I Studie 1 anvendte vi uovervåget klyngeanalyse til at udforske 
-sammensætningen af multimorbiditet hos \num{72249} patienter med IHD. 
+I Studie 1 anvendte vi uovervåget klyngeanalyse (eng: clustering) 
+til at udforske sammensætningen af multimorbiditet hos \num{72249} patienter 
+med \acsfont{IHD}. 
 Ved at bruge tidspunktet for patienternes første koronarangiografi eller 
 koronar-CT som indexdato, 
 definerede vi multimorbiditet fra hele spektret af tidligere 
-registrerede diagnosekoder fra de patienternes hospitalsjournaler. 
+registrerede diagnosekoder fra patienternes sundhedshistorik. 
 På baggrund af disse data, konstruerede vi et patientsimilaritetsnetværk 
 og anvendte derefter Markov-klyngealgoritmen, 
-en skalerbar klyngemetode til grafstrukturer, 
-til at identificere 31 distinkte patientundergrupper. 
+en skalerbar klyngemetode til netværksdata, 
+til at identificere 31 unikke patientundergrupper. 
 Disse undergrupper var karakteriseret ved at have forskellige 
 multimorbiditetsmønstre og tilhørende sygdomsrisici.
 Studiets resultater kan bruges til at kortlægge klinisk relevante 
@@ -114,38 +115,46 @@ patientundergrupper, der lider under multimorbiditet,
 og som oftest udelades fra kliniske forsøg og derved reelt 
 set ikke dækkes af eksisterende kliniske retningslinjer.
 
+I Studie 2 præsenterer vi udviklingen og valideringen af en 
+overlevelsesmodel baseret på neurale netværk til forudsigelse af 
+overlevelsessandsynlighed hos patienter med \acsfont{IHD}.
+Denne model, \pmhnet{1}, blev udviklet ved hjælp af et stort
+og mangfoldigt dataset af \num{39746} \acs{IHD}-patienter fra  
+det Østdanske Hjerteregister og inkorporerer et
+omfattende sæt af 584 foreskellige variable, herunder diagnosekoder, 
+procedurekoder, laboratorieresultater og øvrige kliniske markører. 
+Modellens ydeevne blev vurderet ved hjælp af \acs{tdAUC} og Brier-scoren og 
+blev sammenlignet med version 2.0 af \acs{GRACE} risikoalgoritment. 
+På et internet test-datasæt demonstrerede \pmhnet{1} en \ac{tdAUC} på \num{0.88}
+ved både 6 måneder og et år, \num{0.84} ved tre år og \num{0.82} ved fem år, 
+hvilket viste en betydeligt højere præstation end både \acs{GRACE}2.0 og 
+andre mere simple modeller. Ekstern validering på
+et uafhængigt Islandsk datasæt bestående af 8287 patienter viste yderligere, 
+at modellen er generaliserbar.
+Dette studie underbygger \pmhnet{1} som et værdifuldt værktøj der
+kan anvendes til vurdere risikoen for død i hos patienter med \ac{IHD} og kan
+potentielt på sigt hjælpe klinikere med at træffe informerede beslutninger om
+patientpleje og interventioner.
 
-I Studie 2 præsenterer vi udviklingen og valideringen af en dybt neural
-netværksbaseret overlevelsesmodel til forudsigelse af alleårsmortalitet hos
-patienter med IHD. Denne model, PMHNet-1, blev udviklet ved hjælp af et stort
-og mangfoldigt dataset af 39.746 IHD-patienter fra EDHR og inkorporerer et
-omfattende sæt af 584 funktioner, herunder diagnosehistorie, procedurekoder,
-laboratorieresultater og kliniske målinger. Modellens præstation blev vurderet
-ved hjælp af tdAUC og Brier-scoren og sammenlignet med GRACE risikoscore 2.0. I
-testsæt demonstrerede PMHNet-1 en tdAUC på 0,88 ved både 6 måneder og et år,
-0,84 ved tre år og 0,82 ved fem år, hvilket viste en betydeligt højere
-præstation end både GRACE2.0 og andre enklere modeller. Ekstern validering på
-et uafhængigt islandsk dataset af 8287 patienter viste yderligere, at
-modelpræstationen er generaliserbar. Denne undersøgelse fastslår PMHNet-1 som
-et værdifuldt værktøj til at vurdere risikoen for alleårsmortalitet i en
-realistisk kohorte af IHD-patienter og kan potentielt hjælpe klinikere med at
-træffe informerede beslutninger om patientpleje og interventioner.
-
-I Studie 3 introducerer vi PMHNet-2, en avanceret iteration af vores
-IHD-prognostik algoritme. Denne opdaterede version forudsiger tre nye
-resultater, herunder årsagspecifik mortalitet, nye iskæmiske hændelser og
-udviklingen af IHD-komplikationer, herunder hjertesvigt og hjertestop. Studiets
-hovedbidrag er tofoldigt: For det første præsenterer det en ny ramme for dybt
-neural netværksbaserede diskrete tid modeller, der er i stand til at modellere
-tid-til-begivenhedsdata med konkurrerende risici. For det andet tilbyder det en
-opdateret version af vores AI-drevne prognosticeringsværktøj, der er udstyret
-til at forudsige et bredere udvalg af sygdomsrelaterede resultater ud over
-alleårsmortalitet. Vores konkurrerende risikoramme, som kan betragtes som en
-udvidelse af diskret-tidsmetoden af Gensheimer og Narasimhan (2019), er blevet
-udviklet til den åbne kildekode Python-pakke DiscoTime (tilgængelig via PyPI
-eller Github). Det inkluderede manuskript, selvom det stadig er et arbejde i
-gang, viser effektivt potentialet og mulighederne for vores foreslåede metode
-og raffinerede modeller.
+I Studie 3 introducerer vi \pmhnet{2}, en opdateret udgave af vores 
+prognosticeringsalgoritme til patienter med \ac{IHD}.
+Denne opdaterede version forudsiger tre nye endepunkter, herunder 
+hjertesygdomsrelateret mortalitet, nye iskæmiske hændelser og
+udviklingen af \ac{IHD}-komplikationer, herunder hjertesvigt og hjertestop. 
+Studiets hovedbidrag er tofoldigt: for det første præsenterer det en ny
+metodemæssig tilgang til træning af neurale netværksbaserede 
+overlevelsesmodeller som kan tage højde for konkurrerende endepunkter 
+(eng: competing risks).
+Derudover præsenterer en opdateret version af vores prognosticeringsværktøj, 
+som kan forudsige et bredere udvalg af sygdomsrelaterede endepunkter ud over
+generel mortalitet. Vores nye metodologi, som kan betragtes som en
+udvidelse af diskret-tidsmetoden fra Gensheimer og Narasimhan (2019), 
+er derudover blevet til et \enquote{open source} softwarebibliotek til
+programmeringssproget Python. Denne pakke, \texttt{DiscoTime} er tilgængelig
+via PyPI (\enquote{the Python Package-Index}) og på Github.
+Det inkluderede manuskript, selvom det repræsenterer ikke endnu afsluttet
+forskningsarbejde, viser potentialet af, og mulighederne i, vores 
+foreslåede metode og de opdaterede risikostratificeringsmodeller.
     
 \end{otherlanguage}
 \end{@empty}

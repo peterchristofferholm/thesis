@@ -93,14 +93,15 @@ the usefullness of the updated methodology and presents
 \section{Limitations}
 
 Despite their strengths,
-several limitations and constraints
-exist in the presented studies,
-potentially affecting the overall interpretation of the findings.
+a number of limitations and constraints
+related to the presented studies,
+potentially affects the overall interpretation of the findings.
 In the following,
 I will address and discuss both study-specific
 and general limitations of our research.
 
 \subsection{Definition of Comorbidities}
+\label{sec:comorbidities}
 
 In \studyi{},
 a possible limitation relates to its exclusively data-driven definition
@@ -121,25 +122,52 @@ our study did not differentiate between chronic and acute diagnoses.
 As a result, our clustering could, for example, 
 be influenced by a 3-year old pneumonia diagnosis.
 However, since we accrued the number of admissions for each diagnosis
-the chronic nature of certain conditions is likely implicitly accounted
-for.
+the chronic nature of certain conditions is likely implicitly accounted.
 
-\subsection{Lack of Temporal Resolution}
+\subsection{Lack of Temporal Resolution in Features}
 
-Related to the 
+In this thesis, a notable limitation is the absence of temporal resolution in
+the input features, affecting both the clustering in \studyi{} and the
+prediction models in \studyii{} and \studyiii{}. This lack of temporal
+granularity means that the models and analyses do not account for the timing
+and sequence of medical events or diagnoses.
 
+In \studyi{}, the clustering could have been enhanced by somehow 
+incorporating the chronological order of the diagnoses in the patient vectors.
+This would allow for a more nuanced description of the comorbidity burden
+of the individual patient, and could in addition help alleviate the limitation
+of chronic versus acute conditions described in \cref{sec:comorbidities}.
+Previous research within our group by \textcite{jensenTemporal2014} illustrated
+a method to identify temporal disease trajectories from retrospective registry
+data. They also demonstrated the use of these trajectories in clustering
+applications. However, this method only captures temporal patterns with clear
+directionality, which could exclude many of the comorbidities we considered in
+our study. Thus, while it offers a possible avenue for future research,
+it also has its limitations in fully representing the range of
+comorbidities.
 
-\subsection{Lack of Primary Care Data}
+In \studyii{} and \studyiii{}, time resolved input features could enable 
+the neural network models to learn from sequential patterns of medical
+events and diagnoses. Such information could provide valuable information
+for accurate prognostication. For instance, knowing the progression of 
+\ac{IHD} and comorbidities could potentially inform more timely and tailored
+interventions. Additionally, the study design used in the development of
+\pmhnet{1} and \pmhnet{2} was limited in scope to only provide predictions
+subsequent to an index coronary angiography. While these models 
+might be applicable at other timepoints, it is not something that we have tested,
+and it would probably affect their performance.
 
-
-Additionally, concerning our definition of comorbidities, a significant
-limitation of our study stems from the use of hospital data. 
-This reliance may
-lead to an underrepresentation of conditions primarily managed in primary care
-settings, including  non-complex infections, hypertension, and
-soft-tissue disorders.
-~\autocite{finleyWhat2018} 
-
+Alternatives to address this limitation include the use of time-series data 
+and longitudinal study designs such as those based on landmark analysis.
+\autocite{dafniLandmark2011}
+These approaches can facilitate the creation of dynamic risk prediction
+models.
+\autocite{vanhouwelingenDynamic2007}
+In the context of neural networks, this would likely involve
+using architectures like 
+\ac{LSTM}~\autocite{hochreiterLong1997}
+or Transformers~\autocite{vaswaniAttention2017},
+which are designed to use sequential features.
 
 \subsection{Generalisability of Clusterings}
 
@@ -154,7 +182,6 @@ which could be an internal hold-out set or an external dataset,
 and then directly measure its performance.
 However, this approach is not feasible in most unsupervised clustering
 applications due to the absence of predefined labels.
-
 Alternative strategies do exists,
 as outlined by \textcite{ullmannValidation2022},
 and includes:
@@ -164,14 +191,17 @@ and includes:
         this external dataset shares internal and external characteristics with
         the original clustering. 
     \item Transferring the original clustering to the external dataset by first
-        using a supervised classifier. This classifier is trained to predict
+        using, for example, a supervised classifier. 
+        ~\autocite{ullmannValidation2022}
+        This classifier is trained to predict
         the cluster labels derived from the original dataset and then applied
         to the external dataset. 
         If clustering on the external data is consistent with the transferred
         labels, then it indicates that the cluster algorithm have 
-        captured  patterns that are not just specific to the initial
+        captured patterns that are not just specific to the initial
         dataset.
 \end{itemize}
+
 Such approaches, while not direct validations in the traditional sense, 
 could provide insights into the overall generalisability of the clustering 
 outside the context of the original dataset.
@@ -180,6 +210,8 @@ Nonetheless, these approaches have not been implemented in our research.
 Consequently, we do not assert that the clustering presented is definitively
 the \enquote{best} but rather utilize it as a method to condense the extensive
 array of diagnostic codes into interpretable subgroups.
+
+\subsection{Choice of Clustering Algorithm}
 
 A further potential limitation of \studyi{} 
 is that we did not compare or test other 
@@ -196,6 +228,18 @@ Instead the issue of \enquote{how many clusters} is handled
 by a strong internal logic, rather than being dealt with in an
 arbitrary manner as is common in other clustering algorithms.
 ~\autocite{vandongenGraph2008}
+
+\subsection{Lack of Primary Care Data}
+
+Additionally, concerning our definition of comorbidities, a significant
+limitation of our study stems from the use of hospital data. 
+This reliance may
+lead to an underrepresentation of conditions primarily managed in primary care
+settings, including  non-complex infections, hypertension, and
+soft-tissue disorders.
+~\autocite{finleyWhat2018} 
+
+
 
 
 \subsection{Limitations of Explainable AI}
@@ -307,3 +351,96 @@ but instead paired with contemporary deep learning methods.
 ~\autocite{katzmanDeepSurv2018a}
 
 
+As outlined in \cref{chap:data-foundation}, 
+the studies presented in this thesis draws on hospital data from 
+more than \num{2.6} million individuals, which originates from
+combination of different data sources, including
+electronic health records, national registries, 
+and clinical quality databases.
+In the context of this thesis project,
+a major challenge have been
+processing, combinining, cleaning, and 
+organizing these diverse sources of data
+into curated datasets appropriate for 
+\ac{ML} applications.
+
+
+
+
+
+
+\begin{enumerate}
+    \item 
+        From a comprehensive database including 
+        hospital data on over \num{2.6} million individuals 
+
+        with data 
+        originating from electronic health records and
+        national and clinical registries, extract and curate 
+        high-quality data and setup \ac{ML} experiments and analyses.
+        This includes:
+    \begin{enumerate}
+        \item Writing data-processing code to 
+            consolidate, clean, and organize heterogeneous
+            data from various sources.
+        \item Ensuring the maintenance of robust scientific software 
+            engineering practices, including version control, workflow
+            managers, and containerization for reproducibility.
+        \item Creating definition algorithms for the precise identification of 
+            patient populations, disease onset, and clinical outcomes.
+    \end{enumerate}
+\end{enumerate}
+
+By leveraging a large-scale electronic health database encompassing over
+\num{2.6} million individuals, this research has successfully navigated the
+complexities of data extraction, cleaning, and organization, while maintaining
+rigorous scientific software engineering practices. These efforts have resulted
+in the creation of robust, reproducible data-processing pipelines and
+definition algorithms, essential for accurate patient identification and
+clinical outcome analysis.
+
+Electronical health records are a rich source of health data,
+and can be used to find connections between risk factors and diseases.
+
+Precision medicine is prevention and treatment approaches
+
+that takes individual variation into account.
+
+
+Challenges in developing machine learning models from electronic health records
+includes syntactic interoperability, 
+which specifies the format and structure of the data.
+Many different interopability formats exists, 
+but their adoption varies considerably.
+
+Benefits of interopable digital health data
+~\autocite{lehneWhy2019}.
+
+\begin{itemize}
+    \item Large-scale observational studies.
+    \item Less time spend on data cleaning and pre-processing.
+    \item Interoperable exchange format could further cross-institutional
+    and international collaboration, which would make it easier 
+    to reproduce and externally validate e.g. prognostic applications.
+    In the case of rare diseases with very limited number of patients, 
+    international pooling of data could enable analysis
+    that otherwise would not be possible.
+    \item Faster research and development process.
+    \item If data is known to conform to a well-defined format,
+    computer software can be written without explicit access to the data.
+    This solve many issues related to sensitive data or
+    data that are otherwise subject to strict data protection regulations.
+\end{itemize}
+
+Healthcare data are usually private and scattered across various applications,
+which makes it difficult to share data and generate robust results 
+that translate to different and diverse populations.
+
+AI approaches rely on data that accurately represent
+the real-life distribution of the underlying problem.
+We can not exclusively rely on data that have been carefully curated 
+from few and often very similar sources. 
+In order to capture subtle relationships 
+between health and disease patterns,
+we need to include many and diverse cases~%
+\autocite{riekeFuture2020}.
