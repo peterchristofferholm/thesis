@@ -185,3 +185,71 @@ more reasonable to model the competing risks jointly,
 such that the dependence structure shared between them
 can be leveraged.
 
+
+CAUSALITY
+
+
+
+
+DeepHit parameterizes the probability mass function 
+of the survival distribution.
+They also include a ranking loss to improve model discrimination.
+\citeauthor{kvammeContinuous2021} showed that the DeepHit method
+has excellent discrimination but is poorly calibrated.
+
+
+
+In 2018, DeepSurv 
+In the approach by Faraggi-Simon, they use a neural network to 
+parameterise the log-risk function, using a slightly modified Cox partial 
+likelihood as the optimization target.
+~\autocite{faraggiNeural1995}
+The same approach was used in the \enquote{DeepSurv} paper,
+but instead paired with contemporary deep learning methods.
+~\autocite{katzmanDeepSurv2018a}
+
+
+
+
+Challenges in developing machine learning models from electronic health records
+includes syntactic interoperability, 
+which specifies the format and structure of the data.
+Many different interopability formats exists, 
+but their adoption varies considerably.
+
+Benefits of interopable digital health data
+~\autocite{lehneWhy2019}.
+
+\begin{itemize}
+    \item Large-scale observational studies.
+    \item Less time spend on data cleaning and pre-processing.
+    \item Interoperable exchange format could further cross-institutional
+    and international collaboration, which would make it easier 
+    to reproduce and externally validate e.g. prognostic applications.
+    In the case of rare diseases with very limited number of patients, 
+    international pooling of data could enable analysis
+    that otherwise would not be possible.
+    \item Faster research and development process.
+    \item If data is known to conform to a well-defined format,
+    computer software can be written without explicit access to the data.
+    This solve many issues related to sensitive data or
+    data that are otherwise subject to strict data protection regulations.
+\end{itemize}
+
+Healthcare data are usually private and scattered across various applications,
+which makes it difficult to share data and generate robust results 
+that translate to different and diverse populations.
+
+
+\textquote[byrne20232023]{%
+    A number of prognostic models \textelp{}
+    have been formulated into clinical risk scores and, among
+    these, the GRACE risk score offers the best discriminative performance and
+    is therefore recommended for risk assessment.%
+}
+
+The esc guidelines on risk-prevention highlights 
+that one of the currents gaps in evidence,
+is comparing the performance of competing risk-adjusted 
+cardiovascular disease risk models versus the standard models.
+~\autocite{visseren20212021}

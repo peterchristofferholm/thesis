@@ -30,6 +30,24 @@
   file = {C\:\\Users\\sdp490\\Zotero\\storage\\X7FN6KBX\\Aas et al. - 2020 - Explaining individual predictions when features ar.pdf;C\:\\Users\\sdp490\\Zotero\\storage\\5PIJGP9D\\1903.html}
 }
 
+@article{aasExplaining2021,
+  title = {Explaining Individual Predictions When Features Are Dependent: {{More}} Accurate Approximations to {{Shapley}} Values},
+  shorttitle = {Explaining Individual Predictions When Features Are Dependent},
+  author = {Aas, Kjersti and Jullum, Martin and Løland, Anders},
+  date = {2021-09-01},
+  journaltitle = {Artificial Intelligence},
+  shortjournal = {Artificial Intelligence},
+  volume = {298},
+  pages = {103502},
+  issn = {0004-3702},
+  doi = {10.1016/j.artint.2021.103502},
+  url = {https://www.sciencedirect.com/science/article/pii/S0004370221000539},
+  urldate = {2024-01-02},
+  abstract = {Explaining complex or seemingly simple machine learning models is an important practical problem. We want to explain individual predictions from such models by learning simple, interpretable explanations. Shapley value is a game theoretic concept that can be used for this purpose. The Shapley value framework has a series of desirable theoretical properties, and can in principle handle any predictive model. Kernel SHAP is a computationally efficient approximation to Shapley values in higher dimensions. Like several other existing methods, this approach assumes that the features are independent. Since Shapley values currently suffer from inclusion of unrealistic data instances when features are correlated, the explanations may be very misleading. This is the case even if a simple linear model is used for predictions. In this paper, we extend the Kernel SHAP method to handle dependent features. We provide several examples of linear and non-linear models with various degrees of feature dependence, where our method gives more accurate approximations to the true Shapley values.},
+  keywords = {Dependence,Feature attribution,Kernel SHAP,Shapley values},
+  file = {C\:\\Users\\sdp490\\Zotero\\storage\\9SYELF8I\\Aas et al. - 2021 - Explaining individual predictions when features ar.pdf;C\:\\Users\\sdp490\\Zotero\\storage\\PQU9JSSR\\S0004370221000539.html}
+}
+
 @article{adesCardiac2001,
   title = {Cardiac {{Rehabilitation}} and {{Secondary Prevention}} of {{Coronary Heart Disease}}},
   author = {Ades, Philip A.},
@@ -115,7 +133,7 @@
   url = {https://www.ahajournals.org/doi/full/10.1161/CIRCULATIONAHA.115.017719},
   urldate = {2023-11-08},
   abstract = {Competing risks occur frequently in the analysis of survival data. A competing risk is an event whose occurrence precludes the occurrence of the primary event of interest. In a study examining time to death attributable to cardiovascular causes, death attributable to noncardiovascular causes is a competing risk. When estimating the crude incidence of outcomes, analysts should use the cumulative incidence function, rather than the complement of the Kaplan-Meier survival function. The use of the Kaplan-Meier survival function results in estimates of incidence that are biased upward, regardless of whether the competing events are independent of one another. When fitting regression models in the presence of competing risks, researchers can choose from 2 different families of models: modeling the effect of covariates on the cause-specific hazard of the outcome or modeling the effect of covariates on the cumulative incidence function. The former allows one to estimate the effect of the covariates on the rate of occurrence of the outcome in those subjects who are currently event free. The latter allows one to estimate the effect of covariates on the absolute risk of the outcome over time. The former family of models may be better suited for addressing etiologic questions, whereas the latter model may be better suited for estimating a patient’s clinical prognosis. We illustrate the application of these methods by examining cause-specific mortality in patients hospitalized with heart failure. Statistical software code in both R and SAS is provided.},
-  keywords = {cumulative incidence function,{data interpretation, statistical},incidence,{models, statistical},proportional hazards models,risk assessment,survival analysis},
+  keywords = {cumulative incidence function,data interpretation statistical,incidence,models statistical,proportional hazards models,risk assessment,survival analysis},
   file = {C:\Users\sdp490\Zotero\storage\YEFHQGIS\Austin et al. - 2016 - Introduction to the Analysis of Survival Data in t.pdf}
 }
 
@@ -135,6 +153,19 @@
   urldate = {2023-12-06},
   abstract = {It is said that one out of every ten adults has disease of the gall bladder and that one out of every thirteen has gallstones. If these figures are only approximately correct, there is certainly a remarkable discrepancy between the frequency of the occurrence and of the clinical recognition of chronic cholecystitis. This discrepancy is due partly to the ignorance of general practitioners concerning its frequency and partly to the obscurity of its symptoms. Yet when one's attention has been once directed to the subject, one is able to recognize certain symptoms which are very suggestive if not actually convincing.Prominent among these is indigestion or stomach trouble, with or without more or less epigastric distress, distention or uneasiness coming on several hours after a meal and accompanied or relieved by eructations of gas. Not uncommonly these symptoms of indigestion occur at night, often waking the individual from sleep toward},
   file = {C\:\\Users\\sdp490\\Zotero\\storage\\MY4MUY4I\\BABCOCK - 1909 - CHRONIC CHOLECYSTITIS AS A CAUSE OF MYOCARDIAL INC.pdf;C\:\\Users\\sdp490\\Zotero\\storage\\Z3W8HS54\\429777.html}
+}
+
+@article{bellePrinciples2021,
+  title = {Principles and {{Practice}} of {{Explainable Machine Learning}}},
+  author = {Belle, Vaishak and Papantonis, Ioannis},
+  date = {2021},
+  journaltitle = {Frontiers in Big Data},
+  volume = {4},
+  issn = {2624-909X},
+  url = {https://www.frontiersin.org/articles/10.3389/fdata.2021.688969},
+  urldate = {2024-01-02},
+  abstract = {Artificial intelligence (AI) provides many opportunities to improve private and public life. Discovering patterns and structures in large troves of data in an automated manner is a core component of data science, and currently drives applications in diverse areas such as computational biology, law and finance. However, such a highly positive impact is coupled with a significant challenge: how do we understand the decisions suggested by these systems in order that we can trust them? In this report, we focus specifically on data-driven methods—machine learning (ML) and pattern recognition models in particular—so as to survey and distill the results and observations from the literature. The purpose of this report can be especially appreciated by noting that ML models are increasingly deployed in a wide range of businesses. However, with the increasing prevalence and complexity of methods, business stakeholders in the very least have a growing number of concerns about the drawbacks of models, data-specific biases, and so on. Analogously, data science practitioners are often not aware about approaches emerging from the academic literature or may struggle to appreciate the differences between different methods, so end up using industry standards such as SHAP. Here, we have undertaken a survey to help industry practitioners (but also data scientists more broadly) understand the field of explainable machine learning better and apply the right tools. Our latter sections build a narrative around a putative data scientist, and discuss how she might go about explaining her models by asking the right questions. From an organization viewpoint, after motivating the area broadly, we discuss the main developments, including the principles that allow us to study transparent models vs. opaque models, as well as model-specific or model-agnostic post-hoc explainability approaches. We also briefly reflect on deep learning models, and conclude with a discussion about future research directions.},
+  file = {C:\Users\sdp490\Zotero\storage\8Z4EUVYU\Belle and Papantonis - 2021 - Principles and Practice of Explainable Machine Lea.pdf}
 }
 
 @article{bergstraRandom2012,
@@ -181,7 +212,7 @@
   isbn = {978-0-19-853864-6},
   langid = {english},
   pagetotal = {501},
-  keywords = {Computers / Artificial Intelligence / General,Computers / Data Science / Neural Networks,Computers / Optical Data Processing,Mathematics / Probability \& Statistics / General}
+  keywords = {Computers / Artificial Intelligence / General,Computers / Data Science / Neural Networks,Computers / Optical Data Processing,Mathematics / Probability & Statistics / General}
 }
 
 @article{blancheCindex2019,
@@ -199,7 +230,7 @@
   doi = {10.1093/biostatistics/kxy006},
   abstract = {We show that the widely used concordance index for time to event outcome is not proper when interest is in predicting a \$t\$-year risk of an event, for example 10-year mortality. In the situation with a fixed prediction horizon, the concordance index can be higher for a misspecified model than for a correctly specified model. Impropriety happens because the concordance index assesses the order of the event times and not the order of the event status at the prediction horizon. The time-dependent area under the receiver operating characteristic curve does not have this problem and is proper in this context.},
   langid = {english},
-  keywords = {Area Under Curve,Biostatistics,Concordance index,Cox regression,Discrimination ability,Humans,Model comparison,{Models, Statistical},Prognosis,Risk Assessment,ROC Curve,Survival prediction,Time Factors},
+  keywords = {Area Under Curve,Biostatistics,Concordance index,Cox regression,Discrimination ability,Humans,Model comparison,Models Statistical,Prognosis,Risk Assessment,ROC Curve,Survival prediction,Time Factors},
   file = {C:\Users\sdp490\Zotero\storage\AN928ELV\Blanche et al. - 2019 - The c-index is not proper for the evaluation of $t.pdf}
 }
 
@@ -469,6 +500,25 @@
   file = {C:\Users\sdp490\Zotero\storage\QJHTUJVH\Darby et al. - 2013 - Risk of Ischemic Heart Disease in Women after Radi.pdf}
 }
 
+@article{debruijnPerils2022,
+  title = {The Perils and Pitfalls of Explainable {{AI}}: {{Strategies}} for Explaining Algorithmic Decision-Making},
+  shorttitle = {The Perils and Pitfalls of Explainable {{AI}}},
+  author = {family=Bruijn, given=Hans, prefix=de, useprefix=true and Warnier, Martijn and Janssen, Marijn},
+  date = {2022-04-01},
+  journaltitle = {Government Information Quarterly},
+  shortjournal = {Government Information Quarterly},
+  volume = {39},
+  number = {2},
+  pages = {101666},
+  issn = {0740-624X},
+  doi = {10.1016/j.giq.2021.101666},
+  url = {https://www.sciencedirect.com/science/article/pii/S0740624X21001027},
+  urldate = {2024-01-02},
+  abstract = {Governments look at explainable artificial intelligence's (XAI) potential to tackle the criticisms of the opaqueness of algorithmic decision-making with AI. Although XAI is appealing as a solution for automated decisions, the wicked nature of the challenges governments face complicates the use of XAI. Wickedness means that the facts that define a problem are ambiguous and that there is no consensus on the normative criteria for solving this problem. In such a situation, the use of algorithms can result in distrust. Whereas there is much research advancing XAI technology, the focus of this paper is on strategies for explainability. Three illustrative cases are used to show that explainable, data-driven decisions are often not perceived as objective by the public. The context might raise strong incentives to contest and distrust the explanation of AI, and as a consequence, fierce resistance from society is encountered. To overcome the inherent problems of XAI, decisions-specific strategies are proposed to lead to societal acceptance of AI-based decisions. We suggest strategies to embrace explainable decisions and processes, co-create decisions with societal actors, move away from an instrumental to an institutional approach, use competing and value-sensitive algorithms, and mobilize the tacit knowledge of professionals},
+  keywords = {Accountability,Algorithms,Artificial intelligence,Computational intelligence,Data-driven decision,E-government,Socio-tech,Transparency,Trust,XAI},
+  file = {C\:\\Users\\sdp490\\Zotero\\storage\\8ANWDTC8\\de Bruijn et al. - 2022 - The perils and pitfalls of explainable AI Strateg.pdf;C\:\\Users\\sdp490\\Zotero\\storage\\WWWJ3AYN\\S0740624X21001027.html}
+}
+
 @article{defauwClinically2018,
   title = {Clinically Applicable Deep Learning for Diagnosis and Referral in Retinal Disease},
   author = {De Fauw, Jeffrey and Ledsam, Joseph R. and Romera-Paredes, Bernardino and Nikolov, Stanislav and Tomasev, Nenad and Blackwell, Sam and Askham, Harry and Glorot, Xavier and O’Donoghue, Brendan and Visentin, Daniel and family=Driessche, given=George, prefix=van den, useprefix=true and Lakshminarayanan, Balaji and Meyer, Clemens and Mackinder, Faith and Bouton, Simon and Ayoub, Kareem and Chopra, Reena and King, Dominic and Karthikesalingam, Alan and Hughes, Cían O. and Raine, Rosalind and Hughes, Julian and Sim, Dawn A. and Egan, Catherine and Tufail, Adnan and Montgomery, Hugh and Hassabis, Demis and Rees, Geraint and Back, Trevor and Khaw, Peng T. and Suleyman, Mustafa and Cornebise, Julien and Keane, Pearse A. and Ronneberger, Olaf},
@@ -505,7 +555,7 @@
   issn = {0006-341X},
   abstract = {Methods of evaluating and comparing the performance of diagnostic tests are of increasing importance as new tests are developed and marketed. When a test is based on an observed variable that lies on a continuous or graded scale, an assessment of the overall value of the test can be made through the use of a receiver operating characteristic (ROC) curve. The curve is constructed by varying the cutpoint used to determine which values of the observed variable will be considered abnormal and then plotting the resulting sensitivities against the corresponding false positive rates. When two or more empirical curves are constructed based on tests performed on the same individuals, statistical analysis on differences between curves must take into account the correlated nature of the data. This paper presents a nonparametric approach to the analysis of areas under correlated ROC curves, by using the theory on generalized U-statistics to generate an estimated covariance matrix.},
   langid = {english},
-  keywords = {Algorithms,Analysis of Variance,Female,Humans,Intestinal Obstruction,{Models, Statistical},Ovarian Neoplasms,Predictive Value of Tests,ROC Curve}
+  keywords = {Algorithms,Analysis of Variance,Female,Humans,Intestinal Obstruction,Models Statistical,Ovarian Neoplasms,Predictive Value of Tests,ROC Curve}
 }
 
 @article{dengComplexity1994,
@@ -560,7 +610,7 @@
   doi = {10.1056/NEJM200104053441401},
   abstract = {BACKGROUND: BCR-ABL is a constitutively activated tyrosine kinase that causes chronic myeloid leukemia (CML). Since tyrosine kinase activity is essential to the transforming function of BCR-ABL, an inhibitor of the kinase could be an effective treatment for CML. METHODS: We conducted a phase 1, dose-escalating trial of STI571 (formerly known as CGP 57148B), a specific inhibitor of the BCR-ABL tyrosine kinase. STI571 was administered orally to 83 patients with CML in the chronic phase in whom treatment with interferon alfa had failed. Patients were successively assigned to 1 of 14 doses ranging from 25 to 1000 mg per day. RESULTS: Adverse effects of STI571 were minimal; the most common were nausea, myalgias, edema, and diarrhea. A maximal tolerated dose was not identified. Complete hematologic responses were observed in 53 of 54 patients treated with daily doses of 300 mg or more and typically occurred in the first four weeks of therapy. Of the 54 patients treated with doses of 300 mg or more, cytogenetic responses occurred in 29, including 17 (31 percent of the 54 patients who received this dose) with major responses (0 to 35 percent of cells in metaphase positive for the Philadelphia chromosome); 7 of these patients had complete cytogenetic remissions. CONCLUSIONS: STI571 is well tolerated and has significant antileukemic activity in patients with CML in whom treatment with interferon alfa had failed. Our results provide evidence of the essential role of BCR-ABL tyrosine kinase activity in CML and demonstrate the potential for the development of anticancer drugs based on the specific molecular abnormality present in a human cancer.},
   langid = {english},
-  keywords = {Adult,Aged,Antineoplastic Agents,Benzamides,Blood Cell Count,{Dose-Response Relationship, Drug},Enzyme Inhibitors,Female,{Fusion Proteins, bcr-abl},Humans,Imatinib Mesylate,Interferon-alpha,{Leukemia, Myelogenous, Chronic, BCR-ABL Positive},Male,Middle Aged,Phosphorylation,Piperazines,Protein-Tyrosine Kinases,Pyrimidines,Recurrence,Remission Induction}
+  keywords = {Adult,Aged,Antineoplastic Agents,Benzamides,Blood Cell Count,Dose-Response Relationship Drug,Enzyme Inhibitors,Female,Fusion Proteins bcr-abl,Humans,Imatinib Mesylate,Interferon-alpha,Leukemia Myelogenous Chronic BCR-ABL Positive,Male,Middle Aged,Phosphorylation,Piperazines,Protein-Tyrosine Kinases,Pyrimidines,Recurrence,Remission Induction}
 }
 
 @article{dunlayMultimorbidity2016,
@@ -613,6 +663,17 @@
   abstract = {Here we present deep-learning techniques for healthcare, centering our discussion on deep learning in computer vision, natural language processing, reinforcement learning, and generalized methods. We describe how these computational techniques can impact a few key areas of medicine and explore how to build end-to-end systems. Our discussion of computer vision focuses largely on medical imaging, and we describe the application of natural language processing to domains such as electronic health record data. Similarly, reinforcement learning is discussed in the context of robotic-assisted surgery, and generalized deep-learning methods for genomics are reviewed.},
   langid = {english},
   keywords = {Bioinformatics,Health care,Machine learning}
+}
+
+@legislation{EuropeanParliament2016a,
+  title = {Regulation ({{EU}}) 2016/679 of the {{European Parliament}} and of the {{Council}}. of 27 {{April}} 2016 on the Protection of Natural Persons with Regard to the Processing of Personal Data and on the Free Movement of Such Data, and Repealing {{Directive}} 95/46/{{EC}} ({{General Data Protection Regulation}})},
+  author = {{European Parliament} and {Council of the European Union}},
+  date = {2016-05-04},
+  location = {{OJ L 119, 4.5.2016, p. 1–88}},
+  url = {https://data.europa.eu/eli/reg/2016/679/oj},
+  urldate = {2023-04-13},
+  abstract = {The General Data Protection Regulation (2016/679, "GDPR") is a Regulation in European Union (EU) law on data protection and privacy in the EU and the European Economic Area (EEA).},
+  keywords = {access consumer data data-processing freedom gdpr information justice law personal privacy protection security verification}
 }
 
 @article{falkPathogenesis2006,
@@ -736,7 +797,7 @@
   urldate = {2022-02-16},
   abstract = {Objectives Risk scores are recommended in guidelines to facilitate the management of patients who present with acute coronary syndromes (ACS). Internationally, such scores are not systematically used because they are not easy to apply and some risk indicators are not available at first presentation. We aimed to derive and externally validate a more accurate version of the Global Registry of Acute Coronary Events (GRACE) risk score for predicting the risk of death or death/myocardial infarction (MI) both acutely and over the longer term. The risk score was designed to be suitable for acute and emergency clinical settings and usable in electronic devices. Design and setting The GRACE risk score (2.0) was derived in 32 037 patients from the GRACE registry (14 countries, 94 hospitals) and validated externally in the French registry of Acute ST-elevation and non-ST-elevation MI (FAST-MI) 2005. Participants Patients presenting with ST-elevation and non-ST elevation ACS and with long-term outcomes. Outcome measures The GRACE Score (2.0) predicts the risk of short-term and long-term mortality, and death/MI, overall and in hospital survivors. Results For key independent risk predictors of death (1 year), non-linear associations (vs linear) were found for age (p{$<$}0.0005), systolic blood pressure (p{$<$}0.0001), pulse (p{$<$}0.0001) and creatinine (p{$<$}0.0001). By employing non-linear algorithms, there was improved model discrimination, validated externally. Using the FAST-MI 2005 cohort, the c indices for death exceeded 0.82 for the overall population at 1 year and also at 3 years. Discrimination for death or MI was slightly lower than for death alone (c=0.78). Similar results were obtained for hospital survivors, and with substitutions for creatinine and Killip class, the model performed nearly as well. Conclusions The updated GRACE risk score has better discrimination and is easier to use than the previous score based on linear associations. GRACE Risk (2.0) performed equally well acutely and over the longer term and can be used in a variety of clinical settings to aid management decisions.},
   langid = {english},
-  keywords = {ACCIDENT \& EMERGENCY MEDICINE},
+  keywords = {ACCIDENT & EMERGENCY MEDICINE},
   file = {C\:\\Users\\sdp490\\Zotero\\storage\\8WMPX5RM\\Fox et al. - 2014 - Should patients with acute coronary disease be str.pdf;C\:\\Users\\sdp490\\Zotero\\storage\\BHAKPG8Q\\e004425.html}
 }
 
@@ -754,7 +815,7 @@
   issn = {0036-8075},
   doi = {10.1126/science.287.5462.2398},
   langid = {english},
-  keywords = {Biomedical and Behavioral Research,Cohort Studies,Confidentiality,{Databases, Factual},Denmark,Genetic Research,Humans,{Medical Records Systems, Computerized},Registries,Twin Studies as Topic}
+  keywords = {Biomedical and Behavioral Research,Cohort Studies,Confidentiality,Databases Factual,Denmark,Genetic Research,Humans,Medical Records Systems Computerized,Registries,Twin Studies as Topic}
 }
 
 @article{fusterPathogenesis1992,
@@ -936,6 +997,19 @@
   file = {C:\Users\sdp490\Zotero\storage\UE79H4JD\Hall et al. - 2018 - Multimorbidity and survival for patients with acut.pdf}
 }
 
+@article{hallockFederated2021,
+  title = {Federated {{Networks}} for {{Distributed Analysis}} of {{Health Data}}},
+  author = {Hallock, Harry and Marshall, Serena Elizabeth and family=Hoen, given=Peter A. C., prefix='t, useprefix=true and Nygård, Jan F. and Hoorne, Bert and Fox, Cameron and Alagaratnam, Sharmini},
+  date = {2021},
+  journaltitle = {Frontiers in Public Health},
+  volume = {9},
+  issn = {2296-2565},
+  url = {https://www.frontiersin.org/articles/10.3389/fpubh.2021.712569},
+  urldate = {2024-01-03},
+  abstract = {Access to health data, important for population health planning, basic and clinical research and health industry utilization, remains problematic. Legislation intended to improve access to personal data across national borders has proven to be a double-edged sword, where complexity and implications from misinterpretations have paradoxically resulted in data becoming more siloed. As a result, the potential for development of health specific AI and clinical decision support tools built on real-world data have yet to be fully realized. In this perspective, we propose federated networks as a solution to enable access to diverse data sets and tackle known and emerging health problems. The perspective draws on experience from the World Economic Forum Breaking Barriers to Health Data project, the Personal Health Train and Vantage6 infrastructures, and industry insights. We first define the concept of federated networks in a healthcare context, present the value they can bring to multiple stakeholders, and discuss their establishment, operation and implementation. Challenges of federated networks in healthcare are highlighted, as well as the resulting need for and value of an independent orchestrator for their safe, sustainable and scalable implementation.},
+  file = {C:\Users\sdp490\Zotero\storage\7DHAJ7EH\Hallock et al. - 2021 - Federated Networks for Distributed Analysis of Hea.pdf}
+}
+
 @article{handelmanEDoctor2018,
   title = {{{eDoctor}}: Machine Learning and the Future of Medicine},
   shorttitle = {{{eDoctor}}},
@@ -952,7 +1026,7 @@
   doi = {10.1111/joim.12822},
   abstract = {Machine learning (ML) is a burgeoning field of medicine with huge resources being applied to fuse computer science and statistics to medical problems. Proponents of ML extol its ability to deal with large, complex and disparate data, often found within medicine and feel that ML is the future for biomedical research, personalized medicine, computer-aided diagnosis to significantly advance global health care. However, the concepts of ML are unfamiliar to many medical professionals and there is untapped potential in the use of ML as a research tool. In this article, we provide an overview of the theory behind ML, explore the common ML algorithms used in medicine including their pitfalls and discuss the potential future of ML in medicine.},
   langid = {english},
-  keywords = {Algorithms,artificial intelligence,{Decision Support Systems, Clinical},Forecasting,Humans,machine learning,Machine Learning,medicine,Medicine,Precision Medicine,supervised machine learning,Supervised Machine Learning,unsupervised machine learning,Unsupervised Machine Learning},
+  keywords = {Algorithms,artificial intelligence,Decision Support Systems Clinical,Forecasting,Humans,machine learning,Machine Learning,medicine,Medicine,Precision Medicine,supervised machine learning,Supervised Machine Learning,unsupervised machine learning,Unsupervised Machine Learning},
   file = {C:\Users\sdp490\Zotero\storage\Z3ZHSRG3\Handelman et al. - 2018 - eDoctor machine learning and the future of medici.pdf}
 }
 
@@ -1041,6 +1115,24 @@
   issue = {7 Suppl},
   langid = {english},
   keywords = {Cause of Death,Clinical Coding,Death Certificates,Denmark,Humans,Registries,World Health Organization}
+}
+
+@article{herrettAssociation2014,
+  title = {Association between Clinical Presentations before Myocardial Infarction and Coronary Mortality: A Prospective Population-Based Study Using Linked Electronic Records},
+  shorttitle = {Association between Clinical Presentations before Myocardial Infarction and Coronary Mortality},
+  author = {Herrett, Emily and Bhaskaran, Krishnan and Timmis, Adam and Denaxas, Spiros and Hemingway, Harry and Smeeth, Liam},
+  date = {2014-09-14},
+  journaltitle = {European Heart Journal},
+  shortjournal = {European Heart Journal},
+  volume = {35},
+  number = {35},
+  pages = {2363--2371},
+  issn = {0195-668X},
+  doi = {10.1093/eurheartj/ehu286},
+  url = {https://doi.org/10.1093/eurheartj/ehu286},
+  urldate = {2024-01-03},
+  abstract = {Ischaemia in different arterial territories before acute myocardial infarction (AMI) may influence post-AMI outcomes. No studies have evaluated prospectively collected information on ischaemia and its effect on short- and long-term coronary mortality. The objective of this study was to compare patients with and without prospectively measured ischaemic presentations before AMI in terms of infarct characteristics and coronary mortality.As part of the CALIBER programme, we linked data from primary care, hospital admissions, the national acute coronary syndrome registry and cause-specific mortality to identify patients with first AMI (n = 16,439). We analysed time from AMI to coronary mortality (n = 5283 deaths) using Cox regression (median 2.6 years follow-up), comparing patients with and without recent ischaemic presentations. Patients with ischaemic presentations in the 90 days before AMI experienced lower coronary mortality in the first 7 days after AMI compared with those with no prior ischaemic presentations, after adjusting for age, sex, smoking, diabetes, blood pressure and cardiovascular medications [HR: 0.64 (95\% CI: 0.57–0.73) P \&lt; 0.001], but subsequent mortality was higher [HR: 1.42 (1.13–1.77) P = 0.001]. Patients with ischaemic presentations closer in time to AMI had the lowest seven day mortality (P-trend = 0.001).In the first large prospective study of ischaemic presentations prior to AMI, we have shown that those occurring closest to AMI are associated with lower short-term coronary mortality following AMI, which could represent a natural ischaemic preconditioning effect, observed in a clinical setting.Clinicaltrials.gov identifier NCT01604486.},
+  file = {C:\Users\sdp490\Zotero\storage\UJQGTU2V\Herrett et al. - 2014 - Association between clinical presentations before .pdf}
 }
 
 @article{hjaltelinPancreatic2023,
@@ -1154,7 +1246,7 @@
   doi = {10.1053/j.semnuclmed.2020.02.007},
   abstract = {Ischemic heart disease is a dynamic process of atherosclerosis of the coronary arteries or functional alterations of coronary circulation that can be modified by lifestyle, pharmacological therapies, and revascularization. Such treatment may result in disease stabilization or regression. New terminology describes clinical presentations of Ischemic heart disease categorized as either acute coronary syndrome or chronic coronary syndrome. The reduction in prevalence of obstructive coronary artery disease in a symptomatic population causes a lower pretest probability and clinical likelihood of disease, influencing the diagnostic work-up. Noninvasive functional or anatomic imaging for myocardial ischemia is recommended as the initial test to diagnose coronary artery disease in symptomatic patients, where obstructive disease cannot be excluded by clinical assessment alone. Coronary computed tomography (CT) angiography has advanced and is first line in suitable patients, due to high rule-out power and further qualification of the diagnosis by functional assessment using noninvasive nuclear or magnetic resonance technology or CT-based fractional flow reserve (FFR-CT). Optimal medical treatment remains paramount, while FFR-guided myocardial revascularization in patients that are not responsive to antianginal treatment provides further symptom relieve as well as prognostic impact on prevention of spontaneous myocardial infarction.},
   langid = {english},
-  keywords = {{Fractional Flow Reserve, Myocardial},Humans,Magnetic Resonance Imaging,Myocardial Ischemia,{Tomography, X-Ray Computed}}
+  keywords = {Fractional Flow Reserve Myocardial,Humans,Magnetic Resonance Imaging,Myocardial Ischemia,Tomography X-Ray Computed}
 }
 
 @article{jensenMining2012,
@@ -1714,7 +1806,7 @@
   doi = {10.2217/pgs.13.135},
   abstract = {AIM: To investigate whether an association exists between fluvastatin-induced adverse drug reactions (ADRs) and polymorphisms in genes encoding the metabolizing enzyme CYP2C9 and the drug transporter ABCG2 in renal transplant recipients (RTRs). MATERIALS \& METHODS: Fifty-two RTRs that experienced fluvastatin ADRs and 52 controls matched for age, gender, dose of fluvastatin and immunosuppressive use were enrolled in the study. Genotyping for CYP2C9*2, *3 and ABCG2 421C{$>$}A variants was performed by real-time PCR. RESULTS: CYP2C9 homozygous and heterozygous mutant allele (*2 or *3) carriers had 2.5-times greater odds of developing adverse effects (χ² = 4.370; degrees of freedom = 1; p = 0.037; φ = 0.21, odds ratio [OR]: 2.44; 95\% CI: 1.05-5.71). Patients who were the carriers of at least one mutant CYP2C9 allele (*2 or *3) and who were receiving CYP2C9 inhibitors, had more than six-times greater odds of having adverse effects than those without the inhibitor included in their therapy (p = 0.027; OR: 6.59; 95\% CI: 1.24-35.08). Patients with ABCG2 421CA or AA (taken together) had almost four-times greater odds of developing adverse effects than those with ABCG2 421CC genotype (χ² = 6.190; degrees of freedom = 1; p = 0.013; φ = 0.24, OR: 3.81; 95\% CI: 1.27-11.45). Patients with A allele had 2.75-times (95\% CI: 1.02-7.40) greater odds of developing adverse effects than those with C allele. CONCLUSION: Our preliminary data demonstrate an association between fluvastatin-induced ADRs in RTRs and genetic variants in the CYP2C9 and ABCG2 genes.},
   langid = {english},
-  keywords = {Adult,Aryl Hydrocarbon Hydroxylases,{ATP Binding Cassette Transporter, Subfamily G, Member 2},ATP-Binding Cassette Transporters,Case-Control Studies,Cytochrome P-450 CYP2C9,Drug-Related Side Effects and Adverse Reactions,{Fatty Acids, Monounsaturated},Female,Fluvastatin,Genetic Association Studies,Humans,Indoles,Kidney Transplantation,Male,Middle Aged,Neoplasm Proteins,{Polymorphism, Single Nucleotide},Risk Factors}
+  keywords = {Adult,Aryl Hydrocarbon Hydroxylases,ATP Binding Cassette Transporter Subfamily G Member 2,ATP-Binding Cassette Transporters,Case-Control Studies,Cytochrome P-450 CYP2C9,Drug-Related Side Effects and Adverse Reactions,Fatty Acids Monounsaturated,Female,Fluvastatin,Genetic Association Studies,Humans,Indoles,Kidney Transplantation,Male,Middle Aged,Neoplasm Proteins,Polymorphism Single Nucleotide,Risk Factors}
 }
 
 @book{mitchellMachine1997,
@@ -1976,7 +2068,7 @@
   doi = {10.1097/01.fpc.0000230416.82349.90},
   abstract = {BACKGROUND AND OBJECTIVE: Organic anion transporting polypeptide 1B1 (OATP1B1) is an uptake transporter located at the sinusoidal membrane of human hepatocytes. This study aimed to investigate the effects of genetic polymorphism in the SLCO1B1 gene encoding OATP1B1 on the pharmacokinetics of simvastatin. METHODS: Four healthy volunteers with the homozygous SLCO1B1 c.521CC genotype, 12 with the heterozygous c.521TC genotype and 16 with the homozygous c.521TT genotype (controls) were recruited. Each study participant ingested a single 40-mg dose of simvastatin. Plasma concentrations of simvastatin (inactive lactone) and its active metabolite simvastatin acid were measured for 12 h. RESULTS: The AUC0-infinity of simvastatin acid was 120 and 221\% higher in participants with the SLCO1B1 c.521CC genotype than in those with the c.521TC and c.521TT (reference) genotypes, respectively (P{$<$}0.001). The Cmax of simvastatin acid was 162 and 200\% higher in participants with the c.521CC genotype than in those with the c.521TC and c.521TT genotypes (P{$<$}0.001). The Cmax of simvastatin acid occurred earlier in participants with the c.521CC and c.521TC genotypes than in those with the c.521TT genotype (P{$<$}0.05). No association existed between the SLCO1B1 genotype and the elimination half-life of simvastatin acid. Moreover, no statistically significant association was seen between the SLCO1B1 genotype and the pharmacokinetics of simvastatin lactone. CONCLUSIONS: SLCO1B1 polymorphism markedly affects the pharmacokinetics of active simvastatin acid, but has no significant effect on parent simvastatin. Raised plasma concentrations of simvastatin acid in patients carrying the SLCO1B1 c.521C variant allele may enhance the risk of systemic adverse effects during simvastatin treatment. In addition, reduced uptake of simvastatin acid by OATP1B1 into the liver in patients with the c.521C allele could reduce its cholesterol-lowering efficacy.},
   langid = {english},
-  keywords = {Adult,Female,Genotype,Half-Life,Heterozygote,Homozygote,Humans,Hydroxymethylglutaryl-CoA Reductase Inhibitors,Liver-Specific Organic Anion Transporter 1,Male,Organic Anion Transporters,Pharmacogenetics,{Polymorphism, Single Nucleotide},Simvastatin}
+  keywords = {Adult,Female,Genotype,Half-Life,Heterozygote,Homozygote,Humans,Hydroxymethylglutaryl-CoA Reductase Inhibitors,Liver-Specific Organic Anion Transporter 1,Male,Organic Anion Transporters,Pharmacogenetics,Polymorphism Single Nucleotide,Simvastatin}
 }
 
 @online{paszkePyTorch2019,
@@ -2074,6 +2166,35 @@
   url = {http://udlbook.com}
 }
 
+@online{Proposal,
+  title = {Proposal for a Regulation - {{The European Health Data Space}} - {{European Commission}}},
+  url = {https://health.ec.europa.eu/publications/proposal-regulation-european-health-data-space_en},
+  urldate = {2024-01-03},
+  abstract = {Proposal for a regulation on the European Health Data Space},
+  langid = {english},
+  file = {C:\Users\sdp490\Zotero\storage\4H4XG3QI\proposal-regulation-european-health-data-space_en.html}
+}
+
+@article{raabFederated2023,
+  title = {Federated Electronic Health Records for the {{European Health Data Space}}},
+  author = {Raab, René and Küderle, Arne and Zakreuskaya, Anastasiya and Stern, Ariel D. and Klucken, Jochen and Kaissis, Georgios and Rueckert, Daniel and Boll, Susanne and Eils, Roland and Wagener, Harald and Eskofier, Bjoern M.},
+  date = {2023-11-01},
+  journaltitle = {The Lancet Digital Health},
+  shortjournal = {The Lancet Digital Health},
+  volume = {5},
+  number = {11},
+  eprint = {37741765},
+  eprinttype = {pmid},
+  pages = {e840-e847},
+  publisher = {{Elsevier}},
+  issn = {2589-7500},
+  doi = {10.1016/S2589-7500(23)00156-5},
+  url = {https://www.thelancet.com/journals/landig/article/PIIS2589-7500(23)00156-5/fulltext},
+  urldate = {2024-01-03},
+  langid = {english},
+  file = {C:\Users\sdp490\Zotero\storage\THPCX9TS\Raab et al. - 2023 - Federated electronic health records for the Europe.pdf}
+}
+
 @online{rameshZeroShot2021,
   title = {Zero-{{Shot Text-to-Image Generation}}},
   author = {Ramesh, Aditya and Pavlov, Mikhail and Goh, Gabriel and Gray, Scott and Voss, Chelsea and Radford, Alec and Chen, Mark and Sutskever, Ilya},
@@ -2120,6 +2241,23 @@
   urldate = {2023-10-09},
   abstract = {The population with stable coronary artery disease (SCAD) is growing but validated models to guide their clinical management are lacking. We developed and validated prognostic models for all-cause mortality and non-fatal myocardial infarction (MI) or coronary death in SCAD.Models were developed in a linked electronic health records cohort of 102 023 SCAD patients from the CALIBER programme, with mean follow-up of 4.4 (SD 2.8) years during which 20 817 deaths and 8856 coronary outcomes were observed. The Kaplan–Meier 5-year risk was 20.6\% (95\% CI, 20.3, 20.9) for mortality and 9.7\% (95\% CI, 9.4, 9.9) for non-fatal MI or coronary death. The predictors in the models were age, sex, CAD diagnosis, deprivation, smoking, hypertension, diabetes, lipids, heart failure, peripheral arterial disease, atrial fibrillation, stroke, chronic kidney disease, chronic pulmonary disease, liver disease, cancer, depression, anxiety, heart rate, creatinine, white cell count, and haemoglobin. The models had good calibration and discrimination in internal (external) validation with C-index 0.811 (0.735) for all-cause mortality and 0.778 (0.718) for non-fatal MI or coronary death. Using these models to identify patients at high risk (defined by guidelines as 3\% annual mortality) and support a management decision associated with hazard ratio 0.8 could save an additional 13–16 life years or 15–18 coronary event-free years per 1000 patients screened, compared with models with just age, sex, and deprivation.These validated prognostic models could be used in clinical practice to support risk stratification as recommended in clinical guidelines.},
   file = {C\:\\Users\\sdp490\\Zotero\\storage\\SIHPWXWZ\\Rapsomaniki et al. - 2014 - Prognostic models for stable coronary artery disea.pdf;C\:\\Users\\sdp490\\Zotero\\storage\\5YX6T3PT\\633759.html}
+}
+
+@article{rapsomanikiPrognostic2014a,
+  title = {Prognostic Models for Stable Coronary Artery Disease Based on Electronic Health Record Cohort of 102 023 Patients},
+  author = {Rapsomaniki, Eleni and Shah, Anoop and Perel, Pablo and Denaxas, Spiros and George, Julie and Nicholas, Owen and Udumyan, Ruzan and Feder, Gene Solomon and Hingorani, Aroon D. and Timmis, Adam and Smeeth, Liam and Hemingway, Harry},
+  date = {2014-04-01},
+  journaltitle = {European Heart Journal},
+  shortjournal = {European Heart Journal},
+  volume = {35},
+  number = {13},
+  pages = {844--852},
+  issn = {0195-668X},
+  doi = {10.1093/eurheartj/eht533},
+  url = {https://doi.org/10.1093/eurheartj/eht533},
+  urldate = {2024-01-03},
+  abstract = {The population with stable coronary artery disease (SCAD) is growing but validated models to guide their clinical management are lacking. We developed and validated prognostic models for all-cause mortality and non-fatal myocardial infarction (MI) or coronary death in SCAD.Models were developed in a linked electronic health records cohort of 102 023 SCAD patients from the CALIBER programme, with mean follow-up of 4.4 (SD 2.8) years during which 20 817 deaths and 8856 coronary outcomes were observed. The Kaplan–Meier 5-year risk was 20.6\% (95\% CI, 20.3, 20.9) for mortality and 9.7\% (95\% CI, 9.4, 9.9) for non-fatal MI or coronary death. The predictors in the models were age, sex, CAD diagnosis, deprivation, smoking, hypertension, diabetes, lipids, heart failure, peripheral arterial disease, atrial fibrillation, stroke, chronic kidney disease, chronic pulmonary disease, liver disease, cancer, depression, anxiety, heart rate, creatinine, white cell count, and haemoglobin. The models had good calibration and discrimination in internal (external) validation with C-index 0.811 (0.735) for all-cause mortality and 0.778 (0.718) for non-fatal MI or coronary death. Using these models to identify patients at high risk (defined by guidelines as 3\% annual mortality) and support a management decision associated with hazard ratio 0.8 could save an additional 13–16 life years or 15–18 coronary event-free years per 1000 patients screened, compared with models with just age, sex, and deprivation.These validated prognostic models could be used in clinical practice to support risk stratification as recommended in clinical guidelines.},
+  file = {C:\Users\sdp490\Zotero\storage\UNVS6SI2\Rapsomaniki et al. - 2014 - Prognostic models for stable coronary artery disea.pdf}
 }
 
 @inreference{Regular2023,
@@ -2333,7 +2471,7 @@
   doi = {10.1056/NEJMoa0801936},
   abstract = {BACKGROUND: Lowering low-density lipoprotein cholesterol with statin therapy results in substantial reductions in cardiovascular events, and larger reductions in cholesterol may produce larger benefits. In rare cases, myopathy occurs in association with statin therapy, especially when the statins are administered at higher doses and with certain other medications. METHODS: We carried out a genomewide association study using approximately 300,000 markers (and additional fine-mapping) in 85 subjects with definite or incipient myopathy and 90 controls, all of whom were taking 80 mg of simvastatin daily as part of a trial involving 12,000 participants. Replication was tested in a trial of 40 mg of simvastatin daily involving 20,000 participants. RESULTS: The genomewide scan yielded a single strong association of myopathy with the rs4363657 single-nucleotide polymorphism (SNP) located within SLCO1B1 on chromosome 12 (P=4x10(-9)). SLCO1B1 encodes the organic anion-transporting polypeptide OATP1B1, which has been shown to regulate the hepatic uptake of statins. The noncoding rs4363657 SNP was in nearly complete linkage disequilibrium with the nonsynonymous rs4149056 SNP (r(2)=0.97), which has been linked to statin metabolism. The prevalence of the rs4149056 C allele in the population was 15\%. The odds ratio for myopathy was 4.5 (95\% confidence interval [CI], 2.6 to 7.7) per copy of the C allele, and 16.9 (95\% CI, 4.7 to 61.1) in CC as compared with TT homozygotes. More than 60\% of these myopathy cases could be attributed to the C variant. The association of rs4149056 with myopathy was replicated in the trial of 40 mg of simvastatin daily, which also showed an association between rs4149056 and the cholesterol-lowering effects of simvastatin. No SNPs in any other region were clearly associated with myopathy. CONCLUSIONS: We have identified common variants in SLCO1B1 that are strongly associated with an increased risk of statin-induced myopathy. Genotyping these variants may help to achieve the benefits of statin therapy more safely and effectively. (Current Controlled Trials number, ISRCTN74348595.)},
   langid = {english},
-  keywords = {Aged,Arterial Occlusive Diseases,{Chromosomes, Human, Pair 12},Diabetes Mellitus,Female,Genetic Markers,Genotype,Humans,Hydroxymethylglutaryl-CoA Reductase Inhibitors,Liver-Specific Organic Anion Transporter 1,Male,Middle Aged,Muscular Diseases,Myocardial Infarction,Organic Anion Transporters,{Polymorphism, Single Nucleotide},Risk,Simvastatin},
+  keywords = {Aged,Arterial Occlusive Diseases,Chromosomes Human Pair 12,Diabetes Mellitus,Female,Genetic Markers,Genotype,Humans,Hydroxymethylglutaryl-CoA Reductase Inhibitors,Liver-Specific Organic Anion Transporter 1,Male,Middle Aged,Muscular Diseases,Myocardial Infarction,Organic Anion Transporters,Polymorphism Single Nucleotide,Risk,Simvastatin},
   file = {C:\Users\sdp490\Zotero\storage\LR5YC8DP\SEARCH Collaborative Group et al. - 2008 - SLCO1B1 variants and statin-induced myopathy--a ge.pdf}
 }
 
@@ -2795,6 +2933,27 @@
   file = {C:\Users\sdp490\Zotero\storage\DAKXS85B\Visseren et al. - 2021 - 2021 ESC Guidelines on cardiovascular disease prev.pdf}
 }
 
+@article{vollmerMachine2020,
+  title = {Machine Learning and Artificial Intelligence Research for Patient Benefit: 20 Critical Questions on Transparency, Replicability, Ethics, and Effectiveness},
+  shorttitle = {Machine Learning and Artificial Intelligence Research for Patient Benefit},
+  author = {Vollmer, Sebastian and Mateen, Bilal A. and Bohner, Gergo and Király, Franz J. and Ghani, Rayid and Jonsson, Pall and Cumbers, Sarah and Jonas, Adrian and McAllister, Katherine S. L. and Myles, Puja and Grainger, David and Birse, Mark and Branson, Richard and Moons, Karel G. M. and Collins, Gary S. and Ioannidis, John P. A. and Holmes, Chris and Hemingway, Harry},
+  date = {2020-03-20},
+  journaltitle = {BMJ},
+  shortjournal = {BMJ},
+  volume = {368},
+  eprint = {32198138},
+  eprinttype = {pmid},
+  pages = {l6927},
+  publisher = {{British Medical Journal Publishing Group}},
+  issn = {1756-1833},
+  doi = {10.1136/bmj.l6927},
+  url = {https://www.bmj.com/content/368/bmj.l6927},
+  urldate = {2024-01-03},
+  abstract = {{$<$}p{$>$}Machine learning, artificial intelligence, and other modern statistical methods are providing new opportunities to operationalise previously untapped and rapidly growing sources of data for patient benefit. Despite much promising research currently being undertaken, particularly in imaging, the literature as a whole lacks transparency, clear reporting to facilitate replicability, exploration for potential ethical concerns, and clear demonstrations of effectiveness. Among the many reasons why these problems exist, one of the most important (for which we provide a preliminary solution here) is the current lack of best practice guidance specific to machine learning and artificial intelligence. However, we believe that interdisciplinary groups pursuing research and impact projects involving machine learning and artificial intelligence for health would benefit from explicitly addressing a series of questions concerning transparency, reproducibility, ethics, and effectiveness (TREE). The 20 critical questions proposed here provide a framework for research groups to inform the design, conduct, and reporting; for editors and peer reviewers to evaluate contributions to the literature; and for patients, clinicians and policy makers to critically appraise where new findings may deliver patient benefit. {$<$}/p{$>$}},
+  langid = {english},
+  file = {C:\Users\sdp490\Zotero\storage\J758BX8Z\Vollmer et al. - 2020 - Machine learning and artificial intelligence resea.pdf}
+}
+
 @article{whittyMap2020,
   title = {Map Clusters of Diseases to Tackle Multimorbidity},
   author = {Whitty, Christopher J. M. and Watt, Fiona M.},
@@ -2845,6 +3004,25 @@
   pubstate = {preprint},
   keywords = {Computer Science - Machine Learning,Statistics - Machine Learning},
   file = {C\:\\Users\\sdp490\\Zotero\\storage\\CAWUSTWG\\Wiegrebe et al. - 2023 - Deep Learning for Survival Analysis A Review.pdf;C\:\\Users\\sdp490\\Zotero\\storage\\TCP2Z7AM\\2305.html}
+}
+
+@article{wilsonInternational2012a,
+  title = {An {{International Model}} to {{Predict Recurrent Cardiovascular Disease}}},
+  author = {Wilson, Peter W. F. and D'Agostino, Ralph and Bhatt, Deepak L. and Eagle, Kim and Pencina, Michael J. and Smith, Sidney C. and Alberts, Mark J. and Dallongeville, Jean and Goto, Shinya and Hirsch, Alan T. and Liau, Chiau-Suong and Ohman, E. Magnus and Röther, Joachim and Reid, Christopher and Mas, Jean-Louis and Steg, Ph Gabriel},
+  date = {2012-07-01},
+  journaltitle = {The American Journal of Medicine},
+  shortjournal = {The American Journal of Medicine},
+  volume = {125},
+  number = {7},
+  pages = {695-703.e1},
+  publisher = {{Elsevier}},
+  issn = {0002-9343, 1555-7162},
+  doi = {10.1016/j.amjmed.2012.01.014},
+  url = {https://www.amjmed.com/article/S0002-9343(12)00083-6/fulltext},
+  urldate = {2024-01-03},
+  langid = {english},
+  keywords = {Acute coronary syndromes,Cardiovascular disease,Cerebrovascular disease/stroke,Coronary disease,Mortality,Peripheral vascular disease,Risk factors},
+  file = {C:\Users\sdp490\Zotero\storage\MVGHJTH8\Wilson et al. - 2012 - An International Model to Predict Recurrent Cardio.pdf}
 }
 
 @article{wirthPresence2015,
@@ -2911,7 +3089,7 @@
   issn = {1522-9645},
   doi = {10.1093/eurheartj/ehw211},
   langid = {english},
-  keywords = {Advisory Committees,Antineoplastic Agents,arrhythmias,Cancer Survivors,cancer therapy,cardio-oncology,Cardiology,cardiotoxicity,Cardiotoxicity,chemotherapy,early detection,European Society of Cardiology,Humans,Immunotherapy,ischaemia,myocardial dysfunction,Neoplasms,Radiotherapy,{Societies, Medical},surveillance,Vascular Endothelial Growth Factor A},
+  keywords = {Advisory Committees,Antineoplastic Agents,arrhythmias,Cancer Survivors,cancer therapy,cardio-oncology,Cardiology,cardiotoxicity,Cardiotoxicity,chemotherapy,early detection,European Society of Cardiology,Humans,Immunotherapy,ischaemia,myocardial dysfunction,Neoplasms,Radiotherapy,Societies Medical,surveillance,Vascular Endothelial Growth Factor A},
   file = {C:\Users\sdp490\Zotero\storage\RWCM2YZZ\Zamorano et al. - 2016 - 2016 ESC Position Paper on cancer treatments and c.pdf}
 }
 

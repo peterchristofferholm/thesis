@@ -1,7 +1,7 @@
 \chapter{Fundamentals of Machine Learning and Neural Networks}
 \label{chap:machine-learning}
 
-% figure: hierarchy of artificial intelligence {{{
+% figure: hierarchy of artificial intelligence →
 \begin{marginfigure}[1em]
     \centering
 	\begin{tikzpicture}[scale=1.75]
@@ -15,7 +15,7 @@
         \node[font=\scriptsize, text width=1.4cm, align=center] 
             at (0, 0.0) {Deep Learning};
 	\end{tikzpicture}
-    \caption[The hierarchy of artificial intelligence (AI)]{%
+    \caption[Artifical intelligence, machine learning, and deep learning]{%
         \Ac*{AI} is an umbrella term for computer software 
         that have some sort of \enquote{intelligence} and
         \ac*{ML} is a collection of methods through which 
@@ -25,7 +25,7 @@
         to analyse complex data.
     }
     \label{fig:artificial-intelligence}
-\end{marginfigure}% }}}
+\end{marginfigure}% ←
 
 In modern medicine, 
 ever increasing amounts of data 
@@ -234,11 +234,11 @@ in \cref{chap:study1-outline}.
 \section{Generalization and Overfitting}
 \label{overfitting}
 
-% figure: generalization error {{{
+% figure: generalization error →
 \begin{marginfigure}[3em]
     \centering
 	\includegraphics{graphics/overfitting-2}
-    \caption[Overfitting as Function of Number of Epochs]{%
+    \caption[Overfitting and generalization]{%
         Training a neural network model for many iterations 
         runs the risk of overfitting the model to the training data.
         Although the training error keeps decreasing, 
@@ -247,7 +247,7 @@ in \cref{chap:study1-outline}.
     }
     \label{fig:generalization-error}
 \end{marginfigure}
-% }}}
+% ←
 
 Returning to supervised learning,
 it is important to note that achieving good performance on the 
@@ -299,11 +299,11 @@ would not be representative of neither biology nor disease etiology.
 As a consequence, the test set performance is considerably worse 
 than the training set performance.
 
-% figure: overfitting {{{
+% figure: overfitting →
 \begin{figure}[htb]
 	\includegraphics{graphics/overfitting}
     \setfloatalignment{t}
-    \caption[What is Overfitting?][-1em]{%
+    \caption[Overfitting versus underfitting][-1em]{%
         Illustration of overfitting and underfitting 
         in a simple classification task.
         An overfitted model learns the training data too well,
@@ -315,7 +315,7 @@ than the training set performance.
     \label{fig:overfitting}
     \vspace{-2em}
 \end{figure}
-% }}}
+% ←
 
 Overfitting, and its counterpart, underfitting,
 are key considerations in training of \ac{ML} models (\cref{fig:overfitting}).
@@ -452,7 +452,7 @@ every neuron in one layer is connected to every neuron in the next.
   \node[label] at (N3-1.90) { Hidden Layers };
   \node[label] at (N5-1.90) { Output };
 \end{tikzpicture}
-\caption[Schematic of a Feedforward Neural Network]{
+\caption[Feedforward neural networks]{
     A schematic representation of a feedforward neural network, 
     comprising an input layer, multiple hidden layers, and an output layer. 
     Each circle denotes a neuron, and the connecting lines represent 
@@ -528,7 +528,7 @@ with the sigmoid, \ac{tanh}, and \ac{ReLU} being popular choices
         
     \end{groupplot}
 \end{tikzpicture}% }}}
-\caption[Well-known Activation Functions]{%
+\caption[Types of activation functions]{%
     Plots of well-known activation functions used in neural networks. 
     From top left to bottom right: 
     The Heaviside step function, 
@@ -889,7 +889,7 @@ For a specific feature vector
 \(\vec{x}'\) 
 we decompose the model output \(f(\vec{x}')\)
 into the individual feature contributions \(v_{j}\).
-~\autocite{aasExplaining2020}
+~\autocite{aasExplaining2021}
 \begin{equation}
     \label{eq:explain}
     f(\vec{x}') \approx v_0 + \sum_{j} v_{j}
@@ -900,11 +900,11 @@ feature in \( \vec{x}\).
 
 The shared baseline is typically \(\EX[f(\vec{x})]\), 
 either the average or median prediction from the training set.
-~\autocite{aasExplaining2020}
+~\autocite{aasExplaining2021}
 With this formulation, the Shapley values represent the difference between
 the prediction \(f(\vec{x}')\) and this reference prediction,
 and from \cref{eq:explain} it follows that these contributions are additive.
-~\autocite{aasExplaining2020}
+~\autocite{aasExplaining2021}
 This enables visualizations such as \cref{fig:shap-local}.
 
 % figure: shap explanations{{{
@@ -938,7 +938,7 @@ This enables visualizations such as \cref{fig:shap-local}.
         \draw[->] (\n) -- ($(0)!(\n)!(1)+(0,1)$);
 
     \end{tikzpicture}
-    \caption[Shapley Additive Explanations]{%
+    \caption[Example of Shapley additive explanations]{%
        \Acf{SHAP} values represents the difference between the specific model
        output \(f(\vec{x}')\) and a baseline prediction
        \(\EX [\vec{x}]\). 

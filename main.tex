@@ -327,26 +327,9 @@
 % ←
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\iffalse
-\includeonly{%
-    content/00-copyright.tex,
-    content/00-preface.tex,
-    content/00-acronyms.tex,
-    content/00-summary.tex,
-    content/00-manuscripts.tex,
-    content/00-overview.tex,
-    % content/introduction.tex,
-    % content/machine-learning.tex,
-    % content/survival-analysis.tex,
-    % content/data-foundation.tex,
-    % content/study1-outline.tex,
-    % content/study2-outline.tex,
-    % content/study3-outline.tex,
-    content/discussion.tex,
-}
-\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{document}
 
 \frontmatter
@@ -361,8 +344,12 @@
 \cleardoublepage
 
 \tableofcontents
+{
+% hack to remove spacing between chapters in lof and lot
+\renewcommand{\addvspace}[1]{}
 \listoffigures
 \listoftables
+}
 
 \include{content/00-acronyms}      
 
@@ -407,7 +394,7 @@
 \includepdf[
     clip, trim=1cm .5cm 1cm 1.6cm, offset=0 0, 
     frame=true, scale=0.8, 
-    pages=2-5, pagecommand={}]%
+    pages=2-, pagecommand={}]%
     {assets/paper1-clustering.pdf}
 
 \cleardoublepage
@@ -419,7 +406,7 @@
 
 \includepdf[
     clip, trim=1cm 2cm 1cm 3.2cm, offset=0 0, 
-    frame=true, scale=0.8, pages=2-5, 
+    frame=true, scale=0.8, pages=2-, 
     pagecommand={}]%
     {assets/paper2-pmhnet-v1.pdf}
 
@@ -432,7 +419,7 @@
 
 \includepdf[
     clip, trim=1cm 1.4cm 1cm 1.8cm, offset=0 0, 
-    frame=true, scale=0.8, pages=2-5, 
+    frame=true, scale=0.8, pages=2-, 
     pagecommand={}]%
     {assets/paper3-pmhnet-v2.pdf}
 

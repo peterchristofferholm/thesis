@@ -5,10 +5,6 @@
 
 \usepackage{appendix}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% FORMATTING TABLE OF CONTENTS
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 % formatting for main table of contents
 % [left] {above} {before w/label} {before w/o label} {filler + page} [after]
 
@@ -122,6 +118,7 @@
 \newcommand{\kutitlepage}[0]{{%
     \cleardoublepage
     \newgeometry{left=1.75cm, top=7.5cm, bottom=2.5cm}
+
     %% background
     \AddToShipoutPictureBG*{%
         \includegraphics[width=\paperwidth, height=\paperheight]%
@@ -131,12 +128,6 @@
         \includegraphics[width=\paperwidth, height=\paperheight]%
         {assets/ku-english.pdf}
     }
-
-    % \begin{tikzpicture}[remember picture, overlay,inner sep=0pt,outer sep=0pt]
-    % \node[anchor=south east] at ([xshift=3cm,yshift=-3cm]current page.south east) {
-    %   \includegraphics{assets/ai-cover.png}
-    % };
-    % \end{tikzpicture}
 
     \fontsize{18}{0}\selectfont\par\noindent%
     \textbf{PhD thesis}
@@ -166,13 +157,8 @@
         University of Copenhagen January 3, 2024 \\
     }
 
-
-
-    %\thanklessauthor%
-
-    %\includepdf[noautoscale]{assets/ku-logo.pdf}
-    %\includepdf[noautoscale]{assets/ku-english.pdf}
     \thispagestyle{empty}%
     \clearpage%
     \restoregeometry
 }}
+

@@ -31,7 +31,7 @@ sources utilized in the studies comprising this thesis. It details the
 databases and registries that were accessed and analyzed,
 highlighting how each contributed to the research. 
 
-\begin{figure*}
+\begin{figure*}% →
 \begin{tikzpicture}[
     x=\linewidth,
     tbox/.style={minimum height=5mm, thick, yshift=1em, inner sep=0pt},
@@ -72,14 +72,14 @@ highlighting how each contributed to the research.
 
 \end{tikzpicture}
     \setfloatalignment{b}
-    \caption[Overview of Data]{%
+    \caption[Overview of included data]{%
         Overview of the different data resources used in 
         the research projects presented in this thesis.
         This schematic shows the timeline of the different datasets.
         \vspace{2em}
     }
     \label{fig:data-overview}
-\end{figure*}
+\end{figure*}% ←
 
 \section{The Danish Civil Registration System}
 
@@ -286,7 +286,7 @@ and specificity of the included code.
     \draw (5.east) .. controls +(2ex,0) and +(-2ex,0) .. (t5.west);
     
 \end{tikzpicture}
-\caption[The ICD-10 Hierarchy]{%
+\caption[Hierarchical structure of \acs{ICD-10} codes]{%
     Schematic illustrating the hierarchical structure of the \ac{ICD-10} coding
     system. 
     Using chapter ix---which covers diseases of the circulatory system
@@ -469,9 +469,9 @@ with notably lower number of entries from 2006 to 2009,
 as illustrated in \cref{fig:notes-overview}.
 
 % figure: bth notes stats→
-\begin{figure}
+\begin{figure}[bt]
     \includegraphics[width=\textwidth, trim=10mm 0 0 0]{graphics/bth-notes}
-    \caption[Overview of \acs{BTH} clinical notes][-5em]{%
+    \caption[Overview of \acs{BTH} clinical notes][0em]{%
         Monthly number of clinical notes in \acf*{BTH}
         originating from 
         (\,\cbox{color2}{\phantom{a}}\,) the Capital Region hospitals and 
@@ -587,7 +587,10 @@ Normal general condition.
 Nutritional status above average.
 \kwpa{Blood pressure 149/91}, \kwpa{pulse 76}, \kwpa{height 177 cm}, \kwpa{weight 96 kg}
 \end{Verbatim}
-\caption{Artificial example of unstructured text in an \ac{EHR}}
+\caption[Example of unstructed \acs{EHR} data]{%
+    Artificial example of unstructured text in an \ac{EHR} showcasing
+    different types of information that can be extracted for \acf{ML}
+    applications.}
 \label{fig:notes-example}
 }
 \end{figure}% ←

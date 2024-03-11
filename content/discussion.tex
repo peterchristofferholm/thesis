@@ -231,125 +231,173 @@ arbitrary manner as is common in other clustering algorithms.
 
 \subsection{Lack of Primary Care Data}
 
-Additionally, concerning our definition of comorbidities, a significant
-limitation of our study stems from the use of hospital data. 
-This reliance may
-lead to an underrepresentation of conditions primarily managed in primary care
-settings, including  non-complex infections, hypertension, and
+A fundamental limitation in our research stems from the nature of the data
+accessed, as all our studies primarily utilized hospital data. This
+reliance on hospital data is likely to lead to an underrepresentation 
+of data related to conditions and diseases primarily managed in primary
+care settings, including hypertension, non-complex infections, and various
 soft-tissue disorders.
 ~\autocite{finleyWhat2018} 
 
-
-
+In \studyiii{}, we attempted to mitigate this limitation by incorporating
+prescription data, which can serve as proxy for the conditions managed
+in primary care.
+However, it is important to note that prescription data is only partly
+able to compensate for the lack of detailed primary care patient records.
 
 \subsection{Limitations of Explainable AI}
 
+The last limitation I would like to higlight are some general shortcomings
+of \ac{XAI} that often are overlooked. Currently, \ac{XAI} is only implemented
+in \studyii{}, but our plan is include it in \studyiii{} as well, and for 
+this future work, these limitations also apply.
 
+As described earlier in this thesis, 
+the goal of \ac{ML} is to make accurate predictions on unseen data,
+and as consequence, the \enquote{how} and \enquote{why} of predictions
+is of less concern.
+However, for critical applications, including healthcare, it is 
+generally agreed that transparency is important and that 
+the \enquote{black box} nature of \ac{ML} needs to be 
+adressed. 
+~\autocite{topolHighperformance2019}
+This is exemplifed by article 15,
+of the European Union's \ac{GDPR},
+~\autocite{EuropeanParliament2016a}
+which specifies an requirement for transparency that 
+applies to algorithmic decision-making.%
+\sidenote{%→
+    Item (h) in paragraph 1 of the \acs{GDPR} article 15 states that
+    \textquote{%
+     the existence of automated decision-making, including profiling, referred to
+     in Article 22(1) and (4) and, at least in those cases, meaningful information
+     about the logic involved, as well as the significance and the envisaged
+     consequences of such processing for the data subject.}%
+}% ←
 
+For \ac{ML}, including neural networks, \ac{XAI} is a form of post-hoc
+analysis that seeks to provide the required transparency for 
+otherwise complex and non-transparent models.
+In this domain, \acsu{SHAP}-analysis~\autocite{lundbergUnified2017},
+which we utilized in \studyii{} 
+for providing explanations of the \pmhnet{1} model,
+is arguably one of the most popular \ac{XAI} approaches.
+\ac{SHAP},
+along with other similar approaches,
+relies on the usage of simpler surrogate model
+to estimate the expected marginal contribution
+of each feature to the model's output.
+~\autocite{bellePrinciples2021}
+However, this approach requires certain assumptions,
+including the premise that the model can be locally
+approximated by a simpler model and that features
+are independent.
+~\autocite{lundbergUnified2017}
+The independence assumptions is very strong and often very unrealistic,
+which is likely to bias the estimates of feature contributions---%
+nevertheless, this approach is still in widespread use.
+Recent research has demonstrated that is is possible to partially mitigate
+this limitation, but at the expense of a significantly increased computational
+complexity, which can limit its practical usefulness.
+\autocite{aasExplaining2021}
 
-Finally, the application of \ac{XAI} techniques, particularly
-\ac{SHAP}-analysis, has been instrumental in demystifying the decision-making
-processes of the \ac{ML} models. By elucidating the key factors influencing
-predictions, this approach has greatly increased the transparency and
-trustworthiness of the models. This is a crucial step towards their acceptance
-and integration into clinical practice, marking a significant contribution to
-the field of precision medicine in the secondary prevention of \ac{IHD}.
+\ac{XAI} algorithms such as \ac{SHAP} are approximations 
+of the complete model, therefore the fidelity is not perfect
+and as a consequence, neither are the explanations.
+Currently, there are no established standards for assessing the quality
+of these explanations.
+While it is possible the esimate the error of the approximations,
+this does not necessarily indicate whether the explanations are interpretable
+and understandable to end-users. 
 
+From a practical standpoint,
+the explanations offered by \ac{XAI} can be subject to misinterpretation,
+particularly by users less familiar with technical details of 
+the \acsu{AI}-model and the \ac{XAI} method used.
+During the clinical implementation of the \pmhnet{1} model for a, 
+currently ongoing, clinical trial~\autocite{bundgaardClinical2023}, 
+we provide \ac{SHAP} values alongside the model predictions to inform 
+clinicians on the basis of the model predictions.
+However, a pilot experiment in which clinicians were asked to qualitatively 
+evaluate the model's output and explanations revealed some challenges in 
+the interpretation of these.
 
-How important is XAI? 
-There have been alot of discussion about, and there are many opinions on, 
-the black-box nature of neural networks and 
-how it should or should not affect the clinical use of such models.
-\autocite{gunningXAI2019, vanderveldenExplainable2022}
+For example, one clinician found it counterintuitive that the model identified
+hyperlipidemia (\acs{ICD-10}: E78) as a factor contributing to increased 
+survival.
+While it is possible that this finding is caused by the aforementioned
+limitations, there are other plausible explanations as to why
+hyperlipidemia could be identified as a \enquote{protective} feature.
+It is important to note that \ac{SHAP} values are correlations and 
+do not imply causation.
+Patients already known with hyperlipidemia prior to
+their index coronary angiography may represent a 
+group of patients with non-acute manifestations of \ac{IHD},
+which relative to the median \ac{IHD} patient could
+have improved survival.
+Additionally, these patients are likely to have
+initiated statin treatment before the time of prediction,
+which once again, could be associated with a improved
+prognosis relative to the median patient.
 
-\textquote[russellArtificial2009]{%
-    Which would you trust: 
-    an experimental aircraft that has never flown before
-    but has a detailed explanation of why it is safe, 
-    or an aircraft that safely completed 100 previous flights 
-    and has been carefully maintained,
-    but comes with no guaranted explanation?
-}
-
-One limitation of XAI models is the accuracy and relevance of explanations.
-Explainability algorithms such as SHAP are only approximations
-of the complete model.
-In other words, the fidelity is not perfect and therefore neither
-is the explanation.
-However, for black-box models such as neural networks,
-it is the next best thing.
-
+This example underscores the complexities inherent in
+interpreting \ac{XAI} explanations, especially when they appear
+counterintuitive or misaligned with conventional medical knowledge. 
+It also emphasizes the need for thorough education and effective communication
+with healthcare professionals regarding clinical decision support tools that
+incorporate these technologies.
 
 \section{Future Perspectives}
 
-\subsection{Clinical Implementation}
+Adressing the various just discussed limitations and constraints
+all represent topics for future research, some more important than others.
+To conclude this thesis, I would like to highlight two central challenges
+related to this thesis project of utmost importance for future data-driven 
+research in precision medicine.
 
-The overwhelming majority of published medical prediction models 
-are never used in clinical practice.
+\subsection{Clinical Implementation of Machine Learning Models}
+
+In this thesis, I have argued for the potential benefits of \acsfont{AI/ML}
+methodologies in improving the clinical treatment and management of patients
+with \ac{IHD}. We have developed two neural network-based \ac{IHD}
+prognostication models, evaluated their performance using state-of-the-art
+statistical metrics, and concluded that high-dimensional \ac{ML}-based
+models are superior to existing alternatives.
+However, the theoretical clinical impact is, as of now, only just that---%
+theoretical. 
+
+It is generally accepted that
+the overwhelming majority of published medical prediction models 
+are never implemented in clinical practice.
 ~\autocite{steyerbergPrognosis2013}
+To increase the adoption of \ac{ML}-based prognostic models, 
+we need more prospective clinical studies to ascertain 
+the impact and practical applicability of such models.
+This includes exploring how \acsfont{AI/ML} can positively   
+affect clinical decision-making, patient outcomes, and 
+allocation of healthcare resources.
+Such research is crucial in realising the potential of 
+\acsfont{AI/ML} in the advancement of precision medicine.
 
-Evaluate the clinical impact and practical applicability of the developed ML
-models (PMHnetV1 and PMHnetV2) in real-world healthcare settings. This would
-involve assessing how these models influence clinical decision-making, patient
-outcomes, and healthcare resource allocation for patients with ischemic heart
-disease.
+As an extension of the work presented in \studyii{},
+although not included as a central part of this thesis,
+we have established a collaboration with the public company 
+\acsfont{CIMT} to implement \pmhnet{1} in \enquote{Sundhedsplatformen}, 
+the \ac{EHR} system used in the Capital Region and Region Zealand hospitals,
+for prospective clinical validation.
+We successfully integrated the model into a real-world clinical \ac{EHR}
+setting and have initiated a clinical trial.
+~\autocite{bundgaardClinical2023} This study is still in progress, but
+independently of its outcomes, the mere implementation of the model in a
+clinical setting is a significant achievement.
 
-For predictive models to be effective,
-they must enable clinicians to guide treatment by:
-%
-\begin{enumerate*}
-    \item providing actionable insights on modifiable risk factors
-    \item being adapted to the individual patient
-    \item being generally applicable in different populations
-\end{enumerate*}
+Looking ahead, depending on the findings of this trial,
+the focus needs to shift towards the implementation of processes
+for continuous monitoring of model performance, for regularly updating
+the model with new data, for refining models to include additional 
+endpoints (\pmhnet{2}), and several other important aspects.
 
-
-\textquote[byrne20232023]{%
-    A number of prognostic models \textelp{}
-    have been formulated into clinical risk scores and, among
-    these, the GRACE risk score offers the best discriminative performance and
-    is therefore recommended for risk assessment.%
-}
-
-The esc guidelines on risk-prevention highlights 
-that one of the currents gaps in evidence,
-is comparing the performance of competing risk-adjusted 
-cardiovascular disease risk models versus the standard models.
-~\autocite{visseren20212021}
-
-\subsection{Other}
-
-
-\begin{itemize}
-    \item Consider doing ablation studies to produce less-complex versions
-        of the predictions models.
-    \item Lack of prospective validation of medical prediction models
-    \item Lack of clinical deployment and adoption 
-    \item Limitations of explainable AI
-\end{itemize}
-
-CAUSALITY
-
-
-
-
-DeepHit parameterizes the probability mass function 
-of the survival distribution.
-They also include a ranking loss to improve model discrimination.
-\citeauthor{kvammeContinuous2021} showed that the DeepHit method
-has excellent discrimination but is poorly calibrated.
-
-
-
-In 2018, DeepSurv 
-In the approach by Faraggi-Simon, they use a neural network to 
-parameterise the log-risk function, using a slightly modified Cox partial 
-likelihood as the optimization target.
-~\autocite{faraggiNeural1995}
-The same approach was used in the \enquote{DeepSurv} paper,
-but instead paired with contemporary deep learning methods.
-~\autocite{katzmanDeepSurv2018a}
-
+\subsection{Sharing of Healthcare Data}
 
 As outlined in \cref{chap:data-foundation}, 
 the studies presented in this thesis draws on hospital data from 
@@ -364,83 +412,32 @@ organizing these diverse sources of data
 into curated datasets appropriate for 
 \ac{ML} applications.
 
+However, because such data, for good reason, is subject to ethical 
+and privacy-protecting rules and regulations, it cannot realistically 
+be shared with researchers outside our institution.
+This means that it is impossible for others to reproduce our findings,
+develop and benchmark rival models, and benefit from the data cleaning
+and curation that have already been done.
+It is a waste of resources and limits the development of the field as a whole.
 
+It is evident that 
+there exists an unmet need for regulations and approaches that enable 
+combining and benefitting from otherwise siloed datasets.
+In this context,
+the concept of federated health data networks have been 
+suggested as a possible solution to overcome existing barriers preventing 
+sharing of data.
+~\autocite{hallockFederated2021}
+In the ongoing effort of establishing a European Health Data Space, 
+the European Commission's proposal have also included procedures and
+regulations for secondary research use of health data.
+As suggested by \textcite{raabFederated2023}, 
+this effort could be coupled with the establishment of
+pan-European federated health data network, which could break
+the many barriers limiting current big data-based clinical research.
 
-
-
-
-\begin{enumerate}
-    \item 
-        From a comprehensive database including 
-        hospital data on over \num{2.6} million individuals 
-
-        with data 
-        originating from electronic health records and
-        national and clinical registries, extract and curate 
-        high-quality data and setup \ac{ML} experiments and analyses.
-        This includes:
-    \begin{enumerate}
-        \item Writing data-processing code to 
-            consolidate, clean, and organize heterogeneous
-            data from various sources.
-        \item Ensuring the maintenance of robust scientific software 
-            engineering practices, including version control, workflow
-            managers, and containerization for reproducibility.
-        \item Creating definition algorithms for the precise identification of 
-            patient populations, disease onset, and clinical outcomes.
-    \end{enumerate}
-\end{enumerate}
-
-By leveraging a large-scale electronic health database encompassing over
-\num{2.6} million individuals, this research has successfully navigated the
-complexities of data extraction, cleaning, and organization, while maintaining
-rigorous scientific software engineering practices. These efforts have resulted
-in the creation of robust, reproducible data-processing pipelines and
-definition algorithms, essential for accurate patient identification and
-clinical outcome analysis.
-
-Electronical health records are a rich source of health data,
-and can be used to find connections between risk factors and diseases.
-
-Precision medicine is prevention and treatment approaches
-
-that takes individual variation into account.
-
-
-Challenges in developing machine learning models from electronic health records
-includes syntactic interoperability, 
-which specifies the format and structure of the data.
-Many different interopability formats exists, 
-but their adoption varies considerably.
-
-Benefits of interopable digital health data
-~\autocite{lehneWhy2019}.
-
-\begin{itemize}
-    \item Large-scale observational studies.
-    \item Less time spend on data cleaning and pre-processing.
-    \item Interoperable exchange format could further cross-institutional
-    and international collaboration, which would make it easier 
-    to reproduce and externally validate e.g. prognostic applications.
-    In the case of rare diseases with very limited number of patients, 
-    international pooling of data could enable analysis
-    that otherwise would not be possible.
-    \item Faster research and development process.
-    \item If data is known to conform to a well-defined format,
-    computer software can be written without explicit access to the data.
-    This solve many issues related to sensitive data or
-    data that are otherwise subject to strict data protection regulations.
-\end{itemize}
-
-Healthcare data are usually private and scattered across various applications,
-which makes it difficult to share data and generate robust results 
-that translate to different and diverse populations.
-
-AI approaches rely on data that accurately represent
-the real-life distribution of the underlying problem.
-We can not exclusively rely on data that have been carefully curated 
-from few and often very similar sources. 
-In order to capture subtle relationships 
-between health and disease patterns,
-we need to include many and diverse cases~%
-\autocite{riekeFuture2020}.
+Future research should focus on technical solutions for 
+establishing such networks, development of algorithms for 
+distributed machine learning, and construction of interoperability 
+formats which could further cross-institutional and international 
+collaboration.

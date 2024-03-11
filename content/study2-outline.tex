@@ -193,7 +193,7 @@ models (see \cref{sub:what-is-shap}).
 \begin{marginfigure}
     \centering
     \includegraphics[trim=3mm 0 0 0, width=0.8\textwidth]{graphics/pmhnetv1-performance-curves.pdf}
-    \caption[Calibration Curves for \pmhnet{1} and \acs{GRACE}]{%
+    \caption[Calibration curves for \pmhnet{1} and \acs{GRACE} 2.0]{%
         Calibration curve for the \pmhnet{1} model and
         the \acs{GRACE} 2.0 reference models at a prediction
         horizon of three years.%
@@ -267,7 +267,7 @@ however, with diminishing incremental gains.
 % figure: intermediate models→
 \begin{figure}[htb]
     \includegraphics[trim=5mm 8mm 0 0]{graphics/pmhnet-v1-category-overview.pdf}
-    \caption[\acs{tdAUC} of \pmhnet{1} Models with Different Feature Combinations]{%
+    \caption[Performance of intermediate \pmhnet{1} models]{%
         \acs{tdAUC} scores of different intermediate \pmhnet{1} models each
         limited to specific combinations of the designated feature categories.
         The horizontal reference lines indicate the performance of the \graceii{}
@@ -296,7 +296,7 @@ and the corresponding \ac{SHAP} values (\cref{fig:shap-dependence-age}).
 % figure: shap individual→
 \begin{figure}[t]
     \includegraphics[trim=8mm 5mm 4mm 0]{graphics/pmhnet-v1-shap-individual.pdf}
-    \caption[Patient-level \acs{SHAP} Explanations][-2em]{%
+    \caption[Example patient-level \acs{SHAP} explanations][-2em]{%
         Local patient-level \acsu{SHAP} explanations of 
         5-year predictions from \pmhnet{1}. The three panels shows
         an explanation of the \pmhnet{1} prediction for test-set patients
@@ -315,7 +315,7 @@ and the corresponding \ac{SHAP} values (\cref{fig:shap-dependence-age}).
 % figure: shap-overview→
 \begin{marginfigure}[-5em]
     \includegraphics[trim=0 0 0 0]{graphics/pmhnet-v1-feature-impact.pdf}
-    \caption[Overview of Average \acs{SHAP} Impact]{%
+    \caption[Overview of average feature impact]{%
         By summarising the magnitude of \acsu{SHAP} values, we obtained
         an overview of the relative impact of the different \pmhnet{1} features,
         either aggregated across feature categories (left) or 
@@ -327,7 +327,7 @@ and the corresponding \ac{SHAP} values (\cref{fig:shap-dependence-age}).
 % figure: shap-dependece-age→
 \begin{marginfigure}
     \includegraphics{graphics/pmhnet-v1-shap-age.pdf}
-    \caption[\acs{SHAP} Dependence Plot for Age]{%
+    \caption[\acs{SHAP}-dependence plot for patient age]{%
         Example of a \acs{SHAP} dependence plot 
         showing the \ac{SHAP} value of each \enquote{age} feature
         across the entire test set.}
